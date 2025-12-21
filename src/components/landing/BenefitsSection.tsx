@@ -25,7 +25,7 @@ export function BenefitsSection() {
 						</Badge>
 						<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Why builders choose Jeem</h2>
 						<p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-							We've built the network we wished existed. Here's what you get.
+							We&apos;ve built the network we wished existed. Here&apos;s what you get.
 						</p>
 					</motion.div>
 
@@ -50,4 +50,3 @@ export function BenefitsSection() {
 		</section>
 	);
 }
-

@@ -85,7 +85,7 @@ export function ApplicationForm() {
 						</Badge>
 						<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Ready to join?</h2>
 						<p className="text-muted-foreground text-lg">
-							Show us what you've shipped. We review every application personally.
+							Show us what you&apos;ve shipped. We review every application personally.
 						</p>
 					</motion.div>
 
@@ -161,7 +161,7 @@ export function ApplicationForm() {
 									{/* What you've shipped */}
 									<div className="space-y-2">
 										<label htmlFor="shipped" className="text-sm font-medium">
-											Tell us what you've shipped recently <span className="text-amber">*</span>
+											Tell us what you&apos;ve shipped recently <span className="text-amber">*</span>
 										</label>
 										<Textarea
 											id="shipped"
@@ -211,7 +211,7 @@ export function ApplicationForm() {
 									{/* Privacy note */}
 									<p className="text-xs text-muted-foreground text-center">
 										By submitting, you agree to let us review your application and contact you about opportunities. We
-										won't share your data with third parties.
+										won&apos;t share your data with third parties.
 									</p>
 								</form>
 							</CardContent>

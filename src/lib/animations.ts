@@ -35,3 +35,4 @@ export const scaleIn: Variants = {
 	visible: { opacity: 1, scale: 1 }
 };
 
+

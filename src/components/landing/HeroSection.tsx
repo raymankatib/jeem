@@ -15,7 +15,7 @@ export function HeroSection() {
 	return (
 		<section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
 			{/* Background */}
-			<div className="absolute inset-0 bg-gradient-to-b from-background via-background to-charcoal" />
+			<div className="absolute inset-0 bg-linear-to-b from-background via-background to-charcoal" />
 
 			{/* Noise texture overlay */}
 			<div className="absolute inset-0 bg-noise pointer-events-none" />
