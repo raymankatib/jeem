@@ -1,0 +1,394 @@
+{
+	"common": {
+		"jeem": "Jeem",
+		"email": "hello@jeem.work",
+		"required": "*",
+		"optional": "(اختياري)"
+	},
+	"nav": {
+		"links": {
+			"roles": "الأدوار",
+			"howItWorks": "كيف بتشتغل",
+			"benefits": "المزايا",
+			"proof": "قيمنا",
+			"faq": "أسئلة شائعة"
+		},
+		"cta": "قدّم على Jeem"
+	},
+	"hero": {
+		"headline": "انضمّ لشبكة",
+		"headlineAccent": "بتخلّي الشغل يمشي صح",
+		"subheadline": "انربط بمشاريع حقيقية مع فرق جدّية. طوّر مهارتك، تقاضى بالدولار، واشتغل ضمن مجتمع بيقدّر الجودة قبل الكمية.",
+		"primaryCta": "قدّم على Jeem",
+		"secondaryCta": "شوف الأدوار",
+		"trustPills": {
+			"remoteFriendly": "شغل عن بُعد",
+			"paidInUsd": "الدفع بالدولار",
+			"seriousTeams": "فرق جدّية",
+			"portfolioFirst": "البورتفوليو أهم"
+		},
+		"stats": {
+			"title": "أرقام الشبكة",
+			"activeBuilders": {
+				"value": "150+",
+				"label": "مواهب نشيطة"
+			},
+			"teamsServed": {
+				"value": "40+",
+				"label": "فرق اشتغلنا معها"
+			},
+			"satisfaction": {
+				"value": "98%",
+				"label": "رضا"
+			}
+		},
+		"latestMatch": {
+			"title": "آخر تطابق",
+			"role": "Vibe Coding Engineer",
+			"time": "من يومين"
+		},
+		"thisWeek": {
+			"title": "هالأسبوع",
+			"opportunities": "12 فرصة جديدة",
+			"categories": "ضمن 5 مجالات"
+		},
+		"quote": {
+			"text": "أخيرًا شبكة بتحترم وقتي وبتوصلني بمشاريع بتستاهل.",
+			"author": "— مطوّر Senior"
+		}
+	},
+	"roles": {
+		"sectionLabel": "الأدوار المتاحة",
+		"title": "لاقِي مكانك ضمن الشبكة",
+		"description": "نبحث عن مختصّين بيشتغلوا وبيسلّموا. اختار مجالك وورجينا شغلك.",
+		"whatYouDo": "شو رح تعمل",
+		"whatGoodLooksLike": "كيف بيكون الشغل الجيد",
+		"categories": {
+			"engineering": {
+				"label": "هندسة وبرمجة",
+				"roles": {
+					"vibeCodingEngineer": {
+						"title": "Vibe Coding Engineer",
+						"whatYouDo": [
+							"بناء منتجات باستخدام أدوات مدعومة بالذكاء الاصطناعي",
+							"تحويل الأفكار لكود شغّال بسرعة",
+							"التطوير السريع مع الحفاظ على الجودة"
+						],
+						"whatGoodLooksLike": ["سبق واشتغلت بأدوات مثل Cursor أو Copilot", "بتعرف تشرح قراراتك بوضوح"],
+						"tools": ["Cursor", "Claude", "GPT-4", "Vercel", "React"]
+					},
+					"softwareDeveloper": {
+						"title": "Software Developer",
+						"whatYouDo": ["بناء وصيانة تطبيقات إنتاجية", "كتابة كود نظيف ومجرّب", "التعاون مع فرق التصميم والمنتج"],
+						"whatGoodLooksLike": ["عندك مشاريع حقيقية أو بورتفوليو واضح", "بتقدر تستلم الميزة من الفكرة للتنفيذ"],
+						"tools": ["TypeScript", "React", "Node.js", "PostgreSQL", "AWS"]
+					},
+					"contentCreatorEngineer": {
+						"title": "صانع محتوى تقني",
+						"whatYouDo": ["إنشاء محتوى تقني واضح ومفيد", "بناء شروحات وديموهات", "تبسيط المفاهيم التقنية للجمهور"],
+						"whatGoodLooksLike": ["محتواك عليه تفاعل حقيقي", "بتعرف تشرح المواضيع المعقّدة ببساطة"],
+						"tools": ["MDX", "YouTube", "Twitter/X", "Notion", "Figma"]
+					}
+				}
+			},
+			"growth": {
+				"label": "نمو وتسويق",
+				"roles": {
+					"marketer": {
+						"title": "Marketer",
+						"whatYouDo": ["زيادة الوعي وجذب المستخدمين", "تخطيط وتنفيذ حملات تسويقية", "تحليل النتائج وتحسين الأداء"],
+						"whatGoodLooksLike": ["اشتغلت على حملات أثّرت بالأرقام", "بتفكّر استراتيجي وبتنفّذ عملي"],
+						"tools": ["Google Ads", "Meta Ads", "Mixpanel", "HubSpot", "Notion"]
+					},
+					"seoAeoSpecialist": {
+						"title": "SEO & AEO Specialist",
+						"whatYouDo": [
+							"تحسين المحتوى لمحركات البحث والـ AI",
+							"بحث كلمات مفتاحية وتحليل منافسين",
+							"تنفيذ استراتيجيات محتوى بتترتّب"
+						],
+						"whatGoodLooksLike": ["رفعت الترافيك العضوي بشكل واضح", "بتفهم البحث الحديث"],
+						"tools": ["Ahrefs", "SEMrush", "Screaming Frog", "ChatGPT", "Perplexity"]
+					},
+					"socialMediaManager": {
+						"title": "Social Media Manager",
+						"whatYouDo": ["إدارة حضور العلامة على السوشيال", "إنشاء وجدولة المحتوى", "بناء تفاعل مع الجمهور"],
+						"whatGoodLooksLike": ["كبرت حسابات بتفاعل حقيقي", "بتفهم طبيعة كل منصة"],
+						"tools": ["Buffer", "Hootsuite", "Canva", "CapCut", "Twitter/X"]
+					}
+				}
+			},
+			"revenue": {
+				"label": "مبيعات وإيرادات",
+				"roles": {
+					"leadGenerator": {
+						"title": "Lead Generator",
+						"whatYouDo": ["البحث عن عملاء محتملين مناسبين", "بناء قوائم Leads دقيقة", "تأهيل الـ Leads قبل المبيعات"],
+						"whatGoodLooksLike": ["الـ Leads تبعك تحوّلت لشغل فعلي", "بتعرف توصل لصنّاع القرار"],
+						"tools": ["Apollo.io", "LinkedIn Sales Nav", "Clay", "Clearbit", "Hunter.io"]
+					},
+					"salesPipelinesBuilder": {
+						"title": "Sales Pipelines Builder",
+						"whatYouDo": ["تنظيم عمليات البيع على الـ CRM", "إعداد أتمتة وتقارير", "تحسين مراحل التحويل"],
+						"whatGoodLooksLike": ["بنيت Pipelines مستخدمة فعليًا", "فاهم البيع والتقنية مع بعض"],
+						"tools": ["HubSpot", "Salesforce", "Pipedrive", "Zapier", "Close"]
+					},
+					"leadQualifier": {
+						"title": "Lead Qualifier",
+						"whatYouDo": ["تقييم الـ Leads بسرعة", "إجراء مكالمات تعارف", "تحويل الـ Leads المناسبة للمبيعات"],
+						"whatGoodLooksLike": ["بتقيّم الفرصة خلال وقت قصير", "تواصلك واضح ومنظّم"],
+						"tools": ["HubSpot", "Calendly", "Zoom", "Slack", "Notion"]
+					}
+				}
+			},
+			"creative": {
+				"label": "إبداع وتصميم",
+				"roles": {
+					"designer": {
+						"title": "Designer",
+						"whatYouDo": ["تصميم واجهات جميلة وعملية", "إنشاء مواد بصرية وتسويقية", "التعاون مع المطوّرين بالتنفيذ"],
+						"whatGoodLooksLike": ["بورتفوليوك يبيّن ذوقك وتنوّعك", "بتقدر تسلّم شغل فعلي"],
+						"tools": ["Figma", "Framer", "Photoshop", "Illustrator", "Webflow"]
+					},
+					"aiVideoCreator": {
+						"title": "AI Video Creator",
+						"whatYouDo": [
+							"إنتاج فيديوهات باستخدام أدوات AI",
+							"إنشاء شورتات وإعلانات وشروحات",
+							"التجريب السريع بالأفكار"
+						],
+						"whatGoodLooksLike": ["فيديوهاتك جابت تفاعل حقيقي", "بتدير العملية من السكربت للإخراج"],
+						"tools": ["Runway", "Pika", "HeyGen", "ElevenLabs", "CapCut"]
+					}
+				}
+			},
+			"operations": {
+				"label": "إدارة وتشغيل",
+				"roles": {
+					"virtualAssistant": {
+						"title": "Virtual Assistant",
+						"whatYouDo": ["إدارة المواعيد والإيميلات", "تنفيذ مهام بحث وتوثيق", "تنظيم الشغل ومتابعته"],
+						"whatGoodLooksLike": ["بتتوقّع الاحتياجات قبل ما تنطلب", "ملتزم ودقيق وسريع ردّ"],
+						"tools": ["Notion", "Slack", "Gmail", "Calendly", "Asana"]
+					}
+				}
+			}
+		}
+	},
+	"howItWorks": {
+		"sectionLabel": "الآلية",
+		"title": "كيف Jeem بتشتغل معك",
+		"description": "عملية واضحة وبسيطة. شغلك وبورتفوليوك أهم من الشهادات.",
+		"steps": {
+			"apply": {
+				"number": "01",
+				"title": "قدّم",
+				"description": "قدّم طلبك مع بورتفوليو أو أمثلة عن شغلك."
+			},
+			"getScreened": {
+				"number": "02",
+				"title": "مراجعة",
+				"description": "منراجع كل طلب يدويًا، وإذا في توافق منعمل مكالمة قصيرة."
+			},
+			"getTrained": {
+				"number": "03",
+				"title": "تجهيز",
+				"description": "تدريب بسيط ليواكب متطلبات الشركات."
+			},
+			"matchToWork": {
+				"number": "04",
+				"title": "تطابق",
+				"description": "لما يطلع مشروع مناسب، منخبرك لتقرّر."
+			},
+			"deliverAndGrow": {
+				"number": "05",
+				"title": "سلّم وتطوّر",
+				"description": "سلّم شغل قوي، خد ملاحظات، وطوّر سمعتك."
+			}
+		}
+	},
+	"benefits": {
+		"sectionLabel": "المزايا",
+		"title": "ليش تختار Jeem",
+		"description": "شبكة مبنية لتسهيل الشغل الصح.",
+		"items": {
+			"qualityWork": {
+				"title": "مشاريع نوعية",
+				"description": "شغل حقيقي مع فرق حقيقية."
+			},
+			"clearScope": {
+				"title": "توقعات واضحة",
+				"description": "تسليمات وجداول واضحة من البداية."
+			},
+			"growthFeedback": {
+				"title": "ملاحظات للتطوّر",
+				"description": "Feedback مفيد بعد كل مشروع."
+			},
+			"communityLearning": {
+				"title": "مجتمع ودعم",
+				"description": "تتعلّم وتشارك مع ناس بنفس المستوى."
+			},
+			"flexible": {
+				"title": "مرونة باحترافية",
+				"description": "مرونة بالوقت مع احترام الالتزام."
+			},
+			"fairPay": {
+				"title": "دفع عادل وواضح",
+				"description": "الدفع بالدولار وباتفاق مسبق."
+			}
+		}
+	},
+	"proof": {
+		"sectionLabel": "قيمنا",
+		"title": "شو بنقدّر",
+		"description": "المبادئ يلي نمشي عليها بالشغل.",
+		"values": {
+			"quality": {
+				"title": "الجودة",
+				"description": "نشتغل شغل منفتخر فيه."
+			},
+			"speed": {
+				"title": "السرعة",
+				"description": "الحركة والاستمرارية مهمّة."
+			},
+			"communication": {
+				"title": "التواصل",
+				"description": "وضوح وتحديثات بدون مفاجآت."
+			},
+			"ownership": {
+				"title": "تحمّل المسؤولية",
+				"description": "نملك النتيجة، مو بس المهمّة."
+			}
+		},
+		"testimonials": [
+			{
+				"quote": "شبكة بتحترم الوقت وبتقدّم مشاريع واضحة وجديّة.",
+				"role": "مطوّر Senior عبر Jeem"
+			},
+			{
+				"quote": "التقييم كان دقيق بس عادل. هلّق الفرص يلي بتوصلني نوعية.",
+				"role": "Product Designer عبر Jeem"
+			},
+			{
+				"quote": "تجربة مختلفة فعلًا. تواصل واضح وشغل محترم.",
+				"role": "Growth Marketer عبر Jeem"
+			}
+		],
+		"standards": {
+			"title": "معايير Jeem",
+			"description": "المستوى يلي منلتزم فيه.",
+			"items": ["نراجع كل بورتفوليو", "منقيّم كل طلب يدويًا", "نشتغل بس مع فرق منثق فيها", "نعطي ملاحظات صريحة"]
+		}
+	},
+	"faq": {
+		"sectionLabel": "أسئلة شائعة",
+		"title": "أسئلة بتهمّك",
+		"description": "كل يلي لازم تعرفه عن الانضمام لـ Jeem.",
+		"items": [
+			{
+				"question": "مين فيو يقدّم؟",
+				"answer": "أي شخص عنده مهارات واضحة ضمن الأدوار المذكورة. يهمّنا شغلك أكتر من شهادتك أو مكانك."
+			},
+			{
+				"question": "هل لازم أكون بمكان معيّن؟",
+				"answer": "لا، الشغل عن بُعد. بعض المشاريع بتحتاج تداخل ساعات مع أمريكا أو أوروبا."
+			},
+			{
+				"question": "شو مستوى الإنكليزي المطلوب؟",
+				"answer": "تواصل كتابي واضح. أغلب الشغل async، فالكتابة مهمة."
+			},
+			{
+				"question": "كيف بيتم الدفع؟",
+				"answer": "الدفع بالدولار، غالبًا عبر تحويل بنكي أو Wise، والاتفاق قبل البدء."
+			},
+			{
+				"question": "قدّيش بياخد وقت التطابق؟",
+				"answer": "بيختلف حسب المهارة والتوفّر والمشاريع الموجودة."
+			},
+			{
+				"question": "فيني قدّم على أكتر من دور؟",
+				"answer": "نعم، بس ركّز على أقوى مجال عندك."
+			},
+			{
+				"question": "إذا أنا موظّف دوام كامل؟",
+				"answer": "ما في مشكلة، المهم تكون واضح بخصوص وقتك."
+			},
+			{
+				"question": "في رسوم للانضمام؟",
+				"answer": "لا، التقديم مجاني بالكامل."
+			}
+		]
+	},
+	"applicationForm": {
+		"sectionLabel": "التقديم",
+		"title": "جاهز تنضمّ؟",
+		"description": "ورجينا شو اشتغلت. منراجع كل طلب.",
+		"trustSignals": {
+			"respond": "منردّ على كل الطلبات",
+			"responseTime": "عادة خلال 2–3 أيام",
+			"noFee": "ما في أي رسوم"
+		},
+		"fields": {
+			"name": {
+				"label": "الاسم الكامل",
+				"placeholder": "اسمك الكامل"
+			},
+			"email": {
+				"label": "الإيميل",
+				"placeholder": "you@example.com"
+			},
+			"role": {
+				"label": "الدور",
+				"placeholder": "اختار الدور"
+			},
+			"englishLevel": {
+				"label": "مستوى الإنكليزي",
+				"placeholder": "اختار المستوى",
+				"options": {
+					"native": "لغة أم",
+					"fluent": "طليق",
+					"advanced": "متقدّم",
+					"intermediate": "متوسّط",
+					"basic": "أساسي"
+				}
+			},
+			"portfolio": {
+				"label": "بورتفوليو / LinkedIn / GitHub",
+				"placeholder": "https://..."
+			},
+			"shipped": {
+				"label": "خبرنا عن آخر شغل سلّمته",
+				"placeholder": "احكي عن مشروع أو ميزة اشتغلت عليها ودورك فيها."
+			},
+			"tools": {
+				"label": "أقوى أدواتك",
+				"placeholder": "مثال: Figma, React, HubSpot..."
+			}
+		},
+		"validation": {
+			"nameRequired": "الاسم مطلوب",
+			"emailInvalid": "الإيميل غير صحيح",
+			"roleRequired": "اختار دور",
+			"englishLevelRequired": "اختار مستوى الإنكليزي",
+			"portfolioRequired": "حط رابط بورتفوليو أو حساب",
+			"shippedRequired": "احكي عن شغلك"
+		},
+		"submit": {
+			"button": "إرسال الطلب",
+			"sending": "عم ينرسل..."
+		},
+		"success": {
+			"title": "تم إرسال الطلب",
+			"description": "رح نراجعه ونرجعلك قريب."
+		},
+		"privacyNote": "بإرسالك الطلب، بتوافق نراجع معلوماتك ونتواصل معك بخصوص الفرص."
+	},
+	"footer": {
+		"tagline": "مبني للناس يلي بتسلّم شغل",
+		"links": {
+			"twitterX": "Twitter/X",
+			"linkedin": "LinkedIn"
+		},
+		"copyright": "© {{year}} Jeem. جميع الحقوق محفوظة."
+	}
+}

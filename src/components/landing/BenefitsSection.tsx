@@ -1,11 +1,27 @@
 "use client";
 
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useInView } from "framer-motion";
-import { CONFIG } from "@/lib/config";
+import { Award, Target, MessageSquare, Users, Clock, DollarSign, LucideIcon } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
+interface BenefitItem {
+	key: string;
+	icon: LucideIcon;
+}
+
+const benefits: BenefitItem[] = [
+	{ key: "qualityWork", icon: Award },
+	{ key: "clearScope", icon: Target },
+	{ key: "growthFeedback", icon: MessageSquare },
+	{ key: "communityLearning", icon: Users },
+	{ key: "flexible", icon: Clock },
+	{ key: "fairPay", icon: DollarSign }
+];
+
 export function BenefitsSection() {
+	const { t } = useTranslation();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -25,22 +41,20 @@ export function BenefitsSection() {
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}
 					<motion.div variants={fadeInUp} className="max-w-2xl mb-16">
-						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">Benefits</p>
-						<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">Why builders choose Jeem</h2>
-						<p className="text-muted-foreground text-lg leading-relaxed">
-							We&apos;ve built the network we wished existed. Here&apos;s what you get.
-						</p>
+						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">{t("benefits.sectionLabel")}</p>
+						<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">{t("benefits.title")}</h2>
+						<p className="text-muted-foreground text-lg leading-relaxed">{t("benefits.description")}</p>
 					</motion.div>
 
 					{/* Bento Grid */}
 					<motion.div variants={fadeInUp} className="grid grid-cols-12 gap-4">
-						{CONFIG.benefits.map((benefit, idx) => {
+						{benefits.map((benefit, idx) => {
 							const isFullWidth = idx === 5;
 							const Icon = benefit.icon;
 
 							return (
 								<motion.div
-									key={benefit.title}
+									key={benefit.key}
 									variants={fadeInUp}
 									transition={{ delay: idx * 0.06 }}
 									className={gridPatterns[idx] || gridPatterns[0]}
@@ -59,9 +73,9 @@ export function BenefitsSection() {
 													<Icon className="h-5 w-5 text-muted-foreground" />
 												</div>
 												<div className="flex-1">
-													<h3 className="text-lg font-medium mb-2">{benefit.title}</h3>
+													<h3 className="text-lg font-medium mb-2">{t(`benefits.items.${benefit.key}.title`)}</h3>
 													<p className="text-muted-foreground text-sm leading-relaxed max-w-xl">
-														{benefit.description}
+														{t(`benefits.items.${benefit.key}.description`)}
 													</p>
 												</div>
 											</div>
@@ -71,8 +85,10 @@ export function BenefitsSection() {
 												<div className="w-10 h-10 rounded-xl bg-surface flex items-center justify-center mb-5">
 													<Icon className="h-5 w-5 text-muted-foreground" />
 												</div>
-												<h3 className="text-base font-medium mb-2">{benefit.title}</h3>
-												<p className="text-muted-foreground text-sm leading-relaxed">{benefit.description}</p>
+												<h3 className="text-base font-medium mb-2">{t(`benefits.items.${benefit.key}.title`)}</h3>
+												<p className="text-muted-foreground text-sm leading-relaxed">
+													{t(`benefits.items.${benefit.key}.description`)}
+												</p>
 											</>
 										)}
 									</div>

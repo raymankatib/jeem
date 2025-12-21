@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Cairo } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { I18nProvider } from "@/components/i18n-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const inter = Inter({
+	variable: "--font-sans",
 	subsets: ["latin"]
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+	variable: "--font-mono",
 	subsets: ["latin"]
+});
+
+const cairoArabic = Cairo({
+	variable: "--font-arabic",
+	subsets: ["arabic", "latin"],
+	weight: ["400", "500", "600", "700"]
 });
 
 export const metadata: Metadata = {
@@ -44,11 +51,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-					{children}
-					<Toaster position="bottom-right" richColors />
-				</ThemeProvider>
+			<body className={`${inter.variable} ${jetbrainsMono.variable} ${cairoArabic.variable} antialiased`}>
+				<I18nProvider>
+					<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+						{children}
+						<Toaster position="bottom-right" richColors />
+					</ThemeProvider>
+				</I18nProvider>
 			</body>
 		</html>
 	);

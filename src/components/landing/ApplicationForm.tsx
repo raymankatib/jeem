@@ -1,20 +1,40 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { ArrowRight, Loader2 } from "lucide-react";
-import { CONFIG } from "@/lib/config";
+import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
+const roles = [
+	"Vibe Coding Engineer",
+	"Software Developer",
+	"Content Creator as Engineer",
+	"Marketer",
+	"SEO & AEO Specialist",
+	"Social Media Manager",
+	"Lead Generator",
+	"Sales Pipelines Builder",
+	"Lead Qualifier",
+	"Designer",
+	"AI Video Creator",
+	"Virtual Assistant"
+];
+
+const englishLevelKeys = ["native", "fluent", "advanced", "intermediate", "basic"];
+
 export function ApplicationForm() {
+	const { t, i18n } = useTranslation();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const isRTL = i18n.language === "ar";
+	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -30,27 +50,27 @@ export function ApplicationForm() {
 
 		// Validation
 		if (!formData.name.trim()) {
-			toast.error("Please enter your full name");
+			toast.error(t("applicationForm.validation.nameRequired"));
 			return;
 		}
 		if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-			toast.error("Please enter a valid email address");
+			toast.error(t("applicationForm.validation.emailInvalid"));
 			return;
 		}
 		if (!formData.role) {
-			toast.error("Please select a role");
+			toast.error(t("applicationForm.validation.roleRequired"));
 			return;
 		}
 		if (!formData.englishLevel) {
-			toast.error("Please select your English level");
+			toast.error(t("applicationForm.validation.englishLevelRequired"));
 			return;
 		}
 		if (!formData.portfolio.trim()) {
-			toast.error("Please provide a portfolio, LinkedIn, or GitHub URL");
+			toast.error(t("applicationForm.validation.portfolioRequired"));
 			return;
 		}
 		if (!formData.shipped.trim()) {
-			toast.error("Please tell us what you've shipped recently");
+			toast.error(t("applicationForm.validation.shippedRequired"));
 			return;
 		}
 
@@ -59,8 +79,8 @@ export function ApplicationForm() {
 		// Simulate submission
 		await new Promise((resolve) => setTimeout(resolve, 1500));
 
-		toast.success("Application submitted successfully!", {
-			description: "We'll review your application and get back to you soon."
+		toast.success(t("applicationForm.success.title"), {
+			description: t("applicationForm.success.description")
 		});
 
 		setFormData({
@@ -91,25 +111,27 @@ export function ApplicationForm() {
 					<div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
 						{/* Left Column - Header */}
 						<motion.div variants={fadeInUp} className="lg:col-span-5">
-							<p className="text-sm text-background/60 uppercase tracking-wider mb-3">Apply Now</p>
-							<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">Ready to join?</h2>
-							<p className="text-background/70 text-lg leading-relaxed mb-8">
-								Show us what you&apos;ve shipped. We review every application personally.
+							<p className="text-sm text-background/60 uppercase tracking-wider mb-3">
+								{t("applicationForm.sectionLabel")}
 							</p>
+							<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">
+								{t("applicationForm.title")}
+							</h2>
+							<p className="text-background/70 text-lg leading-relaxed mb-8">{t("applicationForm.description")}</p>
 
 							{/* Quick stats or trust signals */}
 							<div className="space-y-4 text-sm text-background/60">
 								<div className="flex items-center gap-3">
 									<div className="w-1.5 h-1.5 rounded-full bg-background/40" />
-									<span>We respond to every application</span>
+									<span>{t("applicationForm.trustSignals.respond")}</span>
 								</div>
 								<div className="flex items-center gap-3">
 									<div className="w-1.5 h-1.5 rounded-full bg-background/40" />
-									<span>Typical response time: 2-3 days</span>
+									<span>{t("applicationForm.trustSignals.responseTime")}</span>
 								</div>
 								<div className="flex items-center gap-3">
 									<div className="w-1.5 h-1.5 rounded-full bg-background/40" />
-									<span>No fee to join the network</span>
+									<span>{t("applicationForm.trustSignals.noFee")}</span>
 								</div>
 							</div>
 						</motion.div>
@@ -121,12 +143,12 @@ export function ApplicationForm() {
 								<div className="grid sm:grid-cols-2 gap-4">
 									<div className="space-y-2">
 										<label htmlFor="name" className="text-sm text-background/70">
-											Full name <span className="text-background/40">*</span>
+											{t("applicationForm.fields.name.label")} <span className="text-background/40">*</span>
 										</label>
 										<Input
 											id="name"
 											type="text"
-											placeholder="Your full name"
+											placeholder={t("applicationForm.fields.name.placeholder")}
 											value={formData.name}
 											onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 											className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 h-11"
@@ -135,12 +157,12 @@ export function ApplicationForm() {
 
 									<div className="space-y-2">
 										<label htmlFor="email" className="text-sm text-background/70">
-											Email <span className="text-background/40">*</span>
+											{t("applicationForm.fields.email.label")} <span className="text-background/40">*</span>
 										</label>
 										<Input
 											id="email"
 											type="email"
-											placeholder="you@example.com"
+											placeholder={t("applicationForm.fields.email.placeholder")}
 											value={formData.email}
 											onChange={(e) => setFormData({ ...formData, email: e.target.value })}
 											className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 h-11"
@@ -152,14 +174,14 @@ export function ApplicationForm() {
 								<div className="grid sm:grid-cols-2 gap-4">
 									<div className="space-y-2">
 										<label htmlFor="role" className="text-sm text-background/70">
-											Role <span className="text-background/40">*</span>
+											{t("applicationForm.fields.role.label")} <span className="text-background/40">*</span>
 										</label>
 										<Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
 											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-												<SelectValue placeholder="Select role" />
+												<SelectValue placeholder={t("applicationForm.fields.role.placeholder")} />
 											</SelectTrigger>
 											<SelectContent>
-												{CONFIG.roles_list.map((role) => (
+												{roles.map((role) => (
 													<SelectItem key={role} value={role}>
 														{role}
 													</SelectItem>
@@ -170,21 +192,21 @@ export function ApplicationForm() {
 
 									<div className="space-y-2">
 										<label htmlFor="englishLevel" className="text-sm text-background/70">
-											English level <span className="text-background/40">*</span>
+											{t("applicationForm.fields.englishLevel.label")} <span className="text-background/40">*</span>
 										</label>
 										<Select
 											value={formData.englishLevel}
 											onValueChange={(value) => setFormData({ ...formData, englishLevel: value })}
 										>
 											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-												<SelectValue placeholder="Select level" />
+												<SelectValue placeholder={t("applicationForm.fields.englishLevel.placeholder")} />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value="native">Native</SelectItem>
-												<SelectItem value="fluent">Fluent</SelectItem>
-												<SelectItem value="advanced">Advanced</SelectItem>
-												<SelectItem value="intermediate">Intermediate</SelectItem>
-												<SelectItem value="basic">Basic</SelectItem>
+												{englishLevelKeys.map((level) => (
+													<SelectItem key={level} value={level}>
+														{t(`applicationForm.fields.englishLevel.options.${level}`)}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									</div>
@@ -193,12 +215,12 @@ export function ApplicationForm() {
 								{/* Portfolio */}
 								<div className="space-y-2">
 									<label htmlFor="portfolio" className="text-sm text-background/70">
-										Portfolio / LinkedIn / GitHub <span className="text-background/40">*</span>
+										{t("applicationForm.fields.portfolio.label")} <span className="text-background/40">*</span>
 									</label>
 									<Input
 										id="portfolio"
 										type="url"
-										placeholder="https://..."
+										placeholder={t("applicationForm.fields.portfolio.placeholder")}
 										value={formData.portfolio}
 										onChange={(e) => setFormData({ ...formData, portfolio: e.target.value })}
 										className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 h-11"
@@ -208,11 +230,11 @@ export function ApplicationForm() {
 								{/* What you've shipped */}
 								<div className="space-y-2">
 									<label htmlFor="shipped" className="text-sm text-background/70">
-										Tell us what you&apos;ve shipped recently <span className="text-background/40">*</span>
+										{t("applicationForm.fields.shipped.label")} <span className="text-background/40">*</span>
 									</label>
 									<Textarea
 										id="shipped"
-										placeholder="Share a recent project, feature, or piece of work you're proud of. Be specific about your role and the outcome."
+										placeholder={t("applicationForm.fields.shipped.placeholder")}
 										rows={4}
 										value={formData.shipped}
 										onChange={(e) => setFormData({ ...formData, shipped: e.target.value })}
@@ -223,12 +245,13 @@ export function ApplicationForm() {
 								{/* Tools (optional) */}
 								<div className="space-y-2">
 									<label htmlFor="tools" className="text-sm text-background/70">
-										Your strongest tools <span className="text-background/40">(optional)</span>
+										{t("applicationForm.fields.tools.label")}{" "}
+										<span className="text-background/40">{t("common.optional")}</span>
 									</label>
 									<Input
 										id="tools"
 										type="text"
-										placeholder="e.g., Figma, React, HubSpot, Cursor..."
+										placeholder={t("applicationForm.fields.tools.placeholder")}
 										value={formData.tools}
 										onChange={(e) => setFormData({ ...formData, tools: e.target.value })}
 										className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 h-11"
@@ -241,27 +264,24 @@ export function ApplicationForm() {
 										type="submit"
 										size="lg"
 										disabled={isSubmitting}
-										className="w-full sm:w-auto bg-background hover:bg-background/90 text-foreground font-medium h-12 px-10 transition-opacity duration-200"
+										className="w-full sm:w-auto bg-background hover:bg-background/90 text-foreground font-medium h-12 px-10 transition-opacity duration-200 gap-2"
 									>
 										{isSubmitting ? (
 											<>
-												<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-												Sending...
+												<Loader2 className="h-4 w-4 animate-spin" />
+												{t("applicationForm.submit.sending")}
 											</>
 										) : (
 											<>
-												Send application
-												<ArrowRight className="ml-2 h-4 w-4" />
+												{t("applicationForm.submit.button")}
+												<ArrowIcon className="h-4 w-4" />
 											</>
 										)}
 									</Button>
 								</div>
 
 								{/* Privacy note */}
-								<p className="text-xs text-background/40 pt-2">
-									By submitting, you agree to let us review your application and contact you about opportunities. We
-									won&apos;t share your data with third parties.
-								</p>
+								<p className="text-xs text-background/40 pt-2">{t("applicationForm.privacyNote")}</p>
 							</form>
 						</motion.div>
 					</div>

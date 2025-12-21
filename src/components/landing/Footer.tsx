@@ -1,6 +1,11 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
 import { Mail } from "lucide-react";
 
 export function Footer() {
+	const { t } = useTranslation();
+
 	return (
 		<footer className="py-12 border-t border-border bg-background">
 			<div className="container-narrow">
@@ -11,19 +16,19 @@ export function Footer() {
 							<div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
 								<span className="text-background font-semibold text-sm">ج</span>
 							</div>
-							<span className="text-base font-medium">Jeem</span>
+							<span className="text-base font-medium">{t("common.jeem")}</span>
 						</div>
-						<span className="text-muted-foreground text-sm">Built for people who ship</span>
+						<span className="text-muted-foreground text-sm">{t("footer.tagline")}</span>
 					</div>
 
 					{/* Links */}
 					<div className="flex items-center gap-6">
 						<a
-							href="mailto:hello@jeem.work"
+							href={`mailto:${t("common.email")}`}
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 flex items-center gap-2"
 						>
 							<Mail className="h-4 w-4" />
-							hello@jeem.work
+							{t("common.email")}
 						</a>
 						<a
 							href="https://twitter.com/jeemwork"
@@ -31,7 +36,7 @@ export function Footer() {
 							rel="noopener noreferrer"
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 						>
-							Twitter/X
+							{t("footer.links.twitterX")}
 						</a>
 						<a
 							href="https://linkedin.com/company/jeem"
@@ -39,7 +44,7 @@ export function Footer() {
 							rel="noopener noreferrer"
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 						>
-							LinkedIn
+							{t("footer.links.linkedin")}
 						</a>
 					</div>
 				</div>
@@ -47,7 +52,7 @@ export function Footer() {
 				{/* Copyright */}
 				<div className="mt-8 pt-8 border-t border-border">
 					<p className="text-sm text-muted-foreground text-center">
-						© {new Date().getFullYear()} Jeem. All rights reserved.
+						{t("footer.copyright", { year: new Date().getFullYear() })}
 					</p>
 				</div>
 			</div>

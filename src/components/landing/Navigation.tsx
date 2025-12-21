@@ -1,17 +1,29 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { ArrowRight, Menu, X } from "lucide-react";
-import { CONFIG } from "@/lib/config";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ArrowLeft, ArrowRight, Menu, X } from "lucide-react";
 
 export function Navigation() {
+	const { t, i18n } = useTranslation();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const isRTL = i18n.language === "ar";
+	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
+
+	const navLinks = [
+		{ key: "roles", id: "roles" },
+		{ key: "howItWorks", id: "how-it-works" },
+		{ key: "benefits", id: "benefits" },
+		{ key: "proof", id: "proof" },
+		{ key: "faq", id: "faq" }
+	];
 
 	const scrollToSection = (id: string) => {
-		const element = document.getElementById(id.toLowerCase().replace(/\s+/g, "-"));
+		const element = document.getElementById(id);
 		element?.scrollIntoView({ behavior: "smooth" });
 		setMobileMenuOpen(false);
 	};
@@ -21,7 +33,7 @@ export function Navigation() {
 			initial={{ y: -10, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-			className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
+			className="fixed top-0 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
 		>
 			<div className="container-narrow">
 				<div className="flex items-center justify-between h-16">
@@ -30,36 +42,38 @@ export function Navigation() {
 						<div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
 							<span className="text-background font-semibold text-base">ج</span>
 						</div>
-						<span className="text-lg font-medium tracking-tight">Jeem</span>
+						<span className="text-lg font-medium tracking-tight">{t("common.jeem")}</span>
 					</a>
 
 					{/* Desktop Nav Links */}
 					<div className="hidden md:flex items-center gap-8">
-						{CONFIG.nav.links.map((link) => (
+						{navLinks.map((link) => (
 							<button
-								key={link}
-								onClick={() => scrollToSection(link)}
+								key={link.key}
+								onClick={() => scrollToSection(link.id)}
 								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 							>
-								{link}
+								{t(`nav.links.${link.key}`)}
 							</button>
 						))}
 					</div>
 
-					{/* Desktop CTA and Theme Toggle */}
-					<div className="hidden md:flex items-center gap-3">
+					{/* Desktop CTA, Language Switcher and Theme Toggle */}
+					<div className="hidden md:flex items-center gap-2">
+						<LanguageSwitcher />
 						<ThemeToggle />
 						<Button
 							onClick={() => scrollToSection("apply")}
-							className="bg-foreground hover:bg-foreground/90 text-background font-medium h-9 px-4 text-sm transition-opacity duration-200"
+							className="bg-foreground hover:bg-foreground/90 text-background font-medium h-9 px-4 text-sm transition-opacity duration-200 gap-2"
 						>
-							{CONFIG.nav.cta}
-							<ArrowRight className="ml-2 h-3.5 w-3.5" />
+							{t("nav.cta")}
+							<ArrowIcon className="h-3.5 w-3.5" />
 						</Button>
 					</div>
 
-					{/* Mobile Menu Button and Theme Toggle */}
-					<div className="flex items-center gap-2 md:hidden">
+					{/* Mobile Menu Button, Language Switcher and Theme Toggle */}
+					<div className="flex items-center gap-1 md:hidden">
+						<LanguageSwitcher />
 						<ThemeToggle />
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -81,21 +95,21 @@ export function Navigation() {
 						className="md:hidden py-4 border-t border-border"
 					>
 						<div className="flex flex-col gap-1">
-							{CONFIG.nav.links.map((link) => (
+							{navLinks.map((link) => (
 								<button
-									key={link}
-									onClick={() => scrollToSection(link)}
-									className="text-left text-muted-foreground hover:text-foreground transition-colors py-3 px-1"
+									key={link.key}
+									onClick={() => scrollToSection(link.id)}
+									className="text-muted-foreground hover:text-foreground transition-colors py-3 px-1 text-start"
 								>
-									{link}
+									{t(`nav.links.${link.key}`)}
 								</button>
 							))}
 							<Button
 								onClick={() => scrollToSection("apply")}
-								className="bg-foreground hover:bg-foreground/90 text-background font-medium w-full mt-4"
+								className="bg-foreground hover:bg-foreground/90 text-background font-medium w-full mt-4 gap-2"
 							>
-								{CONFIG.nav.cta}
-								<ArrowRight className="ml-2 h-4 w-4" />
+								{t("nav.cta")}
+								<ArrowIcon className="h-4 w-4" />
 							</Button>
 						</div>
 					</motion.div>

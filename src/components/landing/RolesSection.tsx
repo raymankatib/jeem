@@ -1,18 +1,41 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { Check } from "lucide-react";
-import { CONFIG } from "@/lib/config";
+import { Check, Code2, TrendingUp, Target, Palette, Briefcase, LucideIcon } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
+interface RoleCategory {
+	id: string;
+	icon: LucideIcon;
+	translationKey: string;
+}
+
+const categories: RoleCategory[] = [
+	{ id: "engineering", icon: Code2, translationKey: "engineering" },
+	{ id: "growth", icon: TrendingUp, translationKey: "growth" },
+	{ id: "revenue", icon: Target, translationKey: "revenue" },
+	{ id: "creative", icon: Palette, translationKey: "creative" },
+	{ id: "operations", icon: Briefcase, translationKey: "operations" }
+];
+
+const roleKeys: Record<string, string[]> = {
+	engineering: ["vibeCodingEngineer", "softwareDeveloper", "contentCreatorEngineer"],
+	growth: ["marketer", "seoAeoSpecialist", "socialMediaManager"],
+	revenue: ["leadGenerator", "salesPipelinesBuilder", "leadQualifier"],
+	creative: ["designer", "aiVideoCreator"],
+	operations: ["virtualAssistant"]
+};
+
 export function RolesSection() {
+	const { t } = useTranslation();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [activeCategory, setActiveCategory] = useState("engineering");
 
-	const activeRoles = CONFIG.roles.categories.find((c) => c.id === activeCategory)?.roles || [];
+	const activeRoles = roleKeys[activeCategory] || [];
 
 	return (
 		<section id="roles" className="py-32 bg-surface relative bg-noise" ref={ref}>
@@ -20,22 +43,22 @@ export function RolesSection() {
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}
 					<motion.div variants={fadeInUp} className="max-w-2xl mb-16">
-						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">Open Roles</p>
-						<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">
-							Find your place in the network
-						</h2>
-						<p className="text-muted-foreground text-lg leading-relaxed">
-							We&apos;re looking for specialists who ship. Pick your domain and show us what you&apos;ve built.
+						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">
+							{t("roles.sectionLabel")}
 						</p>
+						<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">{t("roles.title")}</h2>
+						<p className="text-muted-foreground text-lg leading-relaxed">{t("roles.description")}</p>
 					</motion.div>
 
 					{/* Category Pills */}
 					<motion.div variants={fadeInUp} className="flex flex-wrap gap-2 mb-12">
-						{CONFIG.roles.categories.map((category) => (
-							<button
-								key={category.id}
-								onClick={() => setActiveCategory(category.id)}
-								className={`
+						{categories.map((category) => {
+							const Icon = category.icon;
+							return (
+								<button
+									key={category.id}
+									onClick={() => setActiveCategory(category.id)}
+									className={`
 									flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
 									${
 										activeCategory === category.id
@@ -43,11 +66,12 @@ export function RolesSection() {
 											: "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20"
 									}
 								`}
-							>
-								<category.icon className="h-4 w-4" />
-								{category.label}
-							</button>
-						))}
+								>
+									<Icon className="h-4 w-4" />
+									{t(`roles.categories.${category.translationKey}.label`)}
+								</button>
+							);
+						})}
 					</motion.div>
 				</motion.div>
 
@@ -61,14 +85,18 @@ export function RolesSection() {
 						transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
 						className="grid grid-cols-12 gap-4"
 					>
-						{activeRoles.map((role, idx) => {
+						{activeRoles.map((roleKey, idx) => {
 							// Create visual hierarchy through size variation
 							const isLarge = idx === 0;
 							const isMedium = idx === 1;
+							const basePath = `roles.categories.${activeCategory}.roles.${roleKey}`;
+							const whatYouDo = t(`${basePath}.whatYouDo`, { returnObjects: true }) as string[];
+							const whatGoodLooksLike = t(`${basePath}.whatGoodLooksLike`, { returnObjects: true }) as string[];
+							const tools = t(`${basePath}.tools`, { returnObjects: true }) as string[];
 
 							return (
 								<motion.div
-									key={role.title}
+									key={roleKey}
 									initial={{ opacity: 0, y: 16 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ delay: idx * 0.08, duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -91,43 +119,45 @@ export function RolesSection() {
 											${isLarge ? "text-xl lg:text-2xl" : "text-lg"}
 										`}
 										>
-											{role.title}
+											{t(`${basePath}.title`)}
 										</h3>
 
 										<div className={`grid gap-6 ${isLarge ? "lg:grid-cols-2" : ""}`}>
 											{/* What you'll do */}
 											<div>
 												<h4 className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
-													What you&apos;ll do
+													{t("roles.whatYouDo")}
 												</h4>
 												<ul className="space-y-2">
-													{role.whatYouDo.map((item, i) => (
-														<li
-															key={i}
-															className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
-														>
-															<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
-															<span>{item}</span>
-														</li>
-													))}
+													{Array.isArray(whatYouDo) &&
+														whatYouDo.map((item, i) => (
+															<li
+																key={i}
+																className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
+															>
+																<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
+																<span>{item}</span>
+															</li>
+														))}
 												</ul>
 											</div>
 
 											{/* What good looks like */}
 											<div>
 												<h4 className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
-													What "good" looks like
+													{t("roles.whatGoodLooksLike")}
 												</h4>
 												<ul className="space-y-2">
-													{role.whatGoodLooksLike.map((item, i) => (
-														<li
-															key={i}
-															className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
-														>
-															<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
-															<span>{item}</span>
-														</li>
-													))}
+													{Array.isArray(whatGoodLooksLike) &&
+														whatGoodLooksLike.map((item, i) => (
+															<li
+																key={i}
+																className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
+															>
+																<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
+																<span>{item}</span>
+															</li>
+														))}
 												</ul>
 											</div>
 										</div>
@@ -135,15 +165,16 @@ export function RolesSection() {
 										{/* Tools */}
 										<div className="mt-6 pt-6 border-t border-border">
 											<div className="flex flex-wrap gap-2">
-												{role.tools.map((tool) => (
-													<Badge
-														key={tool}
-														variant="secondary"
-														className="bg-secondary/80 border-0 text-muted-foreground font-normal text-xs px-2.5 py-1"
-													>
-														{tool}
-													</Badge>
-												))}
+												{Array.isArray(tools) &&
+													tools.map((tool) => (
+														<Badge
+															key={tool}
+															variant="secondary"
+															className="bg-secondary/80 border-0 text-muted-foreground font-normal text-xs px-2.5 py-1"
+														>
+															{tool}
+														</Badge>
+													))}
 											</div>
 										</div>
 									</div>
