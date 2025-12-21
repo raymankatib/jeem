@@ -19,6 +19,7 @@ export function ApplicationForm() {
 		name: "",
 		email: "",
 		role: "",
+		englishLevel: "",
 		portfolio: "",
 		shipped: "",
 		tools: ""
@@ -38,6 +39,10 @@ export function ApplicationForm() {
 		}
 		if (!formData.role) {
 			toast.error("Please select a role");
+			return;
+		}
+		if (!formData.englishLevel) {
+			toast.error("Please select your English level");
 			return;
 		}
 		if (!formData.portfolio.trim()) {
@@ -62,6 +67,7 @@ export function ApplicationForm() {
 			name: "",
 			email: "",
 			role: "",
+			englishLevel: "",
 			portfolio: "",
 			shipped: "",
 			tools: ""
@@ -142,23 +148,46 @@ export function ApplicationForm() {
 									</div>
 								</div>
 
-								{/* Role */}
-								<div className="space-y-2">
-									<label htmlFor="role" className="text-sm text-background/70">
-										Role <span className="text-background/40">*</span>
-									</label>
-									<Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
-										<SelectTrigger className="bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-											<SelectValue placeholder="Select the role you're applying for" />
-										</SelectTrigger>
-										<SelectContent>
-											{CONFIG.roles_list.map((role) => (
-												<SelectItem key={role} value={role}>
-													{role}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
+								{/* Role & English Level */}
+								<div className="grid sm:grid-cols-2 gap-4">
+									<div className="space-y-2">
+										<label htmlFor="role" className="text-sm text-background/70">
+											Role <span className="text-background/40">*</span>
+										</label>
+										<Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
+												<SelectValue placeholder="Select role" />
+											</SelectTrigger>
+											<SelectContent>
+												{CONFIG.roles_list.map((role) => (
+													<SelectItem key={role} value={role}>
+														{role}
+													</SelectItem>
+												))}
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div className="space-y-2">
+										<label htmlFor="englishLevel" className="text-sm text-background/70">
+											English level <span className="text-background/40">*</span>
+										</label>
+										<Select
+											value={formData.englishLevel}
+											onValueChange={(value) => setFormData({ ...formData, englishLevel: value })}
+										>
+											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
+												<SelectValue placeholder="Select level" />
+											</SelectTrigger>
+											<SelectContent>
+												<SelectItem value="native">Native</SelectItem>
+												<SelectItem value="fluent">Fluent</SelectItem>
+												<SelectItem value="advanced">Advanced</SelectItem>
+												<SelectItem value="intermediate">Intermediate</SelectItem>
+												<SelectItem value="basic">Basic</SelectItem>
+											</SelectContent>
+										</Select>
+									</div>
 								</div>
 
 								{/* Portfolio */}
