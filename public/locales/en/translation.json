@@ -463,6 +463,11 @@
 			"title": "Application submitted successfully!",
 			"description": "We'll review your application and get back to you soon."
 		},
+		"errors": {
+			"rateLimit": "Too many requests. Please try again in a minute.",
+			"generic": "Something went wrong. Please try again.",
+			"network": "Network error. Please check your connection and try again."
+		},
 		"privacyNote": "By submitting, you agree to let us review your application and contact you about opportunities. We won't share your data with third parties."
 	},
 	"footer": {
