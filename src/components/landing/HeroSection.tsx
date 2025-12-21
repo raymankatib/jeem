@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CONFIG } from "@/lib/config";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { fadeInUp, staggerContainer, slideInFromRight } from "@/lib/animations";
 
 export function HeroSection() {
 	const scrollToSection = (id: string) => {
@@ -13,112 +13,128 @@ export function HeroSection() {
 	};
 
 	return (
-		<section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-			{/* Background */}
-			<div className="absolute inset-0 bg-linear-to-b from-background via-background to-charcoal" />
-
-			{/* Noise texture overlay */}
-			<div className="absolute inset-0 bg-noise pointer-events-none" />
-
-			{/* Ambient glow effects */}
-			<div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber/10 rounded-full blur-[120px]" />
-			<div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-amber/5 rounded-full blur-[100px]" />
-
-			{/* Subtle grid pattern - theme aware */}
-			<div
-				className="absolute inset-0 opacity-[0.02] dark:opacity-[0.02]"
-				style={{
-					backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
-					backgroundSize: "60px 60px"
-				}}
-			/>
-
-			<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-				<motion.div
-					initial="hidden"
-					animate="visible"
-					variants={staggerContainer}
-					className="text-center max-w-4xl mx-auto"
-				>
-					{/* Headline */}
-					<motion.h1
-						variants={fadeInUp}
-						transition={{ duration: 0.6 }}
-						className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6"
-					>
-						{CONFIG.hero.headline}
-						<br />
-						<span className="text-gradient-amber">{CONFIG.hero.headlineAccent}</span>
-					</motion.h1>
-
-					{/* Subheadline */}
-					<motion.p
-						variants={fadeInUp}
-						transition={{ duration: 0.6, delay: 0.1 }}
-						className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
-					>
-						{CONFIG.hero.subheadline}
-					</motion.p>
-
-					{/* CTAs */}
+		<section className="relative min-h-screen flex items-center pt-16 bg-noise">
+			<div className="container-narrow py-24 lg:py-32">
+				<div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+					{/* Left Column - Text Content */}
 					<motion.div
-						variants={fadeInUp}
-						transition={{ duration: 0.6, delay: 0.2 }}
-						className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+						initial="hidden"
+						animate="visible"
+						variants={staggerContainer}
+						className="lg:col-span-6 xl:col-span-5"
 					>
-						<Button
-							size="lg"
-							onClick={() => scrollToSection("apply")}
-							className="bg-amber hover:bg-amber-dark text-white dark:text-background font-semibold px-8 py-6 text-lg glow-amber"
+						{/* Headline */}
+						<motion.h1
+							variants={fadeInUp}
+							className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] mb-6"
 						>
-							{CONFIG.hero.primaryCta}
-							<ArrowRight className="ml-2 h-5 w-5" />
-						</Button>
-						<Button
-							size="lg"
-							variant="outline"
-							onClick={() => scrollToSection("roles")}
-							className="border-border hover:bg-secondary px-8 py-6 text-lg"
-						>
-							{CONFIG.hero.secondaryCta}
-							<ChevronRight className="ml-2 h-5 w-5" />
-						</Button>
-					</motion.div>
+							{CONFIG.hero.headline}
+							<br />
+							<span className="text-muted-foreground">{CONFIG.hero.headlineAccent}</span>
+						</motion.h1>
 
-					{/* Trust Pills */}
-					<motion.div
-						variants={fadeInUp}
-						transition={{ duration: 0.6, delay: 0.3 }}
-						className="flex flex-wrap justify-center gap-3"
-					>
-						{CONFIG.hero.trustPills.map((pill) => (
-							<div
-								key={pill.text}
-								className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border text-sm text-muted-foreground"
+						{/* Subheadline */}
+						<motion.p variants={fadeInUp} className="text-lg text-muted-foreground leading-relaxed mb-10 max-w-lg">
+							{CONFIG.hero.subheadline}
+						</motion.p>
+
+						{/* CTAs */}
+						<motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-3 mb-12">
+							<Button
+								size="lg"
+								onClick={() => scrollToSection("apply")}
+								className="bg-foreground hover:bg-foreground/90 text-background font-medium h-12 px-8 text-base transition-opacity duration-200"
 							>
-								<pill.icon className="h-4 w-4 text-amber" />
-								<span>{pill.text}</span>
-							</div>
-						))}
-					</motion.div>
-				</motion.div>
-			</div>
+								{CONFIG.hero.primaryCta}
+								<ArrowRight className="ml-2 h-4 w-4" />
+							</Button>
+							<Button
+								size="lg"
+								variant="ghost"
+								onClick={() => scrollToSection("roles")}
+								className="text-muted-foreground hover:text-foreground hover:bg-transparent h-12 px-6 text-base transition-colors duration-200"
+							>
+								{CONFIG.hero.secondaryCta}
+							</Button>
+						</motion.div>
 
-			{/* Scroll indicator */}
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 1, duration: 0.5 }}
-				className="absolute bottom-8 left-1/2 -translate-x-1/2"
-			>
-				<motion.div
-					animate={{ y: [0, 8, 0] }}
-					transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-					className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2"
-				>
-					<div className="w-1.5 h-2.5 rounded-full bg-amber" />
-				</motion.div>
-			</motion.div>
+						{/* Trust Pills */}
+						<motion.div variants={fadeInUp} className="flex flex-wrap gap-2">
+							{CONFIG.hero.trustPills.map((pill) => (
+								<div
+									key={pill.text}
+									className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/50 text-sm text-muted-foreground"
+								>
+									<pill.icon className="h-3.5 w-3.5" />
+									<span>{pill.text}</span>
+								</div>
+							))}
+						</motion.div>
+					</motion.div>
+
+					{/* Right Column - Visual Panel (Bento-style preview) */}
+					<motion.div
+						initial="hidden"
+						animate="visible"
+						variants={slideInFromRight}
+						className="lg:col-span-6 xl:col-span-7"
+					>
+						<div className="relative">
+							{/* Main Card - Asymmetrical bento layout */}
+							<div className="grid grid-cols-2 gap-3">
+								{/* Large stat card */}
+								<div className="col-span-2 bg-card border border-border rounded-2xl p-8 shadow-soft">
+									<div className="flex items-center justify-between mb-6">
+										<span className="text-sm text-muted-foreground">Network Stats</span>
+										<div className="w-2 h-2 rounded-full bg-green-500" />
+									</div>
+									<div className="grid grid-cols-3 gap-6">
+										<div>
+											<div className="text-3xl font-semibold mb-1">150+</div>
+											<div className="text-sm text-muted-foreground">Active builders</div>
+										</div>
+										<div>
+											<div className="text-3xl font-semibold mb-1">40+</div>
+											<div className="text-sm text-muted-foreground">Teams served</div>
+										</div>
+										<div>
+											<div className="text-3xl font-semibold mb-1">98%</div>
+											<div className="text-sm text-muted-foreground">Satisfaction</div>
+										</div>
+									</div>
+								</div>
+
+								{/* Role preview card */}
+								<div className="bg-card border border-border rounded-2xl p-6 shadow-soft">
+									<div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Latest Match</div>
+									<div className="font-medium mb-1">Vibe Coding Engineer</div>
+									<div className="text-sm text-muted-foreground">Matched 2 days ago</div>
+								</div>
+
+								{/* Activity card */}
+								<div className="bg-card border border-border rounded-2xl p-6 shadow-soft">
+									<div className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">This Week</div>
+									<div className="font-medium mb-1">12 new opportunities</div>
+									<div className="text-sm text-muted-foreground">Across 5 categories</div>
+								</div>
+
+								{/* Quote snippet */}
+								<div className="col-span-2 bg-surface border border-border rounded-2xl p-6 shadow-soft">
+									<div className="flex gap-4">
+										<div className="w-10 h-10 rounded-full bg-muted shrink-0" />
+										<div>
+											<p className="text-sm text-muted-foreground leading-relaxed mb-2">
+												&ldquo;Finally, a network that respects my time and matches me with projects worth doing.&rdquo;
+											</p>
+											<p className="text-xs text-muted-foreground">— Senior Developer</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</motion.div>
+				</div>
+			</div>
 		</section>
 	);
 }

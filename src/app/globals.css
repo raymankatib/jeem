@@ -3,12 +3,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Custom fonts */
+/* Custom fonts - Neutral sans-serif with high legibility */
 @font-face {
-  font-family: 'Instrument Serif';
-  src: url('https://fonts.gstatic.com/s/instrumentserif/v4/jizBRFtNs2ka5fXjeivQ4LroWlx-2zIZj1bIkNo.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
+  font-family: 'Satoshi';
+  src: url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
   font-display: swap;
 }
 
@@ -17,7 +15,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-serif: 'Instrument Serif', serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,12 +44,8 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-amber: var(--amber);
-  --color-amber-glow: var(--amber-glow);
-  --color-amber-dark: var(--amber-dark);
-  --color-charcoal: var(--charcoal);
-  --color-charcoal-light: var(--charcoal-light);
-  --color-wood: var(--wood);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -63,90 +56,104 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Jeem Brand Colors */
-  --amber: #C68A32;
-  --amber-glow: #D4963E;
-  --amber-dark: #A67028;
-  --charcoal: #F5F3F0;
-  --charcoal-light: #EBE8E4;
-  --wood: #E8E2D8;
+  --radius: 0.75rem;
   
-  /* Light theme */
-  --background: #FDFCFB;
-  --foreground: #1A1A1A;
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
-  --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  --primary: #C68A32;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F5F3F0;
-  --secondary-foreground: #1A1A1A;
-  --muted: #EBE8E4;
-  --muted-foreground: #6B6B6B;
-  --accent: #C68A32;
-  --accent-foreground: #FFFFFF;
-  --destructive: #DC2626;
-  --border: rgba(0, 0, 0, 0.08);
-  --input: rgba(0, 0, 0, 0.08);
-  --ring: #C68A32;
-  --chart-1: #C68A32;
-  --chart-2: #D4963E;
-  --chart-3: #A67028;
-  --chart-4: #8B5A1E;
-  --chart-5: #704514;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #C68A32;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F5F3F0;
-  --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: rgba(0, 0, 0, 0.08);
-  --sidebar-ring: #C68A32;
+  /* Greyscale-first palette - Light theme */
+  /* Never pure white or pure black */
+  --background: #FAFAF9;           /* Warm off-white */
+  --foreground: #18181B;           /* Near-black, not pure */
+  --surface: #F5F5F4;              /* Light grey sections */
+  --surface-elevated: #FFFFFF;     /* Slightly lighter cards - exception for elevation */
+  
+  --card: #FEFEFE;                 /* Card surface */
+  --card-foreground: #18181B;
+  --popover: #FEFEFE;
+  --popover-foreground: #18181B;
+  
+  /* Primary - Muted, sophisticated accent */
+  --primary: #18181B;              /* Near-black primary actions */
+  --primary-foreground: #FAFAF9;
+  
+  /* Secondary - Subtle grey tones */
+  --secondary: #F5F5F4;
+  --secondary-foreground: #18181B;
+  
+  /* Muted - For backgrounds and less important text */
+  --muted: #E7E5E4;
+  --muted-foreground: #78716C;     /* Mid-grey for secondary text */
+  
+  /* Accent - Sparingly used warm tone */
+  --accent: #A8A29E;               /* Warm grey accent */
+  --accent-foreground: #18181B;
+  
+  --destructive: #B91C1C;
+  
+  /* Very subtle borders */
+  --border: rgba(0, 0, 0, 0.06);
+  --input: rgba(0, 0, 0, 0.06);
+  --ring: #18181B;
+  
+  /* Charts - Greyscale */
+  --chart-1: #18181B;
+  --chart-2: #44403C;
+  --chart-3: #78716C;
+  --chart-4: #A8A29E;
+  --chart-5: #D6D3D1;
+  
+  --sidebar: #FAFAF9;
+  --sidebar-foreground: #18181B;
+  --sidebar-primary: #18181B;
+  --sidebar-primary-foreground: #FAFAF9;
+  --sidebar-accent: #F5F5F4;
+  --sidebar-accent-foreground: #18181B;
+  --sidebar-border: rgba(0, 0, 0, 0.06);
+  --sidebar-ring: #18181B;
 }
 
 .dark {
-  /* Jeem Brand Colors - Dark Theme */
-  --amber: #E6A342;
-  --amber-glow: #F4B860;
-  --amber-dark: #C68A32;
-  --charcoal: #1A1A1A;
-  --charcoal-light: #2A2A2A;
-  --wood: #3D3328;
+  /* Greyscale-first palette - Dark theme */
+  --background: #0C0C0C;           /* Near-black, warm undertone */
+  --foreground: #FAFAF9;           /* Off-white text */
+  --surface: #141414;              /* Elevated surface */
+  --surface-elevated: #1C1C1C;     /* Cards and elevated elements */
   
-  /* Dark theme */
-  --background: #0D0D0D;
-  --foreground: #FAFAFA;
-  --card: #1A1A1A;
-  --card-foreground: #FAFAFA;
-  --popover: #1A1A1A;
-  --popover-foreground: #FAFAFA;
-  --primary: #E6A342;
-  --primary-foreground: #0D0D0D;
-  --secondary: #2A2A2A;
-  --secondary-foreground: #FAFAFA;
+  --card: #161616;
+  --card-foreground: #FAFAF9;
+  --popover: #161616;
+  --popover-foreground: #FAFAF9;
+  
+  --primary: #FAFAF9;
+  --primary-foreground: #0C0C0C;
+  
+  --secondary: #1C1C1C;
+  --secondary-foreground: #FAFAF9;
+  
   --muted: #262626;
-  --muted-foreground: #A3A3A3;
-  --accent: #E6A342;
-  --accent-foreground: #0D0D0D;
+  --muted-foreground: #A1A1AA;
+  
+  --accent: #525252;
+  --accent-foreground: #FAFAF9;
+  
   --destructive: #DC2626;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: #E6A342;
-  --chart-1: #E6A342;
-  --chart-2: #F4B860;
-  --chart-3: #C68A32;
-  --chart-4: #A67C3D;
-  --chart-5: #8B6914;
-  --sidebar: #1A1A1A;
-  --sidebar-foreground: #FAFAFA;
-  --sidebar-primary: #E6A342;
-  --sidebar-primary-foreground: #0D0D0D;
-  --sidebar-accent: #2A2A2A;
-  --sidebar-accent-foreground: #FAFAFA;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #E6A342;
+  
+  --border: rgba(255, 255, 255, 0.06);
+  --input: rgba(255, 255, 255, 0.06);
+  --ring: #FAFAF9;
+  
+  --chart-1: #FAFAF9;
+  --chart-2: #D6D3D1;
+  --chart-3: #A8A29E;
+  --chart-4: #78716C;
+  --chart-5: #44403C;
+  
+  --sidebar: #0C0C0C;
+  --sidebar-foreground: #FAFAF9;
+  --sidebar-primary: #FAFAF9;
+  --sidebar-primary-foreground: #0C0C0C;
+  --sidebar-accent: #1C1C1C;
+  --sidebar-accent-foreground: #FAFAF9;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #FAFAF9;
 }
 
 @layer base {
@@ -154,7 +161,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   html {
     scroll-behavior: smooth;
@@ -163,58 +173,103 @@
 
 /* Custom utilities */
 @layer utilities {
-  .text-gradient-amber {
-    background: linear-gradient(135deg, var(--amber-glow) 0%, var(--amber) 50%, var(--amber-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .glow-amber {
-    box-shadow: 0 0 20px rgba(230, 163, 66, 0.3), 0 0 60px rgba(230, 163, 66, 0.1);
-  }
-  
-  .glow-amber-lg {
-    box-shadow: 0 0 40px rgba(230, 163, 66, 0.4), 0 0 100px rgba(230, 163, 66, 0.2);
-  }
-  
+  /* Very subtle noise texture - barely noticeable */
   .bg-noise {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
+    position: relative;
+  }
+  .bg-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.015;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Subtle shadow system for depth */
+  .shadow-soft {
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.02),
+      0 2px 4px rgba(0, 0, 0, 0.02),
+      0 4px 8px rgba(0, 0, 0, 0.02);
   }
   
-  .border-gradient-amber {
-    border-image: linear-gradient(135deg, var(--amber), var(--amber-dark)) 1;
+  .shadow-soft-lg {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.02),
+      0 4px 8px rgba(0, 0, 0, 0.02),
+      0 8px 16px rgba(0, 0, 0, 0.03),
+      0 16px 32px rgba(0, 0, 0, 0.03);
+  }
+
+  .dark .shadow-soft {
+    box-shadow: 
+      0 1px 2px rgba(0, 0, 0, 0.1),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dark .shadow-soft-lg {
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 4px 8px rgba(0, 0, 0, 0.15),
+      0 8px 16px rgba(0, 0, 0, 0.15),
+      0 16px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Max content width */
+  .container-narrow {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-narrow {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-narrow {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
   }
 }
 
-/* Scrollbar styling - Light theme */
+/* Scrollbar styling - Minimal */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--muted);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--muted-foreground);
-  border-radius: 4px;
+  background: var(--muted);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--foreground);
-}
-
-/* Scrollbar styling - Dark theme */
-.dark::-webkit-scrollbar-track {
-  background: #1A1A1A;
+  background: var(--muted-foreground);
 }
 
 .dark::-webkit-scrollbar-thumb {
-  background: #3A3A3A;
+  background: #2A2A2A;
 }
 
 .dark::-webkit-scrollbar-thumb:hover {
-  background: #4A4A4A;
+  background: #3A3A3A;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--foreground);
+  color: var(--background);
 }

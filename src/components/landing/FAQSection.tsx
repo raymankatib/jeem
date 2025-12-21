@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CONFIG } from "@/lib/config";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
@@ -12,39 +11,42 @@ export function FAQSection() {
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 
 	return (
-		<section id="faq" className="py-24 bg-charcoal relative" ref={ref}>
-			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+		<section id="faq" className="py-32 bg-surface relative bg-noise" ref={ref}>
+			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
-					{/* Section Header */}
-					<motion.div variants={fadeInUp} className="text-center mb-12">
-						<Badge variant="secondary" className="mb-4 bg-amber/10 text-amber border-amber/20">
-							FAQ
-						</Badge>
-						<h2 className="text-3xl sm:text-4xl font-bold mb-4">Common questions</h2>
-						<p className="text-muted-foreground">Everything you need to know about joining Jeem.</p>
-					</motion.div>
+					{/* Two-column layout */}
+					<div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+						{/* Left Column - Header */}
+						<motion.div variants={fadeInUp} className="lg:col-span-4">
+							<div className="lg:sticky lg:top-24">
+								<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">FAQ</p>
+								<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">Common questions</h2>
+								<p className="text-muted-foreground leading-relaxed">Everything you need to know about joining Jeem.</p>
+							</div>
+						</motion.div>
 
-					{/* Accordion */}
-					<motion.div variants={fadeInUp}>
-						<Accordion type="single" collapsible className="space-y-3">
-							{CONFIG.faq.map((item, idx) => (
-								<AccordionItem
-									key={idx}
-									value={`item-${idx}`}
-									className="border border-border rounded-lg px-6 bg-secondary/20 data-[state=open]:bg-secondary/40"
-								>
-									<AccordionTrigger className="text-left hover:no-underline py-5">
-										<span className="font-medium">{item.question}</span>
-									</AccordionTrigger>
-									<AccordionContent className="text-muted-foreground pb-5">{item.answer}</AccordionContent>
-								</AccordionItem>
-							))}
-						</Accordion>
-					</motion.div>
+						{/* Right Column - Accordion */}
+						<motion.div variants={fadeInUp} className="lg:col-span-8">
+							<Accordion type="single" collapsible className="space-y-3">
+								{CONFIG.faq.map((item, idx) => (
+									<AccordionItem
+										key={idx}
+										value={`item-${idx}`}
+										className="border border-border rounded-xl px-6 bg-card data-[state=open]:bg-card shadow-soft"
+									>
+										<AccordionTrigger className="text-left hover:no-underline py-5 text-base font-normal">
+											{item.question}
+										</AccordionTrigger>
+										<AccordionContent className="text-muted-foreground pb-5 text-sm leading-relaxed">
+											{item.answer}
+										</AccordionContent>
+									</AccordionItem>
+								))}
+							</Accordion>
+						</motion.div>
+					</div>
 				</motion.div>
 			</div>
 		</section>
 	);
 }
-
-
