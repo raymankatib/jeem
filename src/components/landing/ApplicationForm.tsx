@@ -119,7 +119,8 @@ export function ApplicationForm() {
 				body: JSON.stringify({
 					...formData,
 					...utmParams,
-					page_path: typeof window !== "undefined" ? window.location.pathname : ""
+					page_path: typeof window !== "undefined" ? window.location.pathname : "",
+					language: i18n.language // Send current language for email
 				})
 			});
 

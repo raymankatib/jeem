@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabaseServer";
+import { sendConfirmationEmail } from "@/lib/email";
 
 // ============================================================================
 // RATE LIMITING (Simple in-memory stub)
@@ -59,6 +60,8 @@ const talentSchema = z.object({
 	utm_term: z.string().max(200).optional().default(""),
 	utm_content: z.string().max(200).optional().default(""),
 	page_path: z.string().max(500).optional().default(""),
+	// Language for email (en or ar)
+	language: z.enum(["en", "ar"]).optional().default("en"),
 	// Honeypot field (should be empty)
 	honey: z.string().optional()
 });
@@ -145,25 +148,30 @@ export async function POST(request: NextRequest) {
 		// Get Supabase admin client
 		const supabase = getSupabaseAdmin();
 
-		// Insert into database
-		const { error: insertError } = await supabase.from("talents").insert({
-			name: data.name,
-			email: data.email,
-			role: data.role,
-			english_level: data.englishLevel,
-			portfolio: data.portfolio,
-			shipped: data.shipped,
-			tools: data.tools || null,
-			source: "landing",
-			utm_source: data.utm_source || null,
-			utm_medium: data.utm_medium || null,
-			utm_campaign: data.utm_campaign || null,
-			utm_term: data.utm_term || null,
-			utm_content: data.utm_content || null,
-			page_path: data.page_path || null,
-			user_agent: userAgent,
-			ip_hash: ipHash
-		});
+		// Insert into database and return the inserted row
+		const { data: insertedTalent, error: insertError } = await supabase
+			.from("talents")
+			.insert({
+				name: data.name,
+				email: data.email,
+				role: data.role,
+				english_level: data.englishLevel,
+				portfolio: data.portfolio,
+				shipped: data.shipped,
+				tools: data.tools || null,
+				source: "landing",
+				utm_source: data.utm_source || null,
+				utm_medium: data.utm_medium || null,
+				utm_campaign: data.utm_campaign || null,
+				utm_term: data.utm_term || null,
+				utm_content: data.utm_content || null,
+				page_path: data.page_path || null,
+				user_agent: userAgent,
+				ip_hash: ipHash,
+				email_status: "pending" // Track email status
+			})
+			.select("id")
+			.single();
 
 		if (insertError) {
 			console.error("Supabase insert error:", insertError);
@@ -174,6 +182,57 @@ export async function POST(request: NextRequest) {
 				},
 				{ status: 500 }
 			);
+		}
+
+		// Send confirmation email (don't fail the request if email fails)
+		const talentId = insertedTalent.id;
+
+		try {
+			const emailResult = await sendConfirmationEmail({
+				to: data.email,
+				name: data.name,
+				role: data.role,
+				talentId,
+				language: data.language || "en"
+			});
+
+			// Update email status in database
+			const emailStatus = emailResult.success ? "sent" : "failed";
+			const updateData: Record<string, unknown> = {
+				email_status: emailStatus
+			};
+
+			if (emailResult.success) {
+				updateData.email_sent_at = new Date().toISOString();
+			} else {
+				updateData.email_error = emailResult.error;
+			}
+
+			const { error: updateError } = await supabase.from("talents").update(updateData).eq("id", talentId);
+
+			if (updateError) {
+				console.error("Failed to update email status:", updateError);
+			}
+
+			if (!emailResult.success) {
+				console.error(`Failed to send confirmation email to ${data.email}:`, emailResult.error);
+			}
+		} catch (emailError) {
+			// Log error but don't fail the request
+			console.error("Email sending error:", emailError);
+
+			// Mark as failed in database
+			const { error: updateError } = await supabase
+				.from("talents")
+				.update({
+					email_status: "failed",
+					email_error: emailError instanceof Error ? emailError.message : "Unknown error"
+				})
+				.eq("id", talentId);
+
+			if (updateError) {
+				console.error("Failed to update email status after error:", updateError);
+			}
 		}
 
 		return NextResponse.json({ ok: true }, { status: 201 });
