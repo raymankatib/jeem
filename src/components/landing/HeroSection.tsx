@@ -3,7 +3,7 @@
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Globe, DollarSign, Users, Award } from "lucide-react";
+import { ArrowLeft, ArrowRight, Globe, DollarSign, Users, Award, Sparkles } from "lucide-react";
 import { fadeInUp, staggerContainer, slideInFromRight } from "@/lib/animations";
 
 export function HeroSection() {
@@ -34,6 +34,14 @@ export function HeroSection() {
 						variants={staggerContainer}
 						className="lg:col-span-6 xl:col-span-5"
 					>
+						{/* Kicker */}
+						<motion.div variants={fadeInUp} className="mb-6">
+							<div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/50 border border-border/60 text-sm text-muted-foreground">
+								<Sparkles className="h-4 w-4 text-foreground/70" />
+								<span className="font-medium text-foreground/80">{t("hero.kicker")}</span>
+							</div>
+						</motion.div>
+
 						{/* Headline */}
 						<motion.h1
 							variants={fadeInUp}
