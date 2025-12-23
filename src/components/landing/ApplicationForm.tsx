@@ -11,19 +11,19 @@ import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
-const roles = [
-	"Vibe Coding Engineer",
-	"Software Developer",
-	"Content Creator as Engineer",
-	"Marketer",
-	"SEO & AEO Specialist",
-	"Social Media Manager",
-	"Lead Generator",
-	"Sales Pipelines Builder",
-	"Lead Qualifier",
-	"Designer",
-	"AI Video Creator",
-	"Virtual Assistant"
+const roleOptions: Array<{ value: string; labelKey: string }> = [
+	{ value: "Vibe Coding Engineer", labelKey: "roles.categories.engineering.roles.vibeCodingEngineer.title" },
+	{ value: "Software Developer", labelKey: "roles.categories.engineering.roles.softwareDeveloper.title" },
+	{ value: "Content Creator as Engineer", labelKey: "roles.categories.engineering.roles.contentCreatorEngineer.title" },
+	{ value: "Marketer", labelKey: "roles.categories.growth.roles.marketer.title" },
+	{ value: "SEO & AEO Specialist", labelKey: "roles.categories.growth.roles.seoAeoSpecialist.title" },
+	{ value: "Social Media Manager", labelKey: "roles.categories.growth.roles.socialMediaManager.title" },
+	{ value: "Lead Generator", labelKey: "roles.categories.revenue.roles.leadGenerator.title" },
+	{ value: "Sales Pipelines Builder", labelKey: "roles.categories.revenue.roles.salesPipelinesBuilder.title" },
+	{ value: "Lead Qualifier", labelKey: "roles.categories.revenue.roles.leadQualifier.title" },
+	{ value: "Designer", labelKey: "roles.categories.creative.roles.designer.title" },
+	{ value: "AI Video Creator", labelKey: "roles.categories.creative.roles.aiVideoCreator.title" },
+	{ value: "Virtual Assistant", labelKey: "roles.categories.operations.roles.virtualAssistant.title" }
 ];
 
 const englishLevelKeys = ["native", "fluent", "advanced", "intermediate", "basic"];
@@ -300,9 +300,9 @@ export function ApplicationForm() {
 												<SelectValue placeholder={t("applicationForm.fields.role.placeholder")} />
 											</SelectTrigger>
 											<SelectContent>
-												{roles.map((role) => (
-													<SelectItem key={role} value={role}>
-														{role}
+												{roleOptions.map((role) => (
+													<SelectItem key={role.value} value={role.value}>
+														{t(role.labelKey)}
 													</SelectItem>
 												))}
 											</SelectContent>

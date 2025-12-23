@@ -44,7 +44,7 @@
 		},
 		"latestMatch": {
 			"title": "آخر تطابق",
-			"role": "Vibe Coding Engineer",
+			"role": "مهندس برمجة (Vibe Coding)",
 			"time": "تطابق من يومين"
 		},
 		"thisWeek": {
@@ -68,7 +68,7 @@
 				"label": "هندسة وبرمجة",
 				"roles": {
 					"vibeCodingEngineer": {
-						"title": "Vibe Coding Engineer",
+						"title": "مهندس برمجة (Vibe Coding)",
 						"whatYouDo": [
 							"تبني منتجات بسرعة باستخدام أدوات AI",
 							"تحوّل الأفكار لكود شغّال بسرعة",
@@ -81,7 +81,7 @@
 						"tools": ["Cursor", "Claude", "GPT-4", "Vercel", "React"]
 					},
 					"softwareDeveloper": {
-						"title": "Software Developer",
+						"title": "مطوّر برمجيات",
 						"whatYouDo": [
 							"تبني وتطوّر تطبيقات جاهزة للإنتاج",
 							"تكتب كود نظيف ومجرّب ومفهوم",
@@ -106,7 +106,7 @@
 				"label": "نمو وتسويق",
 				"roles": {
 					"marketer": {
-						"title": "Marketer",
+						"title": "مسوّق",
 						"whatYouDo": [
 							"تزيد الوعي وتجيب مستخدمين جداد",
 							"تخطّط وتنفّذ حملات عبر قنوات مختلفة",
@@ -119,7 +119,7 @@
 						"tools": ["Google Ads", "Meta Ads", "Mixpanel", "HubSpot", "Notion"]
 					},
 					"seoAeoSpecialist": {
-						"title": "SEO & AEO Specialist",
+						"title": "أخصائي SEO وAEO",
 						"whatYouDo": [
 							"تحسّن المحتوى لمحركات البحث والـ AI",
 							"تبحث كلمات مفتاحية وتحلّل المنافسين",
@@ -129,7 +129,7 @@
 						"tools": ["Ahrefs", "SEMrush", "Screaming Frog", "ChatGPT", "Perplexity"]
 					},
 					"socialMediaManager": {
-						"title": "Social Media Manager",
+						"title": "مدير سوشيال ميديا",
 						"whatYouDo": ["تدير حضور البراند على السوشيال", "تكتب/تنتج وتجدول المحتوى", "تبني تفاعل حقيقي مع الجمهور"],
 						"whatGoodLooksLike": ["كبرت حسابات بتفاعل حقيقي", "بتفهم طبيعة كل منصة وشو بيمشي عليها"],
 						"tools": ["Buffer", "Hootsuite", "Canva", "CapCut", "Twitter/X"]
@@ -140,7 +140,7 @@
 				"label": "مبيعات وإيرادات",
 				"roles": {
 					"leadGenerator": {
-						"title": "Lead Generator",
+						"title": "مولّد عملاء محتملين (Leads)",
 						"whatYouDo": [
 							"تدور على عملاء محتملين مناسبين",
 							"تبني قوائم Leads دقيقة ومرتّبة",
@@ -150,7 +150,7 @@
 						"tools": ["Apollo.io", "LinkedIn Sales Nav", "Clay", "Clearbit", "Hunter.io"]
 					},
 					"salesPipelinesBuilder": {
-						"title": "Sales Pipelines Builder",
+						"title": "مُنشئ مسارات المبيعات (Pipelines)",
 						"whatYouDo": [
 							"تنظّم عمليات البيع على الـ CRM",
 							"تجهّز أتمتة وتقارير بتفيد الفريق",
@@ -160,7 +160,7 @@
 						"tools": ["HubSpot", "Salesforce", "Pipedrive", "Zapier", "Close"]
 					},
 					"leadQualifier": {
-						"title": "Lead Qualifier",
+						"title": "مؤهّل العملاء المحتملين (Leads)",
 						"whatYouDo": [
 							"تقيّم الـ Leads بسرعة",
 							"تعمل مكالمات تعارف قصيرة",
@@ -175,7 +175,7 @@
 				"label": "إبداع وتصميم",
 				"roles": {
 					"designer": {
-						"title": "Designer",
+						"title": "مصمّم",
 						"whatYouDo": [
 							"تصمّم واجهات جميلة وعملية",
 							"تعمل مواد بصرية وتسويقية",
@@ -185,7 +185,7 @@
 						"tools": ["Figma", "Framer", "Photoshop", "Illustrator", "Webflow"]
 					},
 					"aiVideoCreator": {
-						"title": "AI Video Creator",
+						"title": "صانع فيديو بالذكاء الاصطناعي",
 						"whatYouDo": [
 							"تنتج فيديوهات باستخدام أدوات AI",
 							"تعمل شورتات وإعلانات وشروحات",
@@ -200,7 +200,7 @@
 				"label": "إدارة وتشغيل",
 				"roles": {
 					"virtualAssistant": {
-						"title": "Virtual Assistant",
+						"title": "مساعد افتراضي",
 						"whatYouDo": ["تدير المواعيد والإيميلات", "تنجز مهام بحث وتوثيق", "تنظّم الشغل وتتابعه من أوله لآخره"],
 						"whatGoodLooksLike": ["بتتوقّع الاحتياجات قبل ما تنطلب", "ملتزم ودقيق وسريع بالردّ"],
 						"tools": ["Notion", "Slack", "Gmail", "Calendly", "Asana"]
@@ -387,7 +387,7 @@
 				}
 			},
 			"portfolio": {
-				"label": "بورتفوليو / LinkedIn / GitHub",
+				"label": "بورتفوليو / لينكدإن / غيتهاب",
 				"placeholder": "https://..."
 			},
 			"shipped": {
@@ -396,7 +396,7 @@
 			},
 			"tools": {
 				"label": "أقوى أدواتك",
-				"placeholder": "مثال: Figma, React, HubSpot..."
+				"placeholder": "مثال: Figma، React، HubSpot..."
 			}
 		},
 		"validation": {
