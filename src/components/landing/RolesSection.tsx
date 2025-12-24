@@ -43,9 +43,7 @@ export function RolesSection() {
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}
 					<motion.div variants={fadeInUp} className="max-w-2xl mb-16">
-						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">
-							{t("roles.sectionLabel")}
-						</p>
+						<p className="text-sm text-muted-foreground uppercase tracking-wider mb-3">{t("roles.sectionLabel")}</p>
 						<h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">{t("roles.title")}</h2>
 						<p className="text-muted-foreground text-lg leading-relaxed">{t("roles.description")}</p>
 					</motion.div>
@@ -59,7 +57,7 @@ export function RolesSection() {
 									key={category.id}
 									onClick={() => setActiveCategory(category.id)}
 									className={`
-									flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+									flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer
 									${
 										activeCategory === category.id
 											? "bg-foreground text-background"
@@ -131,10 +129,7 @@ export function RolesSection() {
 												<ul className="space-y-2">
 													{Array.isArray(whatYouDo) &&
 														whatYouDo.map((item, i) => (
-															<li
-																key={i}
-																className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
-															>
+															<li key={i} className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed">
 																<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
 																<span>{item}</span>
 															</li>
@@ -150,10 +145,7 @@ export function RolesSection() {
 												<ul className="space-y-2">
 													{Array.isArray(whatGoodLooksLike) &&
 														whatGoodLooksLike.map((item, i) => (
-															<li
-																key={i}
-																className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed"
-															>
+															<li key={i} className="flex gap-2.5 text-sm text-muted-foreground leading-relaxed">
 																<Check className="h-4 w-4 text-foreground/40 shrink-0 mt-0.5" />
 																<span>{item}</span>
 															</li>

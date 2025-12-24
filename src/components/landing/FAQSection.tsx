@@ -38,7 +38,7 @@ export function FAQSection() {
 											value={`item-${idx}`}
 											className="border border-border rounded-xl px-6 bg-card data-[state=open]:bg-card shadow-soft"
 										>
-											<AccordionTrigger className="text-left hover:no-underline py-5 text-base font-normal">
+											<AccordionTrigger className="text-left hover:no-underline py-5 text-base font-normal cursor-pointer">
 												{item.question}
 											</AccordionTrigger>
 											<AccordionContent className="text-muted-foreground pb-5 text-sm leading-relaxed">

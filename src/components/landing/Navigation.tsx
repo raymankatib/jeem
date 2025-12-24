@@ -53,7 +53,7 @@ export function Navigation() {
 							<button
 								key={link.key}
 								onClick={() => scrollToSection(link.id)}
-								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
 							>
 								{t(`nav.links.${link.key}`)}
 							</button>
