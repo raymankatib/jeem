@@ -1,10 +1,10 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { Mail, Building2 } from "lucide-react";
+import { Mail, Users } from "lucide-react";
 import Link from "next/link";
 
-export function Footer() {
+export function HireFooter() {
 	const { t } = useTranslation();
 
 	return (
@@ -13,23 +13,23 @@ export function Footer() {
 				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
 					{/* Logo and tagline */}
 					<div className="flex items-center gap-4">
-						<div className="flex items-center gap-2.5">
+						<Link href="/hire" className="flex items-center gap-2.5">
 							<div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
 								<span className="text-background font-semibold text-sm">ج</span>
 							</div>
 							<span className="text-base font-medium">{t("common.jeem")}</span>
-						</div>
-						<span className="text-muted-foreground text-sm">{t("footer.tagline")}</span>
+						</Link>
+						<span className="text-muted-foreground text-sm">{t("hire.footer.tagline")}</span>
 					</div>
 
 					{/* Links */}
 					<div className="flex items-center gap-6">
 						<Link
-							href="/hire"
+							href="/"
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 flex items-center gap-2"
 						>
-							<Building2 className="h-4 w-4" />
-							{t("footer.links.forCompanies")}
+							<Users className="h-4 w-4" />
+							{t("hire.footer.links.forTalent")}
 						</Link>
 						<a
 							href={`mailto:${t("common.email")}`}
@@ -44,7 +44,7 @@ export function Footer() {
 							rel="noopener noreferrer"
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 						>
-							{t("footer.links.twitterX")}
+							{t("hire.footer.links.twitterX")}
 						</a>
 						<a
 							href="https://linkedin.com/company/jeem"
@@ -52,7 +52,7 @@ export function Footer() {
 							rel="noopener noreferrer"
 							className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 						>
-							{t("footer.links.linkedin")}
+							{t("hire.footer.links.linkedin")}
 						</a>
 					</div>
 				</div>
@@ -67,3 +67,4 @@ export function Footer() {
 		</footer>
 	);
 }
+

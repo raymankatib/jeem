@@ -5,6 +5,10 @@
 		"required": "*",
 		"optional": "(optional)"
 	},
+	"topBanner": {
+		"forCompanies": "Looking to hire? Check out Jeem for Companies",
+		"forTalent": "Looking for work? Join our talent network"
+	},
 	"nav": {
 		"links": {
 			"roles": "Roles",
@@ -475,8 +479,437 @@
 		"tagline": "Built for people who ship",
 		"links": {
 			"twitterX": "Twitter/X",
-			"linkedin": "LinkedIn"
+			"linkedin": "LinkedIn",
+			"forCompanies": "For Companies"
 		},
 		"copyright": "© {{year}} Jeem. All rights reserved."
+	},
+	"hire": {
+		"nav": {
+			"badge": "For Companies",
+			"links": {
+				"whyJeem": "Why Jeem",
+				"talentPool": "Talent",
+				"howItWorks": "How it works",
+				"proof": "Proof",
+				"faq": "FAQ"
+			},
+			"cta": "Get Started",
+			"forTalent": "I'm looking for work"
+		},
+		"hero": {
+			"kicker": "Syrian-built • Trusted by 40+ teams worldwide",
+			"headline": "Hire pre-vetted talent",
+			"headlineAccent": "that ships",
+			"subheadline": "Skip the endless interviews. Get matched with professionals who’ve proven they can deliver — with standout Syrian builders in the mix and pricing that stays competitive without compromising quality.",
+			"primaryCta": "Start Hiring",
+			"secondaryCta": "Browse talent",
+			"trustPills": {
+				"fastMatching": "48h matching",
+				"vetted": "Pre-vetted",
+				"readyToStart": "Ready to start",
+				"qualityFirst": "Quality-first"
+			},
+			"stats": {
+				"title": "Network Stats",
+				"talentPool": {
+					"value": "150+",
+					"label": "Vetted professionals"
+				},
+				"avgMatchTime": {
+					"value": "48h",
+					"label": "Avg. match time"
+				},
+				"successRate": {
+					"value": "96%",
+					"label": "Success rate"
+				}
+			},
+			"recentHire": {
+				"title": "Recent Hire",
+				"role": "Software Developer",
+				"time": "Hired yesterday"
+			},
+			"available": {
+				"title": "Available Now",
+				"roles": "23 professionals",
+				"categories": "Across all categories"
+			},
+			"quote": {
+				"text": "We met 3 strong candidates in 48 hours and hired within a week. The Jeem team stayed involved and the hire has been great.",
+				"author": "— Head of Product, SaaS Company"
+			}
+		},
+		"whyJeem": {
+			"sectionLabel": "Why Jeem",
+			"title": "Hiring should feel effortless",
+			"description": "We handle sourcing, screening, and matching — so you can focus on building. You get quality talent fast, with a strong core of Syrian professionals known for ownership and craft.",
+			"reasons": {
+				"preVetted": {
+					"title": "Pre-Vetted Talent",
+					"description": "Every person you meet is screened. We verify portfolios, check references, and assess communication and reliability."
+				},
+				"fastTurnaround": {
+					"title": "Fast Turnaround",
+					"description": "Get matched within 48 hours. No weeks of sourcing, back-and-forth, and recruiter noise."
+				},
+				"diversePool": {
+					"title": "End-to-End Roles",
+					"description": "Engineers, designers, growth, revenue ops, and operations — all in one network when you need to move fast."
+				},
+				"modernSkills": {
+					"title": "Modern, AI-Ready Skills",
+					"description": "Our talent ships with today’s stack: AI-assisted workflows, modern frameworks, and performance-driven marketing systems."
+				},
+				"handHeld": {
+					"title": "White-Glove Support",
+					"description": "We don’t just introduce you and disappear. We stay close to make sure the engagement succeeds on both sides."
+				},
+				"longTerm": {
+					"title": "Built for Long-Term",
+					"description": "Most matches turn into ongoing relationships. Hire people who grow with your team and raise the bar."
+				}
+			}
+		},
+		"talentPool": {
+			"sectionLabel": "Talent Pool",
+			"title": "Browse roles we match fast",
+			"description": "Specialists across the roles you need most — vetted for skill, communication, and delivery. Many come from Syria: high ownership, strong work ethic, and competitive rates.",
+			"skills": "Top Skills",
+			"availability": "Availability",
+			"categories": {
+				"engineering": {
+					"label": "Engineering",
+					"roles": {
+						"vibeCodingEngineer": {
+							"title": "Vibe Coding Engineers",
+							"description": "AI-native builders who ship fast with modern tools",
+							"count": "12 available",
+							"skills": ["Cursor", "Claude", "React", "Next.js", "Vercel"],
+							"availability": ["Full-time", "Part-time", "Project-based"]
+						},
+						"softwareDeveloper": {
+							"title": "Software Developers",
+							"description": "Production-grade engineers for web apps, APIs, and systems",
+							"count": "24 available",
+							"skills": ["TypeScript", "React", "Node.js", "PostgreSQL", "AWS"],
+							"availability": ["Full-time", "Part-time", "Contract"]
+						},
+						"contentCreatorEngineer": {
+							"title": "Technical Content Creators",
+							"description": "Engineers who teach, write, and turn products into content",
+							"count": "8 available",
+							"skills": ["Technical Writing", "YouTube", "Documentation", "Tutorials"],
+							"availability": ["Part-time", "Project-based"]
+						}
+					}
+				},
+				"growth": {
+					"label": "Growth",
+					"roles": {
+						"marketer": {
+							"title": "Marketers",
+							"description": "Performance marketers who move revenue metrics",
+							"count": "15 available",
+							"skills": ["Google Ads", "Meta Ads", "Analytics", "CRO", "Copywriting"],
+							"availability": ["Full-time", "Part-time", "Project-based"]
+						},
+						"seoAeoSpecialist": {
+							"title": "SEO & AEO Specialists",
+							"description": "Search + answer engine optimization for the new web",
+							"count": "9 available",
+							"skills": ["SEO", "Content Strategy", "Ahrefs", "Link Building", "AI Search"],
+							"availability": ["Part-time", "Project-based", "Retainer"]
+						},
+						"socialMediaManager": {
+							"title": "Social Media Managers",
+							"description": "Community + content operators who drive engagement",
+							"count": "11 available",
+							"skills": ["Content Creation", "Community", "Analytics", "Scheduling", "Copywriting"],
+							"availability": ["Full-time", "Part-time"]
+						}
+					}
+				},
+				"revenue": {
+					"label": "Revenue Ops",
+					"roles": {
+						"leadGenerator": {
+							"title": "Lead Generators",
+							"description": "Prospect researchers who find the right accounts",
+							"count": "18 available",
+							"skills": ["Apollo.io", "LinkedIn", "Clay", "Data Enrichment", "Outreach"],
+							"availability": ["Full-time", "Part-time", "Project-based"]
+						},
+						"salesPipelinesBuilder": {
+							"title": "Sales Pipeline Builders",
+							"description": "CRM builders who turn chaos into a system",
+							"count": "7 available",
+							"skills": ["HubSpot", "Salesforce", "Automation", "Reporting", "Process Design"],
+							"availability": ["Project-based", "Contract"]
+						},
+						"leadQualifier": {
+							"title": "Lead Qualifiers",
+							"description": "SDRs who qualify fast and communicate clearly",
+							"count": "14 available",
+							"skills": ["Discovery Calls", "CRM", "Qualification", "Communication"],
+							"availability": ["Full-time", "Part-time"]
+						}
+					}
+				},
+				"creative": {
+					"label": "Creative",
+					"roles": {
+						"designer": {
+							"title": "Designers",
+							"description": "UI/UX and brand designers with taste and systems",
+							"count": "16 available",
+							"skills": ["Figma", "UI/UX", "Branding", "Webflow", "Motion"],
+							"availability": ["Full-time", "Part-time", "Project-based"]
+						},
+						"aiVideoCreator": {
+							"title": "AI Video Creators",
+							"description": "Video makers using the latest AI production tools",
+							"count": "6 available",
+							"skills": ["Runway", "HeyGen", "CapCut", "Scripting", "Editing"],
+							"availability": ["Project-based", "Retainer"]
+						}
+					}
+				},
+				"operations": {
+					"label": "Operations",
+					"roles": {
+						"virtualAssistant": {
+							"title": "Virtual Assistants",
+							"description": "Reliable operators who keep your day moving",
+							"count": "22 available",
+							"skills": ["Notion", "Calendars", "Research", "Email", "Organization"],
+							"availability": ["Full-time", "Part-time"]
+						}
+					}
+				}
+			}
+		},
+		"howItWorks": {
+			"sectionLabel": "Process",
+			"title": "How hiring works",
+			"description": "A simple process that gets you quality talent fast — without recruiter games or bloated timelines.",
+			"steps": {
+				"tellUs": {
+					"number": "01",
+					"title": "Tell us what you need",
+					"description": "Share the role, must-have skills, timezone overlap, and budget. Takes 5 minutes."
+				},
+				"weMatch": {
+					"number": "02",
+					"title": "We match you",
+					"description": "Within 48 hours, we send 2–3 pre-vetted candidates who fit. No spam — just quality."
+				},
+				"interview": {
+					"number": "03",
+					"title": "Interview & choose",
+					"description": "Hop on a call with the candidates you like. We can join to help structure the process."
+				},
+				"startWorking": {
+					"number": "04",
+					"title": "Start working",
+					"description": "We handle contracting and onboarding. Most hires start in days, not weeks."
+				},
+				"scaleUp": {
+					"number": "05",
+					"title": "Scale when ready",
+					"description": "Add more roles as you grow. Many teams build a whole pod through Jeem over time."
+				}
+			}
+		},
+		"proof": {
+			"sectionLabel": "Proof",
+			"title": "What companies get with Jeem",
+			"description": "Outcomes from teams who hire through Jeem — faster hiring, higher retention, and smoother delivery.",
+			"metrics": {
+				"avgHireTime": {
+					"value": "5 days",
+					"label": "Average time to hire"
+				},
+				"retentionRate": {
+					"value": "96%",
+					"label": "Retention rate"
+				},
+				"clientSatisfaction": {
+					"value": "4.9/5",
+					"label": "Client satisfaction"
+				},
+				"projectSuccess": {
+					"value": "98%",
+					"label": "Project success rate"
+				}
+			},
+			"testimonials": [
+				{
+					"quote": "We went from requirement to offer in under a week. The candidates were genuinely strong and ready to deliver.",
+					"author": "Sarah Chen",
+					"company": "CEO, TechFlow"
+				},
+				{
+					"quote": "Jeem nailed the brief. Our growth hire increased qualified pipeline meaningfully within the first quarter.",
+					"author": "Marcus Johnson",
+					"company": "Head of Growth, ScaleUp"
+				},
+				{
+					"quote": "We’ve hired 5 people through Jeem. Great communication, strong ownership, and consistently high output.",
+					"author": "Elena Rodriguez",
+					"company": "Founder, BuildFast"
+				}
+			],
+			"guarantees": {
+				"title": "Our Commitment",
+				"description": "We stand behind every match we make.",
+				"items": [
+					"2-week trial period with every hire",
+					"Free replacement if it’s not a fit",
+					"Ongoing support throughout the engagement",
+					"Transparent pricing, no hidden fees"
+				]
+			}
+		},
+		"faq": {
+			"sectionLabel": "FAQ",
+			"title": "Questions from companies",
+			"description": "Everything you need to know about hiring through Jeem.",
+			"items": [
+				{
+					"question": "How much does it cost to hire through Jeem?",
+					"answer": "Pricing depends on the engagement type. For long-term roles, we typically charge a placement fee. For project-based work, the fee is built into the rate. You’ll always see pricing upfront — no surprises."
+				},
+				{
+					"question": "How quickly can I get matched with candidates?",
+					"answer": "Within 48 hours of submitting your requirements, we’ll send 2–3 pre-vetted candidates. Many teams complete a hire within 5 days."
+				},
+				{
+					"question": "What if the hire doesn’t work out?",
+					"answer": "Every placement includes a 2-week trial. If it’s not a fit, we’ll replace them at no additional cost."
+				},
+				{
+					"question": "Can I hire for multiple roles at once?",
+					"answer": "Yes. Many clients hire multiple roles in parallel, and some build entire teams through Jeem."
+				},
+				{
+					"question": "How is Jeem different from traditional recruiters?",
+					"answer": "You only meet vetted candidates. It’s faster (48h matches), more hands-on, and we stay involved after the hire to ensure success."
+				},
+				{
+					"question": "Are your talent remote or on-site?",
+					"answer": "Jeem is remote-first. We match for timezone overlap with North America and Europe, and can source for specific coverage when needed."
+				},
+				{
+					"question": "How do you vet talent?",
+					"answer": "Portfolio review, references, and communication assessment. For technical roles, we also validate the work through code review or skill verification."
+				},
+				{
+					"question": "Can we try someone on a project before committing long-term?",
+					"answer": "Yes — “try before hire” is common. Start with a scoped project, then convert to ongoing if it’s a strong fit."
+				}
+			]
+		},
+		"applicationForm": {
+			"sectionLabel": "Get Started",
+			"title": "Tell us what you need",
+			"description": "Share your requirements and we’ll match you with the right talent within 48 hours.",
+			"trustSignals": {
+				"respond": "We respond within 24 hours",
+				"noCommitment": "No commitment required",
+				"flexibleTerms": "Flexible engagement terms"
+			},
+			"fields": {
+				"companyName": {
+					"label": "Company name",
+					"placeholder": "Your company"
+				},
+				"contactName": {
+					"label": "Your name",
+					"placeholder": "Your full name"
+				},
+				"email": {
+					"label": "Work email",
+					"placeholder": "you@company.com"
+				},
+				"website": {
+					"label": "Website",
+					"placeholder": "https://..."
+				},
+				"companySize": {
+					"label": "Company size",
+					"placeholder": "Select size",
+					"options": {
+						"solo": "Just me",
+						"small": "2-10 employees",
+						"medium": "11-50 employees",
+						"large": "51-200 employees",
+						"enterprise": "200+ employees"
+					}
+				},
+				"rolesNeeded": {
+					"label": "What role do you need?",
+					"placeholder": "Select a role",
+					"hint": "Pick the primary role. Mention additional needs in the description."
+				},
+				"projectType": {
+					"label": "Engagement type",
+					"placeholder": "Select type",
+					"options": {
+						"ongoing": "Ongoing / Long-term",
+						"oneTime": "One-time project",
+						"partTime": "Part-time (10-20 hrs/week)",
+						"fullTime": "Full-time (40 hrs/week)",
+						"tryBeforeHire": "Try before hire"
+					}
+				},
+				"budgetRange": {
+					"label": "Monthly budget",
+					"placeholder": "Select range",
+					"options": {
+						"under5k": "Under $5,000/mo",
+						"5kTo15k": "$5,000 - $15,000/mo",
+						"15kTo50k": "$15,000 - $50,000/mo",
+						"over50k": "$50,000+/mo",
+						"notSure": "Not sure yet"
+					}
+				},
+				"projectDescription": {
+					"label": "Tell us about your project",
+					"placeholder": "What are you building? What will this person own? Any must-have skills, timezone overlap, or constraints?"
+				}
+			},
+			"validation": {
+				"companyNameRequired": "Please enter your company name",
+				"contactNameRequired": "Please enter your name",
+				"emailInvalid": "Please enter a valid work email",
+				"companySizeRequired": "Please select your company size",
+				"rolesNeededRequired": "Please select the role you need",
+				"projectTypeRequired": "Please select an engagement type",
+				"projectDescriptionRequired": "Please tell us about your project"
+			},
+			"submit": {
+				"button": "Get matched",
+				"sending": "Sending..."
+			},
+			"success": {
+				"title": "Request received!",
+				"description": "We’ll review your requirements and get back to you within 24 hours with matched candidates."
+			},
+			"errors": {
+				"rateLimit": "Too many requests. Please try again in a minute.",
+				"generic": "Something went wrong. Please try again.",
+				"network": "Network error. Please check your connection and try again."
+			},
+			"privacyNote": "By submitting, you agree to let us contact you about talent matching. We won’t share your data with third parties."
+		},
+		"footer": {
+			"tagline": "Quality talent, delivered fast",
+			"links": {
+				"forTalent": "I'm looking for work",
+				"twitterX": "Twitter/X",
+				"linkedin": "LinkedIn"
+			}
+		}
 	}
 }

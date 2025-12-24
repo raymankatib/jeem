@@ -5,6 +5,10 @@
 		"required": "*",
 		"optional": "(اختياري)"
 	},
+	"topBanner": {
+		"forCompanies": "عم تدوّر على موظفين؟ شوف Jeem للشركات",
+		"forTalent": "عم تدوّر على شغل؟ انضمّ لشبكة المواهب"
+	},
 	"nav": {
 		"links": {
 			"roles": "الأدوار",
@@ -301,7 +305,7 @@
 				"role": "مطوّر خبير عبر Jeem"
 			},
 			{
-				"quote": "التقييم كان دقيق بس عادل. هلّق الفرص يلي بتوصلني نوعية.",
+				"quote": "كانت عملية التقييم قوية بس عادلة. بتفلتر كل اللخبطة، وهلق صرت يوصلني شغل منيح وفرص جدّية بدون دوشة الفريلانس المعتادة.",
 				"role": "مصمّم منتجات عبر Jeem"
 			},
 			{
@@ -427,8 +431,432 @@
 		"tagline": "مبني لناس بتسلّم شغل",
 		"links": {
 			"twitterX": "Twitter/X",
-			"linkedin": "LinkedIn"
+			"linkedin": "LinkedIn",
+			"forCompanies": "للشركات"
 		},
 		"copyright": "© {{year}} Jeem. جميع الحقوق محفوظة."
+	},
+	"hire": {
+		"nav": {
+			"badge": "للشركات",
+			"links": {
+				"whyJeem": "ليش جيم",
+				"talentPool": "المواهب",
+				"howItWorks": "كيف بتتم",
+				"proof": "النتائج",
+				"faq": "الأسئلة الشائعة"
+			},
+			"cta": "ابدأ الآن",
+			"forTalent": "عم دور على شغل"
+		},
+		"hero": {
+			"kicker": "مبني بأيادٍ سورية • موثوق من أكثر من 40 فريق حول العالم",
+			"headline": "وظّف مواهب مختارة",
+			"headlineAccent": "بتسلّم شغل فعلي",
+			"subheadline": "اختصر المقابلات الطويلة. خليك مع محترفين أثبتوا قدرتهم على التنفيذ — مع مواهب سورية قوية جاهزة للتسليم وبكلفة تنافسية بدون أي تنازل عن الجودة.",
+			"primaryCta": "ابدأ التوظيف",
+			"secondaryCta": "تصفح المواهب",
+			"trustPills": {
+				"fastMatching": "مطابقة خلال 48 ساعة",
+				"vetted": "مواهب مختارة",
+				"readyToStart": "جاهزين للبدء",
+				"qualityFirst": "الجودة أولاً"
+			},
+			"stats": {
+				"title": "أرقام الشبكة",
+				"talentPool": {
+					"value": "150+",
+					"label": "محترف مختار"
+				},
+				"avgMatchTime": {
+					"value": "48 ساعة",
+					"label": "متوسط وقت المطابقة"
+				},
+				"successRate": {
+					"value": "96%",
+					"label": "نسبة النجاح"
+				}
+			},
+			"recentHire": {
+				"title": "توظيف حديث",
+				"role": "مطور برمجيات",
+				"time": "تم التوظيف أمس"
+			},
+			"available": {
+				"title": "متاح حالياً",
+				"roles": "23 محترف",
+				"categories": "بمختلف التخصصات"
+			},
+			"quote": {
+				"text": "وصلنا لثلاث مرشحين أقوياء خلال يومين، وعيّنا خلال أسبوع. المتابعة كانت ممتازة والتنفيذ أعلى من المتوقع.",
+				"author": "— مدير المنتج، شركة SaaS"
+			}
+		},
+		"whyJeem": {
+			"sectionLabel": "ليش جيم",
+			"title": "التوظيف لازم يكون بسيط",
+			"description": "نحن منعمل الشغل الصعب — البحث، التقييم، والمطابقة — وأنت بتركّز على البناء، مع مواهب معروفة بالالتزام والتسليم.",
+			"reasons": {
+				"preVetted": {
+					"title": "مواهب مختارة مسبقاً",
+					"description": "كل شخص بالشبكة ممرّ بتقييم فعلي: مراجعة أعمال، مراجع، وتقييم تواصل وجدية."
+				},
+				"fastTurnaround": {
+					"title": "سرعة بالتنفيذ",
+					"description": "مطابقة خلال 48 ساعة بدون أسابيع من البحث والمقابلات غير الضرورية."
+				},
+				"diversePool": {
+					"title": "تخصصات متكاملة",
+					"description": "من الهندسة والتصميم للنمو والمبيعات والعمليات — كل اللي بتحتاجه بمكان واحد."
+				},
+				"modernSkills": {
+					"title": "مهارات حديثة",
+					"description": "مواهب تستخدم أدوات اليوم: ذكاء اصطناعي، أطر حديثة، وأنظمة مبنية على الأداء."
+				},
+				"handHeld": {
+					"title": "متابعة حقيقية",
+					"description": "ما منعمل مطابقة ونختفي. منضل متابعين لنجاح الشغل للطرفين."
+				},
+				"longTerm": {
+					"title": "علاقات طويلة الأمد",
+					"description": "96% من التوظيفات بتتحول لتعاون مستمر."
+				}
+			}
+		},
+		"talentPool": {
+			"sectionLabel": "شبكة المواهب",
+			"title": "تصفح فئات المواهب",
+			"description": "محترفين مختارين للمهارة، التواصل، والاعتمادية. جزء كبير منهم من سوريا — عقلية تسليم وتكلفة مدروسة.",
+			"skills": "المهارات",
+			"availability": "التفرغ",
+			"categories": {
+				"engineering": {
+					"label": "الهندسة",
+					"roles": {
+						"vibeCodingEngineer": {
+							"title": "مهندسي Vibe Coding",
+							"description": "مطورين AI-native بيشتغلوا بسرعة وبأدوات حديثة",
+							"count": "12 متاح",
+							"skills": ["Cursor", "Claude", "React", "Next.js", "Vercel"],
+							"availability": ["دوام كامل", "دوام جزئي", "حسب المشروع"]
+						},
+						"softwareDeveloper": {
+							"title": "مطورين برمجيات",
+							"description": "مهندسين لتطبيقات وأنظمة إنتاجية",
+							"count": "24 متاح",
+							"skills": ["TypeScript", "React", "Node.js", "PostgreSQL", "AWS"],
+							"availability": ["دوام كامل", "دوام جزئي", "عقد"]
+						},
+						"contentCreatorEngineer": {
+							"title": "صنّاع محتوى تقنيين",
+							"description": "مهندسين بيكتبوا ويشرحوا ويبسطوا المنتجات",
+							"count": "8 متاح",
+							"skills": ["كتابة تقنية", "YouTube", "توثيق", "دروس"],
+							"availability": ["دوام جزئي", "حسب المشروع"]
+						}
+					}
+				},
+				"growth": {
+					"label": "النمو",
+					"roles": {
+						"marketer": {
+							"title": "مسوّقين",
+							"description": "مسوّقين أداء بيحرّكوا مقاييس الإيرادات",
+							"count": "15 متاح",
+							"skills": ["Google Ads", "Meta Ads", "تحليلات", "CRO", "كتابة إعلانية"],
+							"availability": ["دوام كامل", "دوام جزئي", "حسب المشروع"]
+						},
+						"seoAeoSpecialist": {
+							"title": "أخصائيي SEO و AEO",
+							"description": "تحسين محركات البحث والإجابات للويب الجديد",
+							"count": "9 متاح",
+							"skills": ["SEO", "استراتيجية محتوى", "Ahrefs", "بناء روابط", "بحث AI"],
+							"availability": ["دوام جزئي", "حسب المشروع", "عقد شهري"]
+						},
+						"socialMediaManager": {
+							"title": "مدراء سوشيال ميديا",
+							"description": "مشغّلين محتوى ومجتمع بيحرّكوا التفاعل",
+							"count": "11 متاح",
+							"skills": ["صناعة محتوى", "مجتمع", "تحليلات", "جدولة", "كتابة إعلانية"],
+							"availability": ["دوام كامل", "دوام جزئي"]
+						}
+					}
+				},
+				"revenue": {
+					"label": "عمليات الإيرادات",
+					"roles": {
+						"leadGenerator": {
+							"title": "مولّدي عملاء محتملين",
+							"description": "باحثين عن عملاء بيلاقوا الحسابات المناسبة",
+							"count": "18 متاح",
+							"skills": ["Apollo.io", "LinkedIn", "Clay", "إثراء البيانات", "التواصل"],
+							"availability": ["دوام كامل", "دوام جزئي", "حسب المشروع"]
+						},
+						"salesPipelinesBuilder": {
+							"title": "بنّائي مسارات المبيعات",
+							"description": "بنّائي CRM بيحوّلوا الفوضى لنظام",
+							"count": "7 متاح",
+							"skills": ["HubSpot", "Salesforce", "أتمتة", "تقارير", "تصميم عمليات"],
+							"availability": ["حسب المشروع", "عقد"]
+						},
+						"leadQualifier": {
+							"title": "مؤهّلي العملاء المحتملين",
+							"description": "SDRs بيأهّلوا بسرعة وبيتواصلوا بوضوح",
+							"count": "14 متاح",
+							"skills": ["مكالمات استكشاف", "CRM", "تأهيل", "تواصل"],
+							"availability": ["دوام كامل", "دوام جزئي"]
+						}
+					}
+				},
+				"creative": {
+					"label": "الإبداع",
+					"roles": {
+						"designer": {
+							"title": "مصمّمين",
+							"description": "مصمّمي UI/UX وبراند بذوق وأنظمة",
+							"count": "16 متاح",
+							"skills": ["Figma", "UI/UX", "براندينغ", "Webflow", "موشن"],
+							"availability": ["دوام كامل", "دوام جزئي", "حسب المشروع"]
+						},
+						"aiVideoCreator": {
+							"title": "صنّاع فيديو بالذكاء الاصطناعي",
+							"description": "صنّاع فيديو بيستخدموا أحدث أدوات AI للإنتاج",
+							"count": "6 متاح",
+							"skills": ["Runway", "HeyGen", "CapCut", "كتابة سيناريو", "مونتاج"],
+							"availability": ["حسب المشروع", "عقد شهري"]
+						}
+					}
+				},
+				"operations": {
+					"label": "العمليات",
+					"roles": {
+						"virtualAssistant": {
+							"title": "مساعدين افتراضيين",
+							"description": "مشغّلين موثوقين بيخلّوا يومك يمشي",
+							"count": "22 متاح",
+							"skills": ["Notion", "تقويمات", "بحث", "إيميل", "تنظيم"],
+							"availability": ["دوام كامل", "دوام جزئي"]
+						}
+					}
+				}
+			}
+		},
+		"howItWorks": {
+			"sectionLabel": "العملية",
+			"title": "كيف بيتم التوظيف",
+			"description": "خطوات واضحة وسريعة بدون تعقيد.",
+			"steps": {
+				"tellUs": {
+					"number": "01",
+					"title": "خبرنا شو بدك",
+					"description": "الدور، المهارات، التفرغ، والميزانية."
+				},
+				"weMatch": {
+					"number": "02",
+					"title": "نطابقك",
+					"description": "خلال 48 ساعة بنبعث مرشحين مناسبين."
+				},
+				"interview": {
+					"number": "03",
+					"title": "قابل وقرّر",
+					"description": "مقابلة سريعة ونساعدك بالقرار."
+				},
+				"startWorking": {
+					"number": "04",
+					"title": "بلّش الشغل",
+					"description": "نحن بنتولى العقود والبدء سريع."
+				},
+				"scaleUp": {
+					"number": "05",
+					"title": "وسّع وقت ما بدك",
+					"description": "كثير فرق بنت فرق كاملة عبر جيم."
+				}
+			}
+		},
+		"proof": {
+			"sectionLabel": "النتائج",
+			"title": "تجربة الشركات مع جيم",
+			"description": "أرقام حقيقية من فرق اعتمدت على جيم.",
+			"metrics": {
+				"avgHireTime": {
+					"value": "5 أيام",
+					"label": "متوسط التوظيف"
+				},
+				"retentionRate": {
+					"value": "96%",
+					"label": "نسبة الاستمرار"
+				},
+				"clientSatisfaction": {
+					"value": "4.9/5",
+					"label": "رضا العملاء"
+				},
+				"projectSuccess": {
+					"value": "98%",
+					"label": "نجاح المشاريع"
+				}
+			},
+			"testimonials": [
+				{
+					"quote": "التوظيف كان سريع وجودة المرشحين عالية جداً.",
+					"author": "Sarah Chen",
+					"company": "CEO, TechFlow"
+				},
+				{
+					"quote": "المطابقة كانت دقيقة والنتائج واضحة من أول شهر.",
+					"author": "Marcus Johnson",
+					"company": "Head of Growth, ScaleUp"
+				},
+				{
+					"quote": "جيم صار خيارنا الأول للتوظيف.",
+					"author": "Elena Rodriguez",
+					"company": "Founder, BuildFast"
+				}
+			],
+			"guarantees": {
+				"title": "التزامنا",
+				"description": "نحن واقفين وراء كل مطابقة.",
+				"items": ["فترة تجربة أسبوعين", "استبدال مجاني إذا ما كان مناسب", "متابعة مستمرة", "تسعير واضح بدون مفاجآت"]
+			}
+		},
+		"faq": {
+			"sectionLabel": "الأسئلة الشائعة",
+			"title": "أسئلة من الشركات",
+			"description": "كل اللي بتحتاج تعرفه عن التوظيف عبر جيم.",
+			"items": [
+				{
+					"question": "قديش تكلفة التوظيف عبر جيم؟",
+					"answer": "التكلفة بتختلف حسب نوع التعاقد، وبنوضح كل شي من البداية بدون مفاجآت."
+				},
+				{
+					"question": "قديش بسرعة بتمت المطابقة؟",
+					"answer": "خلال 48 ساعة بنرسل مرشحين مناسبين."
+				},
+				{
+					"question": "شو إذا ما نجح التوظيف؟",
+					"answer": "في فترة تجربة، وإذا ما كان مناسب منستبدله مجاناً."
+				},
+				{
+					"question": "فيي وظّف أكتر من دور؟",
+					"answer": "نعم، وكثير شركات بنت فرق كاملة عبر جيم."
+				},
+				{
+					"question": "شو الفرق عن شركات التوظيف التقليدية؟",
+					"answer": "أسرع، أوضح، ومواهب مختارة مسبقاً."
+				},
+				{
+					"question": "هل المواهب عن بُعد؟",
+					"answer": "نعم، مع توافق زمني مع أميركا وأوروبا."
+				},
+				{
+					"question": "كيف بتقيموا المواهب؟",
+					"answer": "مراجعة أعمال، مراجع، وتقييم عملي."
+				},
+				{
+					"question": "فيي جرّب قبل التوظيف الطويل؟",
+					"answer": "نعم، خيار شائع ومتاح."
+				}
+			]
+		},
+		"applicationForm": {
+			"sectionLabel": "ابدأ",
+			"title": "خبرنا شو بدك",
+			"description": "شارك متطلباتك ونرجعلك خلال 48 ساعة.",
+			"trustSignals": {
+				"respond": "نرد خلال 24 ساعة",
+				"noCommitment": "بدون التزام",
+				"flexibleTerms": "شروط مرنة"
+			},
+			"fields": {
+				"companyName": {
+					"label": "اسم الشركة",
+					"placeholder": "اسم شركتك"
+				},
+				"contactName": {
+					"label": "اسمك",
+					"placeholder": "اسمك الكامل"
+				},
+				"email": {
+					"label": "إيميل العمل",
+					"placeholder": "you@company.com"
+				},
+				"website": {
+					"label": "الموقع",
+					"placeholder": "https://..."
+				},
+				"companySize": {
+					"label": "حجم الشركة",
+					"placeholder": "اختر الحجم",
+					"options": {
+						"solo": "أنا لوحدي",
+						"small": "2-10 موظفين",
+						"medium": "11-50 موظف",
+						"large": "51-200 موظف",
+						"enterprise": "200+ موظف"
+					}
+				},
+				"rolesNeeded": {
+					"label": "الدور المطلوب",
+					"placeholder": "اختر الدور",
+					"hint": "اختر الدور الأساسي. اذكر أي احتياجات إضافية في الوصف."
+				},
+				"projectType": {
+					"label": "نوع التعاقد",
+					"placeholder": "اختر النوع",
+					"options": {
+						"ongoing": "طويل الأمد",
+						"oneTime": "مشروع واحد",
+						"partTime": "دوام جزئي",
+						"fullTime": "دوام كامل",
+						"tryBeforeHire": "تجربة قبل التوظيف"
+					}
+				},
+				"budgetRange": {
+					"label": "الميزانية الشهرية",
+					"placeholder": "اختر النطاق",
+					"options": {
+						"under5k": "أقل من 5,000$",
+						"5kTo15k": "5,000$ - 15,000$",
+						"15kTo50k": "15,000$ - 50,000$",
+						"over50k": "أكثر من 50,000$",
+						"notSure": "غير متأكد"
+					}
+				},
+				"projectDescription": {
+					"label": "وصف المشروع",
+					"placeholder": "خبرنا شو عم تبنوا وشو متطلباتكم"
+				}
+			},
+			"validation": {
+				"companyNameRequired": "اسم الشركة مطلوب",
+				"contactNameRequired": "الاسم مطلوب",
+				"emailInvalid": "إيميل غير صالح",
+				"companySizeRequired": "اختر حجم الشركة",
+				"rolesNeededRequired": "اختر الدور",
+				"projectTypeRequired": "اختر نوع التعاقد",
+				"projectDescriptionRequired": "وصف المشروع مطلوب"
+			},
+			"submit": {
+				"button": "خلينا نطابقك",
+				"sending": "جاري الإرسال..."
+			},
+			"success": {
+				"title": "وصلتنا طلبك",
+				"description": "رح نرجعلك خلال 24 ساعة."
+			},
+			"errors": {
+				"rateLimit": "محاولات كثيرة، جرّب بعد شوي.",
+				"generic": "صار خطأ، حاول مرة تانية.",
+				"network": "مشكلة اتصال."
+			},
+			"privacyNote": "بإرسال الطلب، بتوافق نتواصل معك بخصوص التوظيف فقط."
+		},
+		"footer": {
+			"tagline": "مواهب قوية، تنفيذ سريع",
+			"links": {
+				"forTalent": "عم دور على شغل",
+				"twitterX": "Twitter/X",
+				"linkedin": "LinkedIn"
+			}
+		}
 	}
 }

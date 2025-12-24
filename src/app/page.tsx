@@ -1,4 +1,5 @@
 import {
+	TopBanner,
 	Navigation,
 	HeroSection,
 	RolesSection,
@@ -13,6 +14,7 @@ import {
 export default function JeemLandingPage() {
 	return (
 		<main className="relative">
+			<TopBanner />
 			<Navigation />
 			<HeroSection />
 			<RolesSection />

@@ -7,17 +7,18 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ArrowLeft, ArrowRight, Menu, X } from "lucide-react";
+import Link from "next/link";
 
-export function Navigation() {
+export function HireNavigation() {
 	const { t, i18n } = useTranslation();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const isRTL = i18n.language === "ar";
 	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
 	const navLinks = [
-		{ key: "roles", id: "roles" },
+		{ key: "whyJeem", id: "why-jeem" },
+		{ key: "talentPool", id: "talent-pool" },
 		{ key: "howItWorks", id: "how-it-works" },
-		{ key: "benefits", id: "benefits" },
 		{ key: "proof", id: "proof" },
 		{ key: "faq", id: "faq" }
 	];
@@ -38,12 +39,15 @@ export function Navigation() {
 			<div className="container-narrow">
 				<div className="flex items-center justify-between h-16">
 					{/* Logo */}
-					<a href="#" className="flex items-center gap-2.5">
+					<Link href="/hire" className="flex items-center gap-2.5">
 						<div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
 							<span className="text-background font-semibold text-base">ج</span>
 						</div>
 						<span className="text-lg font-medium tracking-tight">{t("common.jeem")}</span>
-					</a>
+						<span className="text-xs text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded-full">
+							{t("hire.nav.badge")}
+						</span>
+					</Link>
 
 					{/* Desktop Nav Links */}
 					<div className="hidden md:flex items-center gap-8">
@@ -53,7 +57,7 @@ export function Navigation() {
 								onClick={() => scrollToSection(link.id)}
 								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
 							>
-								{t(`nav.links.${link.key}`)}
+								{t(`hire.nav.links.${link.key}`)}
 							</button>
 						))}
 					</div>
@@ -66,7 +70,7 @@ export function Navigation() {
 							onClick={() => scrollToSection("apply")}
 							className="bg-foreground hover:bg-foreground/90 text-background font-medium h-9 px-4 text-sm transition-opacity duration-200 gap-2"
 						>
-							{t("nav.cta")}
+							{t("hire.nav.cta")}
 							<ArrowIcon className="h-3.5 w-3.5" />
 						</Button>
 					</div>
@@ -101,14 +105,14 @@ export function Navigation() {
 									onClick={() => scrollToSection(link.id)}
 									className="text-muted-foreground hover:text-foreground transition-colors py-3 px-1 text-start"
 								>
-									{t(`nav.links.${link.key}`)}
+									{t(`hire.nav.links.${link.key}`)}
 								</button>
 							))}
 							<Button
 								onClick={() => scrollToSection("apply")}
 								className="bg-foreground hover:bg-foreground/90 text-background font-medium w-full mt-4 gap-2"
 							>
-								{t("nav.cta")}
+								{t("hire.nav.cta")}
 								<ArrowIcon className="h-4 w-4" />
 							</Button>
 						</div>
@@ -118,3 +122,4 @@ export function Navigation() {
 		</motion.nav>
 	);
 }
+
