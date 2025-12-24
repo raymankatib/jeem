@@ -343,7 +343,7 @@ export async function sendCompanyConfirmationEmail({
 		const template = companyEmailTemplates[language];
 
 		const { error } = await resend.emails.send({
-			from: "Jeem <onboarding@resend.dev>",
+			from: "Jeem <hello@jeem.now>",
 			to: [to],
 			subject: template.subject,
 			headers: {
