@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ArrowLeft, ArrowRight, Menu, X } from "lucide-react";
-import Link from "next/link";
+import Image from "next/image";
 
 export function HireNavigation() {
 	const { t, i18n } = useTranslation();
@@ -39,15 +39,22 @@ export function HireNavigation() {
 			<div className="container-narrow">
 				<div className="flex items-center justify-between h-16">
 					{/* Logo */}
-					<Link href="/hire" className="flex items-center gap-2.5">
-						<div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
-							<span className="text-background font-semibold text-base">ج</span>
+					<button
+						type="button"
+						onClick={() => {
+							window.scrollTo({ top: 0, behavior: "smooth" });
+						}}
+						className="flex items-center gap-2.5 cursor-pointer"
+					>
+						<div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center p-1.5">
+							<Image src="/white-logo.png" alt="Jeem Logo" width={28} height={28} className="dark:hidden" />
+							<Image src="/black-logo.png" alt="Jeem Logo" width={28} height={28} className="hidden dark:block" />
 						</div>
 						<span className="text-lg font-medium tracking-tight">{t("common.jeem")}</span>
 						<span className="text-xs text-muted-foreground bg-secondary/80 px-2 py-0.5 rounded-full">
 							{t("hire.nav.badge")}
 						</span>
-					</Link>
+					</button>
 
 					{/* Desktop Nav Links */}
 					<div className="hidden md:flex items-center gap-8">
@@ -55,7 +62,7 @@ export function HireNavigation() {
 							<button
 								key={link.key}
 								onClick={() => scrollToSection(link.id)}
-								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+								className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
 							>
 								{t(`hire.nav.links.${link.key}`)}
 							</button>
@@ -122,4 +129,3 @@ export function HireNavigation() {
 		</motion.nav>
 	);
 }
-

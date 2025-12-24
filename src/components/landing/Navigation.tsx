@@ -36,16 +36,20 @@ export function Navigation() {
 			transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
 			className="fixed top-9 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
 		>
-			<div className="container-narrow">
+			<div className="container-narrow ">
 				<div className="flex items-center justify-between h-16">
 					{/* Logo */}
-					<a href="#" className="flex items-center gap-2.5">
+					<button
+						type="button"
+						onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+						className="flex items-center gap-2.5 cursor-pointer"
+					>
 						<div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center p-1.5">
 							<Image src="/white-logo.png" alt="Jeem Logo" width={28} height={28} className="dark:hidden" />
 							<Image src="/black-logo.png" alt="Jeem Logo" width={28} height={28} className="hidden dark:block" />
 						</div>
 						<span className="text-lg font-medium tracking-tight">{t("common.jeem")}</span>
-					</a>
+					</button>
 
 					{/* Desktop Nav Links */}
 					<div className="hidden md:flex items-center gap-8">

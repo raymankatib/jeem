@@ -19,7 +19,7 @@ export function LanguageSwitcher() {
 	return (
 		<button
 			onClick={toggleLanguage}
-			className="h-8 px-3 rounded-full border border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors duration-200 flex items-center justify-center"
+			className="h-8 px-3 rounded-full border border-border bg-transparent text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors duration-200 flex items-center justify-center cursor-pointer"
 			title={`Switch to ${nextLang.name}`}
 		>
 			{nextLang.code === "ar" ? (

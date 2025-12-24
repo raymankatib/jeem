@@ -59,7 +59,7 @@ export function TalentPoolSection() {
 									key={category.id}
 									onClick={() => setActiveCategory(category.id)}
 									className={`
-									flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+									flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer
 									${
 										activeCategory === category.id
 											? "bg-foreground text-background"
@@ -164,4 +164,3 @@ export function TalentPoolSection() {
 		</section>
 	);
 }
-
