@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 import { Mail, Building2 } from "lucide-react";
 import Link from "next/link";
 
@@ -14,8 +15,21 @@ export function Footer() {
 					{/* Logo and tagline */}
 					<div className="flex items-center gap-4">
 						<div className="flex items-center gap-2.5">
-							<div className="w-7 h-7 rounded-lg bg-foreground flex items-center justify-center">
-								<span className="text-background font-semibold text-sm">ج</span>
+							<div className="w-9 h-9 rounded-lg bg-foreground flex items-center justify-center p-1.5">
+								<Image
+									src="/white-logo.png"
+									alt="Jeem Logo"
+									width={24}
+									height={24}
+									className="dark:hidden"
+								/>
+								<Image
+									src="/black-logo.png"
+									alt="Jeem Logo"
+									width={24}
+									height={24}
+									className="hidden dark:block"
+								/>
 							</div>
 							<span className="text-base font-medium">{t("common.jeem")}</span>
 						</div>

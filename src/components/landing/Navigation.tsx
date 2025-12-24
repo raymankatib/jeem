@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -39,8 +40,9 @@ export function Navigation() {
 				<div className="flex items-center justify-between h-16">
 					{/* Logo */}
 					<a href="#" className="flex items-center gap-2.5">
-						<div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
-							<span className="text-background font-semibold text-base">ج</span>
+						<div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center p-1.5">
+							<Image src="/white-logo.png" alt="Jeem Logo" width={28} height={28} className="dark:hidden" />
+							<Image src="/black-logo.png" alt="Jeem Logo" width={28} height={28} className="hidden dark:block" />
 						</div>
 						<span className="text-lg font-medium tracking-tight">{t("common.jeem")}</span>
 					</a>
