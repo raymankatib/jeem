@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Cairo } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/components/i18n-provider";
@@ -58,6 +59,7 @@ export default function RootLayout({
 						<Toaster position="bottom-right" richColors />
 					</ThemeProvider>
 				</I18nProvider>
+				<Analytics />
 			</body>
 		</html>
 	);
