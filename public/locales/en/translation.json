@@ -1,7 +1,7 @@
 {
 	"common": {
 		"jeem": "Jeem",
-		"email": "hello@jeem.work",
+		"email": "hello@jeem.now",
 		"required": "*",
 		"optional": "(optional)"
 	},

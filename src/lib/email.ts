@@ -170,7 +170,7 @@ export async function sendConfirmationEmail({
 		const { error } = await resend.emails.send({
 			// TODO: Change to your verified domain (e.g., "Jeem <noreply@jeem.work>")
 			// For testing, using Resend's test domain
-			from: "Jeem <onboarding@resend.dev>",
+			from: "Jeem <hello@jeem.now>",
 			to: [to],
 			subject: template.subject,
 			headers: {
