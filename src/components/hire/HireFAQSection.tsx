@@ -56,3 +56,4 @@ export function HireFAQSection() {
 		</section>
 	);
 }
+
