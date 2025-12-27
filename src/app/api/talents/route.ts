@@ -53,6 +53,9 @@ const talentSchema = z.object({
 	portfolio: z.string().url("Invalid portfolio URL").max(500, "Portfolio URL is too long"),
 	shipped: z.string().min(1, "Please describe what you've shipped").max(2000, "Description is too long"),
 	tools: z.string().max(500, "Tools list is too long").optional().default(""),
+	// CV upload fields (optional)
+	cv_url: z.string().url().optional().nullable(),
+	cv_filename: z.string().max(200).optional().nullable(),
 	// UTM parameters (all optional)
 	utm_source: z.string().max(200).optional().default(""),
 	utm_medium: z.string().max(200).optional().default(""),
@@ -159,6 +162,8 @@ export async function POST(request: NextRequest) {
 				portfolio: data.portfolio,
 				shipped: data.shipped,
 				tools: data.tools || null,
+				cv_url: data.cv_url || null,
+				cv_filename: data.cv_filename || null,
 				source: "landing",
 				utm_source: data.utm_source || null,
 				utm_medium: data.utm_medium || null,

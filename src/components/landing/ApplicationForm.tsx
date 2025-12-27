@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle2, FileText } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 const roleOptions: Array<{ value: string; labelKey: string }> = [
@@ -42,6 +42,9 @@ export function ApplicationForm() {
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [cvFile, setCvFile] = useState<File | null>(null);
+	const [cvError, setCvError] = useState<string>("");
+	const [isUploadingCV, setIsUploadingCV] = useState(false);
 	const isRTL = i18n.language === "ar";
 	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
@@ -79,6 +82,48 @@ export function ApplicationForm() {
 		}
 	}, []);
 
+	// CV file validation
+	const validateCVFile = (file: File): string | null => {
+		// Check file type
+		if (file.type !== 'application/pdf') {
+			return t("applicationForm.validation.cvMustBePDF");
+		}
+
+		// Check file size (5MB limit)
+		const maxSize = 5 * 1024 * 1024; // 5MB
+		if (file.size > maxSize) {
+			return t("applicationForm.validation.cvTooLarge");
+		}
+
+		// Check filename length
+		if (file.name.length > 100) {
+			return t("applicationForm.validation.cvFilenameTooLong");
+		}
+
+		return null;
+	};
+
+	// Handle CV file selection
+	const handleCVChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setCvError("");
+		const file = e.target.files?.[0];
+
+		if (!file) {
+			setCvFile(null);
+			return;
+		}
+
+		const error = validateCVFile(file);
+		if (error) {
+			setCvError(error);
+			setCvFile(null);
+			toast.error(error);
+			return;
+		}
+
+		setCvFile(file);
+	};
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -111,6 +156,33 @@ export function ApplicationForm() {
 		setIsSubmitting(true);
 
 		try {
+			let cvUploadData = null;
+
+			// Step 1: Upload CV if provided
+			if (cvFile) {
+				setIsUploadingCV(true);
+
+				const formDataForUpload = new FormData();
+				formDataForUpload.append('cv', cvFile);
+
+				const uploadResponse = await fetch('/api/upload-cv', {
+					method: 'POST',
+					body: formDataForUpload,
+				});
+
+				if (!uploadResponse.ok) {
+					const uploadError = await uploadResponse.json();
+					toast.error(uploadError.error || t("applicationForm.errors.cvUploadFailed"));
+					setIsUploadingCV(false);
+					setIsSubmitting(false);
+					return;
+				}
+
+				cvUploadData = await uploadResponse.json();
+				setIsUploadingCV(false);
+			}
+
+			// Step 2: Submit form data with CV info
 			const response = await fetch("/api/talents", {
 				method: "POST",
 				headers: {
@@ -119,6 +191,8 @@ export function ApplicationForm() {
 				body: JSON.stringify({
 					...formData,
 					...utmParams,
+					cv_url: cvUploadData?.cv_url || null,
+					cv_filename: cvUploadData?.cv_filename || null,
 					page_path: typeof window !== "undefined" ? window.location.pathname : "",
 					language: i18n.language // Send current language for email
 				})
@@ -157,11 +231,14 @@ export function ApplicationForm() {
 				tools: "",
 				honey: ""
 			});
+			setCvFile(null);
+			setCvError("");
 		} catch (error) {
 			console.error("Form submission error:", error);
 			toast.error(t("applicationForm.errors.network"));
 		} finally {
 			setIsSubmitting(false);
+			setIsUploadingCV(false);
 		}
 	};
 
@@ -381,18 +458,51 @@ export function ApplicationForm() {
 									/>
 								</div>
 
+								{/* CV Upload (optional) */}
+								<div className="space-y-2">
+									<label htmlFor="cv" className="text-sm text-background/70">
+										{t("applicationForm.fields.cv.label")}{" "}
+										<span className="text-background/40">{t("common.optional")}</span>
+									</label>
+									<div className="relative">
+										<Input
+											id="cv"
+											type="file"
+											accept=".pdf,application/pdf"
+											onChange={handleCVChange}
+											className="bg-background/5 border-background/10 text-background file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-background/10 file:text-background hover:file:bg-background/20 h-auto py-2"
+											disabled={isSubmitting || isUploadingCV}
+										/>
+										{cvFile && (
+											<div className="mt-2 flex items-center gap-2 text-xs text-background/60">
+												<FileText className="h-4 w-4" />
+												<span>{cvFile.name}</span>
+												<span className="text-background/40">
+													({(cvFile.size / 1024).toFixed(1)} KB)
+												</span>
+											</div>
+										)}
+										{cvError && (
+											<p className="mt-1 text-xs text-red-400">{cvError}</p>
+										)}
+									</div>
+									<p className="text-xs text-background/40">
+										{t("applicationForm.fields.cv.hint")}
+									</p>
+								</div>
+
 								{/* Submit */}
 								<div className="pt-4">
 									<Button
 										type="submit"
 										size="lg"
-										disabled={isSubmitting}
+										disabled={isSubmitting || isUploadingCV}
 										className="w-full sm:w-auto bg-background hover:bg-background/90 text-foreground font-medium h-12 px-10 transition-opacity duration-200 gap-2"
 									>
-										{isSubmitting ? (
+										{isSubmitting || isUploadingCV ? (
 											<>
 												<Loader2 className="h-4 w-4 animate-spin" />
-												{t("applicationForm.submit.sending")}
+												{isUploadingCV ? "Uploading CV..." : t("applicationForm.submit.sending")}
 											</>
 										) : (
 											<>

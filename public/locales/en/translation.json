@@ -450,6 +450,10 @@
 			"tools": {
 				"label": "Your strongest tools",
 				"placeholder": "e.g., Figma, React, HubSpot, Cursor..."
+			},
+			"cv": {
+				"label": "Upload your CV/Resume (PDF)",
+				"hint": "Optional. Max 5MB. PDF format only."
 			}
 		},
 		"validation": {
@@ -458,7 +462,10 @@
 			"roleRequired": "Please select a role",
 			"englishLevelRequired": "Please select your English level",
 			"portfolioRequired": "Please provide a portfolio, LinkedIn, or GitHub URL",
-			"shippedRequired": "Please tell us what you've shipped recently"
+			"shippedRequired": "Please tell us what you've shipped recently",
+			"cvMustBePDF": "CV must be a PDF file",
+			"cvTooLarge": "CV file size must be less than 5MB",
+			"cvFilenameTooLong": "Filename is too long"
 		},
 		"submit": {
 			"button": "Send application",
@@ -471,7 +478,8 @@
 		"errors": {
 			"rateLimit": "Too many requests. Please try again in a minute.",
 			"generic": "Something went wrong. Please try again.",
-			"network": "Network error. Please check your connection and try again."
+			"network": "Network error. Please check your connection and try again.",
+			"cvUploadFailed": "Failed to upload CV. Please try again."
 		},
 		"privacyNote": "By submitting, you agree to let us review your application and contact you about opportunities. We won't share your data with third parties."
 	},
