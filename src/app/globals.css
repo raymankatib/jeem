@@ -195,6 +195,35 @@
   html[dir="rtl"] .rtl-flip {
     transform: scaleX(-1);
   }
+
+  /* Ensure tables respect RTL direction */
+  html[dir="rtl"] table {
+    direction: rtl;
+  }
+
+  html[dir="rtl"] th,
+  html[dir="rtl"] td {
+    text-align: start;
+  }
+
+  /* Align tabs to the right in RTL */
+  html[dir="rtl"] [data-slot="tabs-list"] {
+    margin-inline-start: auto;
+  }
+
+  /* Align card headers and content to the right in RTL */
+  html[dir="rtl"] [data-slot="card-header"],
+  html[dir="rtl"] [data-slot="card-title"],
+  html[dir="rtl"] [data-slot="card-description"],
+  html[dir="rtl"] [data-slot="card-content"],
+  html[dir="rtl"] [data-slot="card-header"] * {
+    text-align: start !important;
+  }
+
+  /* Ensure grid items in card headers also align right */
+  html[dir="rtl"] [data-slot="card-header"] {
+    direction: rtl;
+  }
 }
 
 /* Custom utilities */

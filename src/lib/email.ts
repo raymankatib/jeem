@@ -367,3 +367,423 @@ export async function sendCompanyConfirmationEmail({
 		};
 	}
 }
+
+// ============================================================================
+// TALENT STATUS UPDATE EMAIL
+// ============================================================================
+
+type TalentStatus = 'under_review' | 'interviewing' | 'training' | 'pending_matching' | 'matched' | 'rejected';
+
+interface SendTalentStatusUpdateEmailParams {
+	to: string;
+	name: string;
+	role: string;
+	talentId: string;
+	newStatus: TalentStatus;
+	language: "en" | "ar";
+}
+
+const talentStatusEmailContent = {
+	en: {
+		under_review: {
+			subject: "Your application is under review – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Your application for ${role} is currently being reviewed by our team. We'll update you soon!`,
+				text: `Your application for ${role} is currently being reviewed by our team. We'll update you soon!`
+			})
+		},
+		interviewing: {
+			subject: "Interview invitation – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. We'll be in touch soon to coordinate a time.`,
+				text: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. We'll be in touch soon to coordinate a time.`
+			})
+		},
+		training: {
+			subject: "Welcome to Jeem training – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Congratulations ${firstName}! You've been accepted into our training program for ${role}. We'll send you details about the next steps shortly.`,
+				text: `Congratulations ${firstName}! You've been accepted into our training program for ${role}. We'll send you details about the next steps shortly.`
+			})
+		},
+		pending_matching: {
+			subject: "Ready for project matching – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Great news ${firstName}! You're now in our talent pool and we're actively looking for projects that match your ${role} skills.`,
+				text: `Great news ${firstName}! You're now in our talent pool and we're actively looking for projects that match your ${role} skills.`
+			})
+		},
+		matched: {
+			subject: "You've been matched with a project! – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Exciting news ${firstName}! We've matched you with a project that fits your ${role} profile. We'll be reaching out with project details and next steps.`,
+				text: `Exciting news ${firstName}! We've matched you with a project that fits your ${role} profile. We'll be reaching out with project details and next steps.`
+			})
+		},
+		rejected: {
+			subject: "Application update – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Thank you for your interest in joining Jeem as a ${role}. Unfortunately, we won't be moving forward with your application at this time. We encourage you to apply again in the future as our needs evolve.`,
+				text: `Thank you for your interest in joining Jeem as a ${role}. Unfortunately, we won't be moving forward with your application at this time. We encourage you to apply again in the future as our needs evolve.`
+			})
+		}
+	},
+	ar: {
+		under_review: {
+			subject: "طلبك قيد المراجعة – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `طلبك لـ ${role} قيد المراجعة من قبل فريقنا حالياً. راح نحدّثك قريباً!`,
+				text: `طلبك لـ ${role} قيد المراجعة من قبل فريقنا حالياً. راح نحدّثك قريباً!`
+			})
+		},
+		interviewing: {
+			subject: "دعوة للمقابلة – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. راح نتواصل معك قريباً لتنسيق الوقت.`,
+				text: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. راح نتواصل معك قريباً لتنسيق الوقت.`
+			})
+		},
+		training: {
+			subject: "أهلاً فيك ببرنامج التدريب – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `مبروك ${firstName}! تم قبولك في برنامج التدريب لـ ${role}. راح نبعثلك تفاصيل الخطوات الجاية قريباً.`,
+				text: `مبروك ${firstName}! تم قبولك في برنامج التدريب لـ ${role}. راح نبعثلك تفاصيل الخطوات الجاية قريباً.`
+			})
+		},
+		pending_matching: {
+			subject: "جاهز للمطابقة مع المشاريع – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `خبر سار ${firstName}! صرت الآن ضمن مجموعة المواهب وعم ندور على مشاريع تناسب مهاراتك بـ ${role}.`,
+				text: `خبر سار ${firstName}! صرت الآن ضمن مجموعة المواهب وعم ندور على مشاريع تناسب مهاراتك بـ ${role}.`
+			})
+		},
+		matched: {
+			subject: "تمت مطابقتك مع مشروع! – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `خبر مفرح ${firstName}! طابقناك مع مشروع يناسب ملفك كـ ${role}. راح نتواصل معك بتفاصيل المشروع والخطوات الجاية.`,
+				text: `خبر مفرح ${firstName}! طابقناك مع مشروع يناسب ملفك كـ ${role}. راح نتواصل معك بتفاصيل المشروع والخطوات الجاية.`
+			})
+		},
+		rejected: {
+			subject: "تحديث على طلبك – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `شكراً لاهتمامك بالانضمام لـ Jeem كـ ${role}. للأسف، ما راح نكمل مع طلبك بهاللحظة. بنشجعك تقدّم مرة تانية بالمستقبل لما احتياجاتنا تتغير.`,
+				text: `شكراً لاهتمامك بالانضمام لـ Jeem كـ ${role}. للأسف، ما راح نكمل مع طلبك بهاللحظة. بنشجعك تقدّم مرة تانية بالمستقبل لما احتياجاتنا تتغير.`
+			})
+		}
+	}
+};
+
+function getStatusEmailTemplate(status: TalentStatus, language: "en" | "ar", firstName: string, role: string) {
+	const content = talentStatusEmailContent[language][status].getContent(firstName, role);
+
+	return {
+		subject: talentStatusEmailContent[language][status].subject,
+		html: language === "en" ? `
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Hey ${firstName} 👋</h1>
+  </div>
+
+  <p style="margin: 0 0 16px 0;">
+    ${content.html}
+  </p>
+
+  <p style="margin: 24px 0 0 0; color: #666;">
+    – The Jeem Team
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;">
+
+  <p style="font-size: 12px; color: #999; margin: 0;">
+    You received this email because you applied to join Jeem.
+  </p>
+</body>
+</html>
+		` : `
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Cairo', sans-serif; line-height: 1.8; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px; direction: rtl; text-align: right;">
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">أهلاً ${firstName} 👋</h1>
+  </div>
+
+  <p style="margin: 0 0 16px 0;">
+    ${content.html}
+  </p>
+
+  <p style="margin: 24px 0 0 0; color: #666;">
+    – فريق Jeem
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;">
+
+  <p style="font-size: 12px; color: #999; margin: 0;">
+    وصلك هذا الإيميل لأنك قدّمت على Jeem.
+  </p>
+</body>
+</html>
+		`,
+		text: content.text
+	};
+}
+
+export async function sendTalentStatusUpdateEmail({
+	to,
+	name,
+	role,
+	talentId,
+	newStatus,
+	language = "en"
+}: SendTalentStatusUpdateEmailParams): Promise<{ success: boolean; error?: string }> {
+	try {
+		const resend = getResend();
+		const idempotencyKey = `talent-status-${talentId}-${newStatus}-${Date.now()}`;
+		const firstName = name.split(" ")[0];
+		const template = getStatusEmailTemplate(newStatus, language, firstName, role);
+
+		const { error } = await resend.emails.send({
+			from: "Jeem <hello@jeem.now>",
+			to: [to],
+			subject: template.subject,
+			headers: {
+				"X-Idempotency-Key": idempotencyKey
+			},
+			html: template.html,
+			text: template.text
+		});
+
+		if (error) {
+			console.error("Resend error:", error);
+			return { success: false, error: error.message };
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.error("Email send error:", error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Unknown error"
+		};
+	}
+}
+
+// ============================================================================
+// COMPANY STATUS UPDATE EMAIL
+// ============================================================================
+
+type CompanyStatus = 'under_review' | 'reviewing_candidates' | 'interviewing_candidates' | 'negotiating' | 'matched' | 'rejected';
+
+interface SendCompanyStatusUpdateEmailParams {
+	to: string;
+	contactName: string;
+	companyName: string;
+	companyId: string;
+	newStatus: CompanyStatus;
+	language: "en" | "ar";
+}
+
+const companyStatusEmailContent = {
+	en: {
+		under_review: {
+			subject: "Your inquiry is under review – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `Your hiring inquiry for ${companyName} is currently being reviewed by our team. We'll update you soon!`,
+				text: `Your hiring inquiry for ${companyName} is currently being reviewed by our team. We'll update you soon!`
+			})
+		},
+		reviewing_candidates: {
+			subject: "Reviewing candidates for you – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `We're currently reviewing our talent pool to find the best matches for ${companyName}'s requirements. We'll share candidate profiles with you shortly.`,
+				text: `We're currently reviewing our talent pool to find the best matches for ${companyName}'s requirements. We'll share candidate profiles with you shortly.`
+			})
+		},
+		interviewing_candidates: {
+			subject: "Candidate interviews scheduled – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `We're scheduling interviews with potential candidates for ${companyName}. We'll coordinate with you to set up meetings with the most promising talent.`,
+				text: `We're scheduling interviews with potential candidates for ${companyName}. We'll coordinate with you to set up meetings with the most promising talent.`
+			})
+		},
+		negotiating: {
+			subject: "Moving to contract negotiation – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `Great progress! We're now in the negotiation phase for ${companyName}. We'll work with you to finalize terms and get started.`,
+				text: `Great progress! We're now in the negotiation phase for ${companyName}. We'll work with you to finalize terms and get started.`
+			})
+		},
+		matched: {
+			subject: "Talent matched successfully! – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `Excellent news! We've successfully matched ${companyName} with talent from our network. We'll be in touch with contract details and next steps.`,
+				text: `Excellent news! We've successfully matched ${companyName} with talent from our network. We'll be in touch with contract details and next steps.`
+			})
+		},
+		rejected: {
+			subject: "Inquiry update – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `Thank you for your interest in hiring through Jeem for ${companyName}. Unfortunately, we don't have suitable candidates available at this time. We encourage you to reach out again as your needs evolve.`,
+				text: `Thank you for your interest in hiring through Jeem for ${companyName}. Unfortunately, we don't have suitable candidates available at this time. We encourage you to reach out again as your needs evolve.`
+			})
+		}
+	},
+	ar: {
+		under_review: {
+			subject: "طلبك قيد المراجعة – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `طلب التوظيف لـ ${companyName} قيد المراجعة من قبل فريقنا حالياً. راح نحدّثك قريباً!`,
+				text: `طلب التوظيف لـ ${companyName} قيد المراجعة من قبل فريقنا حالياً. راح نحدّثك قريباً!`
+			})
+		},
+		reviewing_candidates: {
+			subject: "عم نراجع المرشحين – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `عم نراجع حالياً مجموعة المواهب لإيجاد أفضل مطابقة لمتطلبات ${companyName}. راح نشاركك ملفات المرشحين قريباً.`,
+				text: `عم نراجع حالياً مجموعة المواهب لإيجاد أفضل مطابقة لمتطلبات ${companyName}. راح نشاركك ملفات المرشحين قريباً.`
+			})
+		},
+		interviewing_candidates: {
+			subject: "جدولة مقابلات المرشحين – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `عم نجدول مقابلات مع مرشحين محتملين لـ ${companyName}. راح ننسق معك لترتيب لقاءات مع أفضل المواهب.`,
+				text: `عم نجدول مقابلات مع مرشحين محتملين لـ ${companyName}. راح ننسق معك لترتيب لقاءات مع أفضل المواهب.`
+			})
+		},
+		negotiating: {
+			subject: "الانتقال للتفاوض على العقد – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `تقدم ممتاز! وصلنا لمرحلة التفاوض لـ ${companyName}. راح نشتغل معك لإنهاء الشروط والبدء.`,
+				text: `تقدم ممتاز! وصلنا لمرحلة التفاوض لـ ${companyName}. راح نشتغل معك لإنهاء الشروط والبدء.`
+			})
+		},
+		matched: {
+			subject: "تمت المطابقة بنجاح! – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `خبر ممتاز! طابقنا ${companyName} بنجاح مع مواهب من شبكتنا. راح نتواصل معك بتفاصيل العقد والخطوات الجاية.`,
+				text: `خبر ممتاز! طابقنا ${companyName} بنجاح مع مواهب من شبكتنا. راح نتواصل معك بتفاصيل العقد والخطوات الجاية.`
+			})
+		},
+		rejected: {
+			subject: "تحديث على الطلب – Jeem",
+			getContent: (firstName: string, companyName: string) => ({
+				html: `شكراً لاهتمامك بالتوظيف من خلال Jeem لـ ${companyName}. للأسف، ما عنا مرشحين مناسبين بهاللحظة. بنشجعك تتواصل معنا مرة تانية لما احتياجاتك تتطور.`,
+				text: `شكراً لاهتمامك بالتوظيف من خلال Jeem لـ ${companyName}. للأسف، ما عنا مرشحين مناسبين بهاللحظة. بنشجعك تتواصل معنا مرة تانية لما احتياجاتك تتطور.`
+			})
+		}
+	}
+};
+
+function getCompanyStatusEmailTemplate(status: CompanyStatus, language: "en" | "ar", firstName: string, companyName: string) {
+	const content = companyStatusEmailContent[language][status].getContent(firstName, companyName);
+
+	return {
+		subject: companyStatusEmailContent[language][status].subject,
+		html: language === "en" ? `
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Hey ${firstName} 👋</h1>
+  </div>
+
+  <p style="margin: 0 0 16px 0;">
+    ${content.html}
+  </p>
+
+  <p style="margin: 24px 0 0 0; color: #666;">
+    – The Jeem Team
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;">
+
+  <p style="font-size: 12px; color: #999; margin: 0;">
+    You received this email because you submitted an inquiry on Jeem.
+  </p>
+</body>
+</html>
+		` : `
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Cairo', sans-serif; line-height: 1.8; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px; direction: rtl; text-align: right;">
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">أهلاً ${firstName} 👋</h1>
+  </div>
+
+  <p style="margin: 0 0 16px 0;">
+    ${content.html}
+  </p>
+
+  <p style="margin: 24px 0 0 0; color: #666;">
+    – فريق Jeem
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;">
+
+  <p style="font-size: 12px; color: #999; margin: 0;">
+    وصلك هذا الإيميل لأنك قدّمت طلب على Jeem.
+  </p>
+</body>
+</html>
+		`,
+		text: content.text
+	};
+}
+
+export async function sendCompanyStatusUpdateEmail({
+	to,
+	contactName,
+	companyName,
+	companyId,
+	newStatus,
+	language = "en"
+}: SendCompanyStatusUpdateEmailParams): Promise<{ success: boolean; error?: string }> {
+	try {
+		const resend = getResend();
+		const idempotencyKey = `company-status-${companyId}-${newStatus}-${Date.now()}`;
+		const firstName = contactName.split(" ")[0];
+		const template = getCompanyStatusEmailTemplate(newStatus, language, firstName, companyName);
+
+		const { error } = await resend.emails.send({
+			from: "Jeem <hello@jeem.now>",
+			to: [to],
+			subject: template.subject,
+			headers: {
+				"X-Idempotency-Key": idempotencyKey
+			},
+			html: template.html,
+			text: template.text
+		});
+
+		if (error) {
+			console.error("Resend error:", error);
+			return { success: false, error: error.message };
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.error("Email send error:", error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Unknown error"
+		};
+	}
+}

@@ -48,11 +48,15 @@ setInterval(() => {
 const talentSchema = z.object({
 	name: z.string().min(1, "Name is required").max(200, "Name is too long"),
 	email: z.string().email("Invalid email address").max(200, "Email is too long"),
+	countryCode: z.string().min(1, "Country code is required").max(10, "Country code is too long"),
+	phoneNumber: z.string().min(7, "Phone number is too short").max(20, "Phone number is too long"),
 	role: z.string().min(1, "Role is required").max(200, "Role is too long"),
 	englishLevel: z.string().min(1, "English level is required").max(50, "English level is too long"),
 	portfolio: z.string().url("Invalid portfolio URL").max(500, "Portfolio URL is too long"),
 	shipped: z.string().min(1, "Please describe what you've shipped").max(2000, "Description is too long"),
 	tools: z.string().max(500, "Tools list is too long").optional().default(""),
+	// Password for account creation
+	password: z.string().min(8, "Password must be at least 8 characters").max(100, "Password is too long"),
 	// CV upload fields (optional)
 	cv_url: z.string().url().optional().nullable(),
 	cv_filename: z.string().max(200).optional().nullable(),
@@ -151,12 +155,47 @@ export async function POST(request: NextRequest) {
 		// Get Supabase admin client
 		const supabase = getSupabaseAdmin();
 
+		// Create auth user first
+		const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+			email: data.email,
+			password: data.password,
+			email_confirm: true, // Auto-confirm email
+			user_metadata: {
+				full_name: data.name,
+				// No role - must be manually set to 'admin' in database
+			}
+		});
+
+		if (authError) {
+			console.error("Auth user creation error:", authError);
+			// Check if user already exists
+			if (authError.message?.includes("already") || authError.status === 422) {
+				return NextResponse.json(
+					{
+						ok: false,
+						error: "An account with this email already exists. Please use the login page."
+					},
+					{ status: 400 }
+				);
+			}
+			return NextResponse.json(
+				{
+					ok: false,
+					error: "Failed to create account. Please try again."
+				},
+				{ status: 500 }
+			);
+		}
+
 		// Insert into database and return the inserted row
 		const { data: insertedTalent, error: insertError } = await supabase
 			.from("talents")
 			.insert({
+				user_id: authData.user.id, // Link to auth user
 				name: data.name,
 				email: data.email,
+				country_code: data.countryCode,
+				phone_number: data.phoneNumber,
 				role: data.role,
 				english_level: data.englishLevel,
 				portfolio: data.portfolio,
