@@ -7,9 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, CheckCircle2, Check, ChevronsUpDown } from "lucide-react";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { countryCodes } from "@/lib/country-codes";
+import { cn } from "@/lib/utils";
 
 const companySizeKeys = ["solo", "small", "medium", "large", "enterprise"];
 const projectTypeKeys = ["ongoing", "oneTime", "partTime", "fullTime", "tryBeforeHire"];
@@ -44,6 +49,7 @@ export function CompanyApplicationForm() {
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [isSubmitted, setIsSubmitted] = useState(false);
+	const [countryCodeOpen, setCountryCodeOpen] = useState(false);
 	const isRTL = i18n.language === "ar";
 	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
@@ -60,6 +66,8 @@ export function CompanyApplicationForm() {
 		companyName: "",
 		contactName: "",
 		email: "",
+		countryCode: "+1", // Default to US/Canada
+		phoneNumber: "",
 		website: "",
 		companySize: "",
 		rolesNeeded: "",
@@ -68,6 +76,11 @@ export function CompanyApplicationForm() {
 		projectDescription: "",
 		honey: "" // Honeypot field
 	});
+
+	// Password modal state
+	const [showPasswordModal, setShowPasswordModal] = useState(false);
+	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
 
 	// Extract UTM parameters from URL on mount
 	useEffect(() => {
@@ -99,6 +112,15 @@ export function CompanyApplicationForm() {
 			toast.error(t("hire.applicationForm.validation.emailInvalid"));
 			return;
 		}
+		if (!formData.phoneNumber.trim()) {
+			toast.error(t("hire.applicationForm.validation.phoneNumberRequired"));
+			return;
+		}
+		const phoneDigitsOnly = formData.phoneNumber.replace(/\D/g, "");
+		if (phoneDigitsOnly.length < 7 || phoneDigitsOnly.length > 15) {
+			toast.error(t("hire.applicationForm.validation.phoneNumberInvalid"));
+			return;
+		}
 		if (!formData.companySize) {
 			toast.error(t("hire.applicationForm.validation.companySizeRequired"));
 			return;
@@ -116,7 +138,23 @@ export function CompanyApplicationForm() {
 			return;
 		}
 
+		// Show password modal instead of submitting directly
+		setShowPasswordModal(true);
+	};
+
+	const handlePasswordSubmit = async () => {
+		// Validate password
+		if (!password || password.length < 8) {
+			toast.error(t("hire.applicationForm.validation.passwordTooShort"));
+			return;
+		}
+		if (password !== confirmPassword) {
+			toast.error(t("hire.applicationForm.validation.passwordMismatch"));
+			return;
+		}
+
 		setIsSubmitting(true);
+		setShowPasswordModal(false);
 
 		try {
 			const response = await fetch("/api/companies", {
@@ -127,6 +165,7 @@ export function CompanyApplicationForm() {
 				body: JSON.stringify({
 					...formData,
 					...utmParams,
+					password: password,
 					page_path: typeof window !== "undefined" ? window.location.pathname : "",
 					language: i18n.language
 				})
@@ -157,6 +196,8 @@ export function CompanyApplicationForm() {
 				companyName: "",
 				contactName: "",
 				email: "",
+				countryCode: "+1",
+				phoneNumber: "",
 				website: "",
 				companySize: "",
 				rolesNeeded: "",
@@ -165,6 +206,8 @@ export function CompanyApplicationForm() {
 				projectDescription: "",
 				honey: ""
 			});
+			setPassword("");
+			setConfirmPassword("");
 		} catch (error) {
 			console.error("Form submission error:", error);
 			toast.error(t("hire.applicationForm.errors.network"));
@@ -331,6 +374,70 @@ export function CompanyApplicationForm() {
 									</div>
 								</div>
 
+								{/* Phone Number */}
+								<div className="space-y-2">
+									<label htmlFor="phoneNumber" className="text-sm text-background/70">
+										{t("hire.applicationForm.fields.phoneNumber.label")} <span className="text-background/40">*</span>
+									</label>
+									<div className="grid grid-cols-[140px_1fr] gap-2">
+										<Popover open={countryCodeOpen} onOpenChange={setCountryCodeOpen}>
+											<PopoverTrigger asChild>
+												<Button
+													variant="outline"
+													role="combobox"
+													aria-expanded={countryCodeOpen}
+													className="w-full justify-between bg-background/5 border-background/10 text-background hover:bg-background/10 hover:text-background focus:border-background/30 h-11"
+													disabled={isSubmitting}
+												>
+													{formData.countryCode}
+													<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+												</Button>
+											</PopoverTrigger>
+											<PopoverContent className="w-[300px] p-0" align="start">
+												<Command>
+													<CommandInput placeholder="Search country..." className="h-9" />
+													<CommandList>
+														<CommandEmpty>No country found.</CommandEmpty>
+														<CommandGroup>
+															{countryCodes.map((country) => (
+																<CommandItem
+																	key={`${country.code}-${country.country}`}
+																	value={`${country.country} ${country.code}`}
+																	onSelect={() => {
+																		setFormData({ ...formData, countryCode: country.code });
+																		setCountryCodeOpen(false);
+																	}}
+																>
+																	<span className="flex items-center gap-2">
+																		<span>{country.flag}</span>
+																		<span>{country.code}</span>
+																		<span className="text-muted-foreground text-sm">{country.country}</span>
+																	</span>
+																	<Check
+																		className={cn(
+																			"ml-auto h-4 w-4",
+																			formData.countryCode === country.code ? "opacity-100" : "opacity-0"
+																		)}
+																	/>
+																</CommandItem>
+															))}
+														</CommandGroup>
+													</CommandList>
+												</Command>
+											</PopoverContent>
+										</Popover>
+										<Input
+											id="phoneNumber"
+											type="tel"
+											placeholder={t("hire.applicationForm.fields.phoneNumber.placeholder")}
+											value={formData.phoneNumber}
+											onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+											className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 h-11"
+											disabled={isSubmitting}
+										/>
+									</div>
+								</div>
+
 								{/* Company Size & Project Type */}
 								<div className="grid sm:grid-cols-2 gap-4">
 									<div className="space-y-2">
@@ -470,6 +577,73 @@ export function CompanyApplicationForm() {
 								{/* Privacy note */}
 								<p className="text-xs text-background/40 pt-2">{t("hire.applicationForm.privacyNote")}</p>
 							</form>
+
+							{/* Password Modal */}
+							<Dialog open={showPasswordModal} onOpenChange={setShowPasswordModal}>
+								<DialogContent className="sm:max-w-md">
+									<DialogHeader>
+										<DialogTitle>{t("hire.applicationForm.passwordModal.title")}</DialogTitle>
+										<DialogDescription>
+											{t("hire.applicationForm.passwordModal.description")}
+										</DialogDescription>
+									</DialogHeader>
+									<div className="space-y-4 py-4">
+										<div className="space-y-2">
+											<label htmlFor="modal-password" className="text-sm font-medium">
+												{t("hire.applicationForm.fields.password.label")} <span className="text-muted-foreground">*</span>
+											</label>
+											<Input
+												id="modal-password"
+												type="password"
+												placeholder={t("hire.applicationForm.fields.password.placeholder")}
+												value={password}
+												onChange={(e) => setPassword(e.target.value)}
+												autoComplete="new-password"
+												autoFocus
+											/>
+											<p className="text-xs text-muted-foreground">{t("hire.applicationForm.fields.password.hint")}</p>
+										</div>
+
+										<div className="space-y-2">
+											<label htmlFor="modal-confirmPassword" className="text-sm font-medium">
+												{t("hire.applicationForm.fields.confirmPassword.label")} <span className="text-muted-foreground">*</span>
+											</label>
+											<Input
+												id="modal-confirmPassword"
+												type="password"
+												placeholder={t("hire.applicationForm.fields.confirmPassword.placeholder")}
+												value={confirmPassword}
+												onChange={(e) => setConfirmPassword(e.target.value)}
+												autoComplete="new-password"
+											/>
+										</div>
+									</div>
+									<DialogFooter>
+										<Button
+											type="button"
+											variant="outline"
+											onClick={() => setShowPasswordModal(false)}
+											disabled={isSubmitting}
+										>
+											{t("common.cancel")}
+										</Button>
+										<Button
+											type="button"
+											onClick={handlePasswordSubmit}
+											disabled={isSubmitting}
+										>
+											{isSubmitting ? (
+												<>
+													<Loader2 className="h-4 w-4 animate-spin mr-2" />
+													{t("hire.applicationForm.submit.sending")}
+												</>
+											) : (
+												t("hire.applicationForm.passwordModal.submit")
+											)}
+										</Button>
+									</DialogFooter>
+								</DialogContent>
+							</Dialog>
 						</motion.div>
 					</div>
 				</motion.div>

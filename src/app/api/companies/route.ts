@@ -48,6 +48,8 @@ const companySchema = z.object({
 	companyName: z.string().min(1, "Company name is required").max(200, "Company name is too long"),
 	contactName: z.string().min(1, "Contact name is required").max(200, "Contact name is too long"),
 	email: z.string().email("Invalid email address").max(200, "Email is too long"),
+	countryCode: z.string().min(1, "Country code is required").max(10, "Country code is too long"),
+	phoneNumber: z.string().min(7, "Phone number is too short").max(20, "Phone number is too long"),
 	website: z.string().url("Invalid website URL").max(500, "Website URL is too long").optional().or(z.literal("")),
 	companySize: z.string().min(1, "Company size is required").max(50, "Company size is too long"),
 	rolesNeeded: z.string().min(1, "Roles needed is required").max(500, "Roles needed is too long"),
@@ -57,6 +59,8 @@ const companySchema = z.object({
 		.string()
 		.min(1, "Project description is required")
 		.max(3000, "Project description is too long"),
+	// Password for account creation
+	password: z.string().min(8, "Password must be at least 8 characters").max(100, "Password is too long"),
 	// UTM parameters (all optional)
 	utm_source: z.string().max(200).optional().default(""),
 	utm_medium: z.string().max(200).optional().default(""),
@@ -148,13 +152,49 @@ export async function POST(request: NextRequest) {
 		// Get Supabase admin client
 		const supabase = getSupabaseAdmin();
 
+		// Create auth user first
+		const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+			email: data.email,
+			password: data.password,
+			email_confirm: true, // Auto-confirm email
+			user_metadata: {
+				full_name: data.contactName,
+				company_name: data.companyName,
+				// No role - must be manually set to 'admin' in database
+			}
+		});
+
+		if (authError) {
+			console.error("Auth user creation error:", authError);
+			// Check if user already exists
+			if (authError.message?.includes("already") || authError.status === 422) {
+				return NextResponse.json(
+					{
+						ok: false,
+						error: "An account with this email already exists. Please use the login page."
+					},
+					{ status: 400 }
+				);
+			}
+			return NextResponse.json(
+				{
+					ok: false,
+					error: "Failed to create account. Please try again."
+				},
+				{ status: 500 }
+			);
+		}
+
 		// Insert into database
 		const { data: insertedCompany, error: insertError } = await supabase
 			.from("companies")
 			.insert({
+				user_id: authData.user.id, // Link to auth user
 				company_name: data.companyName,
 				contact_name: data.contactName,
 				email: data.email,
+				country_code: data.countryCode,
+				phone_number: data.phoneNumber,
 				website: data.website || null,
 				company_size: data.companySize,
 				roles_needed: data.rolesNeeded,

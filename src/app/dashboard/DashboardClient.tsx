@@ -1,0 +1,387 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { LogOut, Mail, ExternalLink, FileText, Calendar, User as UserIcon, Building2, Briefcase, DollarSign, Phone } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import type { User } from "@supabase/supabase-js";
+import { AuthNav } from "@/components/auth-nav";
+
+type TalentStatus = 'under_review' | 'interviewing' | 'training' | 'pending_matching' | 'matched' | 'rejected';
+type CompanyStatus = 'under_review' | 'reviewing_candidates' | 'interviewing_candidates' | 'negotiating' | 'matched' | 'rejected';
+
+interface Talent {
+  id: string;
+  name: string;
+  email: string;
+  country_code: string | null;
+  phone_number: string | null;
+  role: string;
+  english_level: string;
+  portfolio: string;
+  shipped: string;
+  tools: string | null;
+  cv_url: string | null;
+  cv_filename: string | null;
+  email_status: string | null;
+  application_status: TalentStatus;
+  created_at?: string;
+}
+
+interface Company {
+  id: string;
+  company_name: string;
+  contact_name: string;
+  email: string;
+  country_code: string | null;
+  phone_number: string | null;
+  website: string | null;
+  company_size: string;
+  roles_needed: string;
+  project_type: string;
+  budget_range: string | null;
+  project_description: string;
+  email_status: string | null;
+  application_status: CompanyStatus;
+  created_at?: string;
+}
+
+interface DashboardClientProps {
+  user: User;
+  talentProfile: Talent | null;
+  companyProfile: Company | null;
+}
+
+export default function DashboardClient({ user, talentProfile, companyProfile }: DashboardClientProps) {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      toast.error(t("auth.logout.error"));
+      return;
+    }
+
+    toast.success(t("auth.logout.success"));
+    // Redirect company accounts to /hire, others to home
+    router.push(companyProfile ? "/hire" : "/");
+    router.refresh();
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "-";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  return (
+    <>
+      <AuthNav />
+      <div className="min-h-screen bg-background pt-24 p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight mb-2">
+                {t("dashboard.userProfile.title")}
+              </h1>
+              <p className="text-muted-foreground">
+                {t("dashboard.userProfile.subtitle")}
+              </p>
+            </div>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 me-2" />
+              {t("auth.logout.button")}
+            </Button>
+          </div>
+
+          {/* Talent Profile */}
+          {talentProfile && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <UserIcon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <CardTitle>{talentProfile.name}</CardTitle>
+                    <CardDescription>{talentProfile.role}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.email")}
+                    </label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{talentProfile.email}</span>
+                    </div>
+                  </div>
+
+                  {talentProfile.phone_number && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.talents.details.phone")}
+                      </label>
+                      <div className="mt-1 flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-muted-foreground" />
+                        <a href={`tel:${talentProfile.country_code}${talentProfile.phone_number}`} className="text-sm hover:underline">
+                          {talentProfile.country_code} {talentProfile.phone_number}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.applicationStatus")}
+                    </label>
+                    <div className="mt-1">
+                      <Badge variant={
+                        talentProfile.application_status === 'matched' ? 'default' :
+                        talentProfile.application_status === 'rejected' ? 'destructive' :
+                        'secondary'
+                      }>
+                        {t(`dashboard.status.talent.${
+                          talentProfile.application_status
+                            .split('_')
+                            .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+                            .join('')
+                        }`)}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.englishLevel")}
+                    </label>
+                    <p className="mt-1 text-sm">{talentProfile.english_level}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.portfolio")}
+                    </label>
+                    <div className="mt-1">
+                      <a
+                        href={talentProfile.portfolio}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                      >
+                        {talentProfile.portfolio}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.shipped")}
+                    </label>
+                    <p className="mt-1 text-sm">{talentProfile.shipped}</p>
+                  </div>
+
+                  {talentProfile.tools && (
+                    <div className="col-span-full">
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.talents.details.tools")}
+                      </label>
+                      <p className="mt-1 text-sm">{talentProfile.tools}</p>
+                    </div>
+                  )}
+
+                  {talentProfile.cv_url && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.talents.details.cv")}
+                      </label>
+                      <div className="mt-1 flex items-center gap-3">
+                        <a
+                          href={talentProfile.cv_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                        >
+                          <FileText className="h-4 w-4" />
+                          {talentProfile.cv_filename || "CV.pdf"}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.talents.details.submittedOn")}
+                    </label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{formatDate(talentProfile.created_at)}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Company Profile */}
+          {companyProfile && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <Building2 className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <CardTitle>{companyProfile.company_name}</CardTitle>
+                    <CardDescription>{companyProfile.contact_name}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.email")}
+                    </label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{companyProfile.email}</span>
+                    </div>
+                  </div>
+
+                  {companyProfile.phone_number && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.companies.details.phone")}
+                      </label>
+                      <div className="mt-1 flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-muted-foreground" />
+                        <a href={`tel:${companyProfile.country_code}${companyProfile.phone_number}`} className="text-sm hover:underline">
+                          {companyProfile.country_code} {companyProfile.phone_number}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.applicationStatus")}
+                    </label>
+                    <div className="mt-1">
+                      <Badge variant={
+                        companyProfile.application_status === 'matched' ? 'default' :
+                        companyProfile.application_status === 'rejected' ? 'destructive' :
+                        'secondary'
+                      }>
+                        {t(`dashboard.status.company.${
+                          companyProfile.application_status
+                            .split('_')
+                            .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+                            .join('')
+                        }`)}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  {companyProfile.website && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.companies.details.website")}
+                      </label>
+                      <div className="mt-1">
+                        <a
+                          href={companyProfile.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                        >
+                          {companyProfile.website}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.companySize")}
+                    </label>
+                    <p className="mt-1 text-sm">{companyProfile.company_size}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.projectType")}
+                    </label>
+                    <p className="mt-1 text-sm">{companyProfile.project_type}</p>
+                  </div>
+
+                  <div className="col-span-full">
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.rolesNeeded")}
+                    </label>
+                    <p className="mt-1 text-sm">{companyProfile.roles_needed}</p>
+                  </div>
+
+                  {companyProfile.budget_range && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">
+                        {t("dashboard.companies.details.budgetRange")}
+                      </label>
+                      <p className="mt-1 text-sm">{companyProfile.budget_range}</p>
+                    </div>
+                  )}
+
+                  <div className="col-span-full">
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.projectDescription")}
+                    </label>
+                    <p className="mt-1 text-sm">{companyProfile.project_description}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      {t("dashboard.companies.details.submittedOn")}
+                    </label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{formatDate(companyProfile.created_at)}</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* No profile found */}
+          {!talentProfile && !companyProfile && (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <UserIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <h3 className="text-lg font-semibold mb-2">No Profile Found</h3>
+                <p className="text-muted-foreground">
+                  Your account is not associated with any talent or company profile yet.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}

@@ -3,7 +3,8 @@
 		"jeem": "Jeem",
 		"email": "hello@jeem.now",
 		"required": "*",
-		"optional": "(optional)"
+		"optional": "(optional)",
+		"cancel": "Cancel"
 	},
 	"topBanner": {
 		"forCompanies": "Looking to hire? Check out Jeem for Companies",
@@ -17,7 +18,10 @@
 			"proof": "Proof",
 			"faq": "FAQ"
 		},
-		"cta": "Apply to Jeem"
+		"cta": "Apply to Jeem",
+		"home": "Home",
+		"login": "Login",
+		"dashboard": "Dashboard"
 	},
 	"hero": {
 		"kicker": "Syrian-built • Working with teams at leading companies",
@@ -424,6 +428,10 @@
 				"label": "Email",
 				"placeholder": "you@example.com"
 			},
+			"phoneNumber": {
+				"label": "Phone Number",
+				"placeholder": "123 456 7890"
+			},
 			"role": {
 				"label": "Role",
 				"placeholder": "Select role"
@@ -451,6 +459,15 @@
 				"label": "Your strongest tools",
 				"placeholder": "e.g., Figma, React, HubSpot, Cursor..."
 			},
+			"password": {
+				"label": "Password",
+				"placeholder": "Create a password for your account",
+				"hint": "At least 8 characters"
+			},
+			"confirmPassword": {
+				"label": "Confirm Password",
+				"placeholder": "Re-enter your password"
+			},
 			"cv": {
 				"label": "Upload your CV/Resume (PDF)",
 				"hint": "Optional. Max 5MB. PDF format only."
@@ -459,10 +476,14 @@
 		"validation": {
 			"nameRequired": "Please enter your full name",
 			"emailInvalid": "Please enter a valid email address",
+			"phoneNumberRequired": "Please enter your phone number",
+			"phoneNumberInvalid": "Please enter a valid phone number (7-15 digits)",
 			"roleRequired": "Please select a role",
 			"englishLevelRequired": "Please select your English level",
 			"portfolioRequired": "Please provide a portfolio, LinkedIn, or GitHub URL",
 			"shippedRequired": "Please tell us what you've shipped recently",
+			"passwordTooShort": "Password must be at least 8 characters",
+			"passwordMismatch": "Passwords do not match",
 			"cvMustBePDF": "CV must be a PDF file",
 			"cvTooLarge": "CV file size must be less than 5MB",
 			"cvFilenameTooLong": "Filename is too long"
@@ -481,7 +502,12 @@
 			"network": "Network error. Please check your connection and try again.",
 			"cvUploadFailed": "Failed to upload CV. Please try again."
 		},
-		"privacyNote": "By submitting, you agree to let us review your application and contact you about opportunities. We won't share your data with third parties."
+		"privacyNote": "By submitting, you agree to let us review your application and contact you about opportunities. We won't share your data with third parties.",
+		"passwordModal": {
+			"title": "Create your account",
+			"description": "Set a password to create your account. You'll use this to access your dashboard after submitting your application.",
+			"submit": "Submit Application"
+		}
 	},
 	"footer": {
 		"tagline": "Built for people who ship",
@@ -840,6 +866,10 @@
 					"label": "Work email",
 					"placeholder": "you@company.com"
 				},
+				"phoneNumber": {
+					"label": "Phone Number",
+					"placeholder": "123 456 7890"
+				},
 				"website": {
 					"label": "Website",
 					"placeholder": "https://..."
@@ -885,16 +915,29 @@
 				"projectDescription": {
 					"label": "Tell us about your project",
 					"placeholder": "What are you building? What will this person own? Any must-have skills, timezone overlap, or constraints?"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "Create a password for your account",
+					"hint": "At least 8 characters"
+				},
+				"confirmPassword": {
+					"label": "Confirm Password",
+					"placeholder": "Re-enter your password"
 				}
 			},
 			"validation": {
 				"companyNameRequired": "Please enter your company name",
 				"contactNameRequired": "Please enter your name",
 				"emailInvalid": "Please enter a valid work email",
+				"phoneNumberRequired": "Please enter your phone number",
+				"phoneNumberInvalid": "Please enter a valid phone number (7-15 digits)",
 				"companySizeRequired": "Please select your company size",
 				"rolesNeededRequired": "Please select the role you need",
 				"projectTypeRequired": "Please select an engagement type",
-				"projectDescriptionRequired": "Please tell us about your project"
+				"projectDescriptionRequired": "Please tell us about your project",
+				"passwordTooShort": "Password must be at least 8 characters",
+				"passwordMismatch": "Passwords do not match"
 			},
 			"submit": {
 				"button": "Get matched",
@@ -909,7 +952,12 @@
 				"generic": "Something went wrong. Please try again.",
 				"network": "Network error. Please check your connection and try again."
 			},
-			"privacyNote": "By submitting, you agree to let us contact you about talent matching. We won’t share your data with third parties."
+			"privacyNote": "By submitting, you agree to let us contact you about talent matching. We won't share your data with third parties.",
+			"passwordModal": {
+				"title": "Create your account",
+				"description": "Set a password to create your account. You'll use this to access your dashboard and view your inquiries.",
+				"submit": "Submit Request"
+			}
 		},
 		"footer": {
 			"tagline": "Quality talent, delivered fast",
@@ -917,6 +965,206 @@
 				"forTalent": "I'm looking for work",
 				"twitterX": "Twitter/X",
 				"linkedin": "LinkedIn"
+			}
+		}
+	},
+	"auth": {
+		"login": {
+			"title": "Welcome Back",
+			"subtitle": "Sign in to your account",
+			"fields": {
+				"email": {
+					"label": "Email",
+					"placeholder": "admin@example.com"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "Enter your password"
+				}
+			},
+			"submit": {
+				"button": "Sign In",
+				"loading": "Signing in..."
+			},
+			"validation": {
+				"emailInvalid": "Please enter a valid email address",
+				"passwordTooShort": "Password must be at least 6 characters"
+			},
+			"errors": {
+				"generic": "Failed to sign in. Please try again."
+			},
+			"success": "Successfully signed in!",
+			"noAccount": "Don't have an account?",
+			"applyForTalent": "Apply as talent",
+			"applyForCompany": "Apply as company"
+		},
+		"signup": {
+			"title": "Create Admin Account",
+			"subtitle": "Join the Jeem admin team",
+			"fields": {
+				"name": {
+					"label": "Full Name",
+					"placeholder": "John Doe"
+				},
+				"email": {
+					"label": "Email",
+					"placeholder": "admin@example.com"
+				},
+				"password": {
+					"label": "Password",
+					"placeholder": "Create a strong password",
+					"hint": "At least 8 characters"
+				},
+				"confirmPassword": {
+					"label": "Confirm Password",
+					"placeholder": "Re-enter your password"
+				}
+			},
+			"submit": {
+				"button": "Create Account",
+				"loading": "Creating account..."
+			},
+			"validation": {
+				"nameRequired": "Please enter your name",
+				"emailInvalid": "Please enter a valid email address",
+				"passwordTooShort": "Password must be at least 8 characters",
+				"passwordMismatch": "Passwords do not match"
+			},
+			"errors": {
+				"generic": "Failed to create account. Please try again."
+			},
+			"success": {
+				"title": "Account created successfully!",
+				"description": "You can now access the dashboard"
+			},
+			"haveAccount": "Already have an account?",
+			"loginLink": "Sign in"
+		},
+		"logout": {
+			"button": "Sign Out",
+			"success": "Successfully signed out",
+			"error": "Failed to sign out"
+		}
+	},
+	"dashboard": {
+		"title": "Dashboard",
+		"subtitle": "Manage your Jeem platform",
+		"userProfile": {
+			"title": "My Profile",
+			"subtitle": "View and manage your profile information"
+		},
+		"profile": {
+			"title": "Profile",
+			"description": "Your account information",
+			"email": "Email",
+			"name": "Name"
+		},
+		"stats": {
+			"totalTalents": "Total Talents",
+			"talentsDesc": "Talent applications received",
+			"totalCompanies": "Total Companies",
+			"companiesDesc": "Company inquiries received"
+		},
+		"tabs": {
+			"talents": "Talents",
+			"companies": "Companies"
+		},
+		"status": {
+			"talent": {
+				"underReview": "Under Review",
+				"interviewing": "Interviewing",
+				"training": "Training",
+				"pendingMatching": "Pending Matching",
+				"matched": "Matched",
+				"rejected": "Rejected"
+			},
+			"company": {
+				"underReview": "Under Review",
+				"reviewingCandidates": "Reviewing Candidates",
+				"interviewingCandidates": "Interviewing Candidates",
+				"negotiating": "Negotiating",
+				"matched": "Matched",
+				"rejected": "Rejected"
+			},
+			"confirm": {
+				"title": "Confirm Status Update",
+				"description": "Are you sure you want to update the status? This action will notify the applicant.",
+				"currentStatus": "Current Status",
+				"newStatus": "New Status",
+				"cancel": "Cancel",
+				"confirm": "Update Status"
+			}
+		},
+		"talents": {
+			"title": "Talent Applications",
+			"description": "View and manage all talent applications",
+			"empty": "No talent applications yet",
+			"statusUpdated": "Status updated successfully",
+			"statusUpdateFailed": "Failed to update status",
+			"table": {
+				"name": "Name",
+				"email": "Email",
+				"phone": "Phone",
+				"role": "Role",
+				"englishLevel": "English Level",
+				"tools": "Tools & Skills",
+				"portfolio": "Portfolio",
+				"cv": "CV",
+				"appliedDate": "Applied",
+				"status": "Status",
+				"actions": "Actions",
+				"details": "Details",
+				"viewPortfolio": "View",
+				"viewCV": "View CV",
+				"downloadCV": "Download"
+			},
+			"details": {
+				"title": "Talent Application Details",
+				"description": "Complete information about this talent application",
+				"email": "Email",
+				"phone": "Phone Number",
+				"applicationStatus": "Application Status",
+				"englishLevel": "English Level",
+				"portfolio": "Portfolio URL",
+				"tools": "Tools & Technologies",
+				"shipped": "Portfolio Description",
+				"cv": "CV / Resume",
+				"submittedOn": "Submitted On"
+			}
+		},
+		"companies": {
+			"title": "Company Inquiries",
+			"description": "View and manage all company hiring requests",
+			"empty": "No company inquiries yet",
+			"statusUpdated": "Status updated successfully",
+			"statusUpdateFailed": "Failed to update status",
+			"table": {
+				"companyName": "Company",
+				"contactName": "Contact",
+				"email": "Email",
+				"phone": "Phone",
+				"companySize": "Size",
+				"rolesNeeded": "Role Needed",
+				"projectType": "Type",
+				"budget": "Budget",
+				"submittedDate": "Submitted",
+				"status": "Status",
+				"actions": "Actions",
+				"details": "Details"
+			},
+			"details": {
+				"title": "Company Inquiry Details",
+				"description": "Complete information about this hiring request",
+				"email": "Email",
+				"phone": "Phone Number",
+				"applicationStatus": "Application Status",
+				"website": "Website",
+				"companySize": "Company Size",
+				"projectType": "Engagement Type",
+				"rolesNeeded": "Roles Needed",
+				"budgetRange": "Budget Range",
+				"projectDescription": "Project Description",
+				"submittedOn": "Submitted On"
 			}
 		}
 	}

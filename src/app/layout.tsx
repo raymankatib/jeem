@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { I18nProvider } from "@/components/i18n-provider";
+import { AuthProvider } from "@/components/auth-provider";
 import "./globals.css";
 
 const inter = Inter({
@@ -55,8 +56,10 @@ export default function RootLayout({
 			<body className={`${inter.variable} ${jetbrainsMono.variable} ${cairoArabic.variable} antialiased`}>
 				<I18nProvider>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-						{children}
-						<Toaster position="bottom-right" richColors />
+						<AuthProvider>
+							{children}
+							<Toaster position="bottom-right" richColors />
+						</AuthProvider>
 					</ThemeProvider>
 				</I18nProvider>
 				<Analytics />

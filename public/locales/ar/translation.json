@@ -3,7 +3,8 @@
 		"jeem": "Jeem",
 		"email": "hello@jeem.now",
 		"required": "*",
-		"optional": "(اختياري)"
+		"optional": "(اختياري)",
+		"cancel": "إلغاء"
 	},
 	"topBanner": {
 		"forCompanies": "عم تدوّر على موظفين؟ شوف Jeem للشركات",
@@ -17,7 +18,10 @@
 			"proof": "قيمنا",
 			"faq": "أسئلة شائعة"
 		},
-		"cta": "قدّم على Jeem"
+		"cta": "قدّم على Jeem",
+		"home": "الرئيسية",
+		"login": "تسجيل الدخول",
+		"dashboard": "لوحة التحكم"
 	},
 	"hero": {
 		"kicker": "سوريّة الصنع • عم نشتغل مع فرق بشركات كبيرة",
@@ -376,6 +380,10 @@
 				"label": "الإيميل",
 				"placeholder": "you@example.com"
 			},
+			"phoneNumber": {
+				"label": "رقم الهاتف",
+				"placeholder": "123 456 7890"
+			},
 			"role": {
 				"label": "الدور",
 				"placeholder": "اختار الدور المناسب"
@@ -403,6 +411,15 @@
 				"label": "أقوى أدواتك",
 				"placeholder": "مثال: Figma، React، HubSpot..."
 			},
+			"password": {
+				"label": "كلمة المرور",
+				"placeholder": "أنشئ كلمة مرور لحسابك",
+				"hint": "8 أحرف على الأقل"
+			},
+			"confirmPassword": {
+				"label": "تأكيد كلمة المرور",
+				"placeholder": "أعد إدخال كلمة المرور"
+			},
 			"cv": {
 				"label": "ارفع سيرتك الذاتية (PDF)",
 				"hint": "اختياري. الحد الأقصى 5 ميجابايت. صيغة PDF فقط."
@@ -411,10 +428,14 @@
 		"validation": {
 			"nameRequired": "الاسم مطلوب",
 			"emailInvalid": "الإيميل غير صحيح",
+			"phoneNumberRequired": "رقم الهاتف مطلوب",
+			"phoneNumberInvalid": "أدخل رقم هاتف صحيح (7-15 رقم)",
 			"roleRequired": "اختار دور",
 			"englishLevelRequired": "اختار مستوى الإنكليزي",
 			"portfolioRequired": "حط رابط بورتفوليو أو حساب",
 			"shippedRequired": "احكي عن شغلك",
+			"passwordTooShort": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+			"passwordMismatch": "كلمات المرور غير متطابقة",
 			"cvMustBePDF": "السيرة الذاتية يجب أن تكون بصيغة PDF",
 			"cvTooLarge": "حجم الملف يجب أن يكون أقل من 5 ميجابايت",
 			"cvFilenameTooLong": "اسم الملف طويل جداً"
@@ -433,7 +454,12 @@
 			"network": "خطأ بالاتصال. تأكد من الإنترنت وجرّب مرة تانية.",
 			"cvUploadFailed": "فشل رفع السيرة الذاتية. حاول مرة تانية."
 		},
-		"privacyNote": "بمجرّد ما تبعت الطلب، بتوافق إنّا نراجع معلوماتك ونتواصل معك بخصوص الفرص."
+		"privacyNote": "بمجرّد ما تبعت الطلب، بتوافق إنّا نراجع معلوماتك ونتواصل معك بخصوص الفرص.",
+		"passwordModal": {
+			"title": "أنشئ حسابك",
+			"description": "اختر كلمة مرور لحسابك. رح تستخدمها للدخول على لوحة التحكم بعد إرسال طلبك.",
+			"submit": "إرسال الطلب"
+		}
 	},
 	"footer": {
 		"tagline": "مبني لناس بتسلّم شغل",
@@ -787,6 +813,10 @@
 					"label": "إيميل العمل",
 					"placeholder": "you@company.com"
 				},
+				"phoneNumber": {
+					"label": "رقم الهاتف",
+					"placeholder": "123 456 7890"
+				},
 				"website": {
 					"label": "الموقع",
 					"placeholder": "https://..."
@@ -832,16 +862,29 @@
 				"projectDescription": {
 					"label": "وصف المشروع",
 					"placeholder": "خبرنا شو عم تبنوا وشو متطلباتكم"
+				},
+				"password": {
+					"label": "كلمة المرور",
+					"placeholder": "أنشئ كلمة مرور لحسابك",
+					"hint": "8 أحرف على الأقل"
+				},
+				"confirmPassword": {
+					"label": "تأكيد كلمة المرور",
+					"placeholder": "أعد إدخال كلمة المرور"
 				}
 			},
 			"validation": {
 				"companyNameRequired": "اسم الشركة مطلوب",
 				"contactNameRequired": "الاسم مطلوب",
 				"emailInvalid": "إيميل غير صالح",
+				"phoneNumberRequired": "رقم الهاتف مطلوب",
+				"phoneNumberInvalid": "أدخل رقم هاتف صحيح (7-15 رقم)",
 				"companySizeRequired": "اختر حجم الشركة",
 				"rolesNeededRequired": "اختر الدور",
 				"projectTypeRequired": "اختر نوع التعاقد",
-				"projectDescriptionRequired": "وصف المشروع مطلوب"
+				"projectDescriptionRequired": "وصف المشروع مطلوب",
+				"passwordTooShort": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+				"passwordMismatch": "كلمات المرور غير متطابقة"
 			},
 			"submit": {
 				"button": "خلينا نطابقك",
@@ -856,7 +899,12 @@
 				"generic": "صار خطأ، حاول مرة تانية.",
 				"network": "مشكلة اتصال."
 			},
-			"privacyNote": "بإرسال الطلب، بتوافق نتواصل معك بخصوص التوظيف فقط."
+			"privacyNote": "بإرسال الطلب، بتوافق نتواصل معك بخصوص التوظيف فقط.",
+			"passwordModal": {
+				"title": "أنشئ حسابك",
+				"description": "اختر كلمة مرور لحسابك. رح تستخدمها للدخول على لوحة التحكم ومراجعة طلباتك.",
+				"submit": "إرسال الطلب"
+			}
 		},
 		"footer": {
 			"tagline": "مواهب قوية، تنفيذ سريع",
@@ -864,6 +912,206 @@
 				"forTalent": "عم دور على شغل",
 				"twitterX": "Twitter/X",
 				"linkedin": "LinkedIn"
+			}
+		}
+	},
+	"auth": {
+		"login": {
+			"title": "مرحباً بعودتك",
+			"subtitle": "تسجيل الدخول إلى حسابك",
+			"fields": {
+				"email": {
+					"label": "البريد الإلكتروني",
+					"placeholder": "admin@example.com"
+				},
+				"password": {
+					"label": "كلمة المرور",
+					"placeholder": "أدخل كلمة المرور"
+				}
+			},
+			"submit": {
+				"button": "تسجيل الدخول",
+				"loading": "جاري تسجيل الدخول..."
+			},
+			"validation": {
+				"emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+				"passwordTooShort": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل"
+			},
+			"errors": {
+				"generic": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى."
+			},
+			"success": "تم تسجيل الدخول بنجاح!",
+			"noAccount": "ليس لديك حساب؟",
+			"applyForTalent": "قدّم كموهبة",
+			"applyForCompany": "قدّم كشركة"
+		},
+		"signup": {
+			"title": "إنشاء حساب مدير",
+			"subtitle": "انضم إلى فريق إدارة جيم",
+			"fields": {
+				"name": {
+					"label": "الاسم الكامل",
+					"placeholder": "أحمد محمد"
+				},
+				"email": {
+					"label": "البريد الإلكتروني",
+					"placeholder": "admin@example.com"
+				},
+				"password": {
+					"label": "كلمة المرور",
+					"placeholder": "أنشئ كلمة مرور قوية",
+					"hint": "8 أحرف على الأقل"
+				},
+				"confirmPassword": {
+					"label": "تأكيد كلمة المرور",
+					"placeholder": "أعد إدخال كلمة المرور"
+				}
+			},
+			"submit": {
+				"button": "إنشاء حساب",
+				"loading": "جاري إنشاء الحساب..."
+			},
+			"validation": {
+				"nameRequired": "يرجى إدخال اسمك",
+				"emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+				"passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+				"passwordMismatch": "كلمات المرور غير متطابقة"
+			},
+			"errors": {
+				"generic": "فشل إنشاء الحساب. يرجى المحاولة مرة أخرى."
+			},
+			"success": {
+				"title": "تم إنشاء الحساب بنجاح!",
+				"description": "يمكنك الآن الوصول إلى لوحة التحكم"
+			},
+			"haveAccount": "لديك حساب بالفعل؟",
+			"loginLink": "تسجيل الدخول"
+		},
+		"logout": {
+			"button": "تسجيل الخروج",
+			"success": "تم تسجيل الخروج بنجاح",
+			"error": "فشل تسجيل الخروج"
+		}
+	},
+	"dashboard": {
+		"title": "لوحة التحكم",
+		"subtitle": "إدارة منصة جيم الخاصة بك",
+		"userProfile": {
+			"title": "ملفي الشخصي",
+			"subtitle": "عرض وإدارة معلومات ملفك الشخصي"
+		},
+		"profile": {
+			"title": "الملف الشخصي",
+			"description": "معلومات حسابك",
+			"email": "البريد الإلكتروني",
+			"name": "الاسم"
+		},
+		"stats": {
+			"totalTalents": "إجمالي المواهب",
+			"talentsDesc": "طلبات المواهب المستلمة",
+			"totalCompanies": "إجمالي الشركات",
+			"companiesDesc": "استفسارات الشركات المستلمة"
+		},
+		"tabs": {
+			"talents": "المواهب",
+			"companies": "الشركات"
+		},
+		"status": {
+			"talent": {
+				"underReview": "قيد المراجعة",
+				"interviewing": "في المقابلة",
+				"training": "في التدريب",
+				"pendingMatching": "بانتظار المطابقة",
+				"matched": "تمت المطابقة",
+				"rejected": "مرفوض"
+			},
+			"company": {
+				"underReview": "قيد المراجعة",
+				"reviewingCandidates": "مراجعة المرشحين",
+				"interviewingCandidates": "مقابلة المرشحين",
+				"negotiating": "في التفاوض",
+				"matched": "تمت المطابقة",
+				"rejected": "مرفوض"
+			},
+			"confirm": {
+				"title": "تأكيد تحديث الحالة",
+				"description": "هل أنت متأكد من تحديث الحالة؟ سيتم إشعار المتقدم بهذا التغيير.",
+				"currentStatus": "الحالة الحالية",
+				"newStatus": "الحالة الجديدة",
+				"cancel": "إلغاء",
+				"confirm": "تحديث الحالة"
+			}
+		},
+		"talents": {
+			"title": "طلبات المواهب",
+			"description": "عرض وإدارة جميع طلبات المواهب",
+			"empty": "لا توجد طلبات مواهب بعد",
+			"statusUpdated": "تم تحديث الحالة بنجاح",
+			"statusUpdateFailed": "فشل تحديث الحالة",
+			"table": {
+				"name": "الاسم",
+				"email": "البريد الإلكتروني",
+				"phone": "رقم الهاتف",
+				"role": "الدور",
+				"englishLevel": "مستوى الإنجليزية",
+				"tools": "الأدوات والمهارات",
+				"portfolio": "المعرض",
+				"cv": "السيرة الذاتية",
+				"appliedDate": "تاريخ التقديم",
+				"status": "الحالة",
+				"actions": "الإجراءات",
+				"details": "التفاصيل",
+				"viewPortfolio": "عرض",
+				"viewCV": "عرض السيرة",
+				"downloadCV": "تحميل"
+			},
+			"details": {
+				"title": "تفاصيل طلب الموهبة",
+				"description": "معلومات كاملة عن هذا الطلب",
+				"email": "البريد الإلكتروني",
+				"phone": "رقم الهاتف",
+				"applicationStatus": "حالة الطلب",
+				"englishLevel": "مستوى الإنجليزية",
+				"portfolio": "رابط المعرض",
+				"tools": "الأدوات والتقنيات",
+				"shipped": "وصف المعرض",
+				"cv": "السيرة الذاتية",
+				"submittedOn": "تاريخ التقديم"
+			}
+		},
+		"companies": {
+			"title": "استفسارات الشركات",
+			"description": "عرض وإدارة جميع طلبات التوظيف من الشركات",
+			"empty": "لا توجد استفسارات من الشركات بعد",
+			"statusUpdated": "تم تحديث الحالة بنجاح",
+			"statusUpdateFailed": "فشل تحديث الحالة",
+			"table": {
+				"companyName": "الشركة",
+				"contactName": "جهة الاتصال",
+				"email": "البريد الإلكتروني",
+				"phone": "رقم الهاتف",
+				"companySize": "الحجم",
+				"rolesNeeded": "الدور المطلوب",
+				"projectType": "النوع",
+				"budget": "الميزانية",
+				"submittedDate": "تاريخ التقديم",
+				"status": "الحالة",
+				"actions": "الإجراءات",
+				"details": "التفاصيل"
+			},
+			"details": {
+				"title": "تفاصيل استفسار الشركة",
+				"description": "معلومات كاملة عن طلب التوظيف",
+				"email": "البريد الإلكتروني",
+				"phone": "رقم الهاتف",
+				"applicationStatus": "حالة الطلب",
+				"website": "الموقع الإلكتروني",
+				"companySize": "حجم الشركة",
+				"projectType": "نوع التعاقد",
+				"rolesNeeded": "الأدوار المطلوبة",
+				"budgetRange": "نطاق الميزانية",
+				"projectDescription": "وصف المشروع",
+				"submittedOn": "تاريخ التقديم"
 			}
 		}
 	}
