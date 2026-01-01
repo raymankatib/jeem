@@ -1207,5 +1207,11 @@
 				"rejected": "مرفوض"
 			}
 		}
+	},
+	"pagination": {
+		"showing": "عرض {{start}}-{{end}} من {{total}}",
+		"previous": "السابق",
+		"next": "التالي",
+		"pageOf": "صفحة {{current}} من {{total}}"
 	}
 }
