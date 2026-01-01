@@ -106,7 +106,7 @@ export function HireTopBanner() {
 						<div className="relative group">
 							{/* Glow effect */}
 							<div className="absolute -inset-1 bg-linear-to-r from-teal-500/30 via-cyan-500/30 to-emerald-500/30 rounded-full blur-lg opacity-60 group-hover:opacity-80 transition-opacity" />
-							
+
 							<button
 								onClick={() => setIsExpanded(true)}
 								className="relative flex items-center gap-2 px-3 py-2.5 rounded-full bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-white/10 shadow-xl hover:border-teal-500/30 transition-colors"
@@ -127,4 +127,3 @@ export function HireTopBanner() {
 		</div>
 	);
 }
-

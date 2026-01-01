@@ -79,9 +79,7 @@ export function TopBanner() {
 										<p className="text-sm font-medium text-white leading-tight">
 											{t("topBanner.title", "Looking to hire?")}
 										</p>
-										<p className="text-xs text-zinc-400 mt-0.5">
-											{t("topBanner.subtitle", "Access vetted talent →")}
-										</p>
+										<p className="text-xs text-zinc-400 mt-0.5">{t("topBanner.subtitle", "Access vetted talent →")}</p>
 									</div>
 									<motion.div
 										className="shrink-0 p-1.5 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors"
@@ -106,7 +104,7 @@ export function TopBanner() {
 						<div className="relative group">
 							{/* Glow effect */}
 							<div className="absolute -inset-1 bg-linear-to-r from-amber-500/30 via-orange-500/30 to-rose-500/30 rounded-full blur-lg opacity-60 group-hover:opacity-80 transition-opacity" />
-							
+
 							<button
 								onClick={() => setIsExpanded(true)}
 								className="relative flex items-center gap-2 px-3 py-2.5 rounded-full bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-900 border border-white/10 shadow-xl hover:border-amber-500/30 transition-colors"
