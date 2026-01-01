@@ -75,6 +75,7 @@ export interface HiringRequest {
 	request_status: "open" | "filled" | "cancelled";
 	created_at?: string;
 	updated_at?: string;
+	matched_at?: string | null;
 	matched_talent_id?: string | null;
 	matched_talent?: {
 		id: string;
@@ -389,6 +390,18 @@ export default function DashboardClient({
 										</p>
 									</div>
 
+									{matchedHiringRequest.matched_at && (
+										<div>
+											<label className="text-sm font-medium text-muted-foreground">
+												{t("dashboard.talents.details.matchedDate")}
+											</label>
+											<div className="mt-1 flex items-center gap-2">
+												<Calendar className="h-4 w-4 text-muted-foreground" />
+												<span className="text-sm">{formatDate(matchedHiringRequest.matched_at)}</span>
+											</div>
+										</div>
+									)}
+
 									<div className="col-span-full">
 										<label className="text-sm font-medium text-muted-foreground">
 											{t("dashboard.hiringRequests.table.description")}
@@ -584,6 +597,19 @@ export default function DashboardClient({
 																		<ExternalLink className="h-3 w-3" />
 																	</a>
 																</div>
+																{request.updated_at && (
+																	<div className="col-span-full pt-2 border-t border-primary/10">
+																		<label className="text-xs text-muted-foreground">
+																			{t("dashboard.companies.details.matchedDate")}
+																		</label>
+																		<div className="flex items-center gap-2 mt-1">
+																			<Calendar className="h-3 w-3 text-muted-foreground" />
+																			{request.matched_at && (
+																				<span className="text-sm">{formatDate(request.matched_at)}</span>
+																			)}
+																		</div>
+																	</div>
+																)}
 															</div>
 														</div>
 													)}
