@@ -1110,6 +1110,8 @@
 			"empty": "No talent applications yet",
 			"statusUpdated": "Status updated successfully",
 			"statusUpdateFailed": "Failed to update status",
+			"salaryUpdated": "Salary updated successfully",
+			"salaryUpdateFailed": "Failed to update salary",
 			"table": {
 				"name": "Name",
 				"email": "Email",
@@ -1117,6 +1119,7 @@
 				"role": "Role",
 				"englishLevel": "English Level",
 				"tools": "Tools & Skills",
+				"salary": "Salary",
 				"portfolio": "Portfolio",
 				"cv": "CV",
 				"appliedDate": "Applied",
@@ -1130,6 +1133,8 @@
 			"details": {
 				"title": "Talent Application Details",
 				"description": "Complete information about this talent application",
+				"name": "Name",
+				"role": "Role",
 				"email": "Email",
 				"phone": "Phone Number",
 				"applicationStatus": "Application Status",
@@ -1138,7 +1143,13 @@
 				"tools": "Tools & Technologies",
 				"shipped": "Portfolio Description",
 				"cv": "CV / Resume",
-				"submittedOn": "Submitted On"
+				"submittedOn": "Submitted On",
+				"matchedRequest": "Matched Hiring Request",
+				"matchedDate": "Matched On"
+			},
+			"matchedProject": {
+				"title": "Your Matched Project",
+				"description": "You've been matched with this project opportunity"
 			}
 		},
 		"companies": {
@@ -1164,6 +1175,8 @@
 			"details": {
 				"title": "Company Inquiry Details",
 				"description": "Complete information about this hiring request",
+				"companyName": "Company Name",
+				"contactName": "Contact Name",
 				"email": "Email",
 				"phone": "Phone Number",
 				"applicationStatus": "Application Status",
@@ -1173,7 +1186,11 @@
 				"rolesNeeded": "Roles Needed",
 				"budgetRange": "Budget Range",
 				"projectDescription": "Project Description",
-				"submittedOn": "Submitted On"
+				"submittedOn": "Submitted On",
+				"hiringRequests": "Hiring Requests",
+				"matchedWith": "Matched with",
+				"matchedDate": "Matched On",
+				"notMatched": "Not yet matched"
 			}
 		},
 		"hiringRequests": {
@@ -1226,6 +1243,9 @@
 			},
 			"table": {
 				"requestTitle": "Request Title",
+				"title": "Project Title",
+				"roles": "Roles Needed",
+				"description": "Description",
 				"company": "Company",
 				"role": "Role",
 				"projectType": "Project Type",
@@ -1233,11 +1253,15 @@
 				"status": "Status",
 				"requestStatus": "Request Status",
 				"applicationStatus": "Application Status",
+				"matchedTalent": "Matched Talent",
 				"created": "Created",
 				"updated": "Updated",
 				"actions": "Actions",
 				"viewDetails": "Details",
 				"empty": "No hiring requests found"
+			},
+			"matchedTalent": {
+				"title": "Matched Talent"
 			},
 			"details": {
 				"title": "Hiring Request Details",
@@ -1252,7 +1276,10 @@
 				"requestStatus": "Request Status",
 				"createdDate": "Created Date",
 				"updatedDate": "Last Updated",
-				"projectDescription": "Project Description"
+				"projectDescription": "Project Description",
+				"matchedTalent": "Matched Talent",
+				"matchedDate": "Matched On",
+				"talentNotFound": "Matched talent not found"
 			},
 			"status": {
 				"open": "Open",
@@ -1266,6 +1293,35 @@
 				"negotiating": "Negotiating",
 				"matched": "Matched",
 				"rejected": "Rejected"
+			},
+			"match": {
+				"button": "Match Talent",
+				"unmatchButton": "Unmatch",
+				"dialogTitle": "Match Talent to Hiring Request",
+				"dialogDescription": "Select a talent to match with this hiring request. Only talents with 'Pending Matching' status are shown.",
+				"selectTalent": "Select a talent",
+				"selectTalentPlaceholder": "Search talents...",
+				"noTalentsAvailable": "No talents available for matching",
+				"noTalentsAvailableDesc": "There are no talents with 'Pending Matching' status currently available.",
+				"talentInfo": "Talent Information",
+				"confirmButton": "Confirm Match",
+				"cancelButton": "Cancel",
+				"matching": "Matching...",
+				"matchSuccess": "Talent matched successfully",
+				"matchError": "Failed to match talent",
+				"alreadyMatched": "This hiring request is already matched",
+				"talentNotAvailable": "This talent is no longer available for matching"
+			},
+			"unmatch": {
+				"dialogTitle": "Unmatch Talent",
+				"dialogDescription": "Are you sure you want to unmatch this talent from the hiring request?",
+				"warning": "This will revert the talent status to 'Pending Matching' and the request status to 'Reviewing Candidates'. The position will be reopened.",
+				"currentMatch": "Currently Matched",
+				"confirmButton": "Unmatch",
+				"cancelButton": "Cancel",
+				"unmatching": "Unmatching...",
+				"unmatchSuccess": "Talent unmatched successfully",
+				"unmatchError": "Failed to unmatch talent"
 			}
 		}
 	},

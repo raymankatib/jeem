@@ -1057,6 +1057,8 @@
 			"empty": "لا توجد طلبات مواهب بعد",
 			"statusUpdated": "تم تحديث الحالة بنجاح",
 			"statusUpdateFailed": "فشل تحديث الحالة",
+			"salaryUpdated": "تم تحديث الراتب بنجاح",
+			"salaryUpdateFailed": "فشل تحديث الراتب",
 			"table": {
 				"name": "الاسم",
 				"email": "البريد الإلكتروني",
@@ -1064,6 +1066,7 @@
 				"role": "الدور",
 				"englishLevel": "مستوى الإنجليزية",
 				"tools": "الأدوات والمهارات",
+				"salary": "الراتب",
 				"portfolio": "المعرض",
 				"cv": "السيرة الذاتية",
 				"appliedDate": "تاريخ التقديم",
@@ -1077,6 +1080,8 @@
 			"details": {
 				"title": "تفاصيل طلب الموهبة",
 				"description": "معلومات كاملة عن هذا الطلب",
+				"name": "الاسم",
+				"role": "الدور",
 				"email": "البريد الإلكتروني",
 				"phone": "رقم الهاتف",
 				"applicationStatus": "حالة الطلب",
@@ -1085,7 +1090,13 @@
 				"tools": "الأدوات والتقنيات",
 				"shipped": "وصف المعرض",
 				"cv": "السيرة الذاتية",
-				"submittedOn": "تاريخ التقديم"
+				"submittedOn": "تاريخ التقديم",
+				"matchedRequest": "طلب التوظيف المطابق",
+				"matchedDate": "تاريخ المطابقة"
+			},
+			"matchedProject": {
+				"title": "مشروعك المطابق",
+				"description": "تمت مطابقتك مع فرصة المشروع هذه"
 			}
 		},
 		"companies": {
@@ -1111,6 +1122,8 @@
 			"details": {
 				"title": "تفاصيل استفسار الشركة",
 				"description": "معلومات كاملة عن طلب التوظيف",
+				"companyName": "اسم الشركة",
+				"contactName": "اسم جهة الاتصال",
 				"email": "البريد الإلكتروني",
 				"phone": "رقم الهاتف",
 				"applicationStatus": "حالة الطلب",
@@ -1120,7 +1133,11 @@
 				"rolesNeeded": "الأدوار المطلوبة",
 				"budgetRange": "نطاق الميزانية",
 				"projectDescription": "وصف المشروع",
-				"submittedOn": "تاريخ التقديم"
+				"submittedOn": "تاريخ التقديم",
+				"hiringRequests": "طلبات التوظيف",
+				"matchedWith": "تمت المطابقة مع",
+				"matchedDate": "تاريخ المطابقة",
+				"notMatched": "لم تتم المطابقة بعد"
 			}
 		},
 		"hiringRequests": {
@@ -1173,6 +1190,9 @@
 			},
 			"table": {
 				"requestTitle": "عنوان الطلب",
+				"title": "عنوان المشروع",
+				"roles": "الأدوار المطلوبة",
+				"description": "الوصف",
 				"company": "الشركة",
 				"role": "الدور",
 				"projectType": "نوع المشروع",
@@ -1180,11 +1200,15 @@
 				"status": "الحالة",
 				"requestStatus": "حالة الطلب",
 				"applicationStatus": "حالة المعالجة",
+				"matchedTalent": "الموهبة المطابقة",
 				"created": "تاريخ الإنشاء",
 				"updated": "آخر تحديث",
 				"actions": "الإجراءات",
 				"viewDetails": "التفاصيل",
 				"empty": "لا توجد طلبات توظيف"
+			},
+			"matchedTalent": {
+				"title": "الموهبة المطابقة"
 			},
 			"details": {
 				"title": "تفاصيل طلب التوظيف",
@@ -1199,7 +1223,10 @@
 				"requestStatus": "حالة طلب التوظيف",
 				"createdDate": "تاريخ الإنشاء",
 				"updatedDate": "آخر تحديث",
-				"projectDescription": "وصف المشروع"
+				"projectDescription": "وصف المشروع",
+				"matchedTalent": "الموهبة المطابقة",
+				"matchedDate": "تاريخ المطابقة",
+				"talentNotFound": "لم يتم العثور على الموهبة المطابقة"
 			},
 			"status": {
 				"open": "مفتوح",
@@ -1213,6 +1240,35 @@
 				"negotiating": "قيد التفاوض",
 				"matched": "تمت المطابقة",
 				"rejected": "مرفوض"
+			},
+			"match": {
+				"button": "مطابقة موهبة",
+				"unmatchButton": "إلغاء المطابقة",
+				"dialogTitle": "مطابقة موهبة مع طلب التوظيف",
+				"dialogDescription": "اختر موهبة لمطابقتها مع طلب التوظيف. تظهر فقط المواهب ذات حالة 'بانتظار المطابقة'.",
+				"selectTalent": "اختر موهبة",
+				"selectTalentPlaceholder": "ابحث عن المواهب...",
+				"noTalentsAvailable": "لا توجد مواهب متاحة للمطابقة",
+				"noTalentsAvailableDesc": "لا توجد مواهب بحالة 'بانتظار المطابقة' متاحة حالياً.",
+				"talentInfo": "معلومات الموهبة",
+				"confirmButton": "تأكيد المطابقة",
+				"cancelButton": "إلغاء",
+				"matching": "جارٍ المطابقة...",
+				"matchSuccess": "تمت مطابقة الموهبة بنجاح",
+				"matchError": "فشلت مطابقة الموهبة",
+				"alreadyMatched": "طلب التوظيف مطابق بالفعل",
+				"talentNotAvailable": "هذه الموهبة لم تعد متاحة للمطابقة"
+			},
+			"unmatch": {
+				"dialogTitle": "إلغاء مطابقة الموهبة",
+				"dialogDescription": "هل أنت متأكد من إلغاء مطابقة هذه الموهبة مع طلب التوظيف؟",
+				"warning": "سيتم إرجاع حالة الموهبة إلى 'بانتظار المطابقة' وحالة الطلب إلى 'مراجعة المرشحين'. سيتم إعادة فتح الوظيفة.",
+				"currentMatch": "المطابقة الحالية",
+				"confirmButton": "إلغاء المطابقة",
+				"cancelButton": "إلغاء",
+				"unmatching": "جارٍ إلغاء المطابقة...",
+				"unmatchSuccess": "تم إلغاء مطابقة الموهبة بنجاح",
+				"unmatchError": "فشل إلغاء مطابقة الموهبة"
 			}
 		}
 	},
