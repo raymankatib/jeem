@@ -1,13 +1,20 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle
+} from "@/components/ui/dialog";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
@@ -15,25 +22,11 @@ import { ArrowLeft, ArrowRight, Loader2, CheckCircle2, Check, ChevronsUpDown } f
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { countryCodes } from "@/lib/country-codes";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 const companySizeKeys = ["solo", "small", "medium", "large", "enterprise"];
-const projectTypeKeys = ["ongoing", "oneTime", "partTime", "fullTime", "tryBeforeHire"];
-const budgetRangeKeys = ["under5k", "5kTo15k", "15kTo50k", "over50k", "notSure"];
-
-const roleOptions = [
-	"Vibe Coding Engineer",
-	"Software Developer",
-	"Content Creator as Engineer",
-	"Marketer",
-	"SEO & AEO Specialist",
-	"Social Media Manager",
-	"Lead Generator",
-	"Sales Pipelines Builder",
-	"Lead Qualifier",
-	"Designer",
-	"AI Video Creator",
-	"Virtual Assistant"
-];
+// REMOVED: projectTypeKeys, budgetRangeKeys, roleOptions
+// These are now used in the HiringRequestForm component instead
 
 interface UTMParams {
 	utm_source: string;
@@ -45,6 +38,7 @@ interface UTMParams {
 
 export function CompanyApplicationForm() {
 	const { t, i18n } = useTranslation();
+	const router = useRouter();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,10 +64,8 @@ export function CompanyApplicationForm() {
 		phoneNumber: "",
 		website: "",
 		companySize: "",
-		rolesNeeded: "",
-		projectType: "",
-		budgetRange: "",
-		projectDescription: "",
+		// REMOVED: rolesNeeded, projectType, budgetRange, projectDescription
+		// These fields are now collected via hiring requests
 		honey: "" // Honeypot field
 	});
 
@@ -125,18 +117,8 @@ export function CompanyApplicationForm() {
 			toast.error(t("hire.applicationForm.validation.companySizeRequired"));
 			return;
 		}
-		if (!formData.rolesNeeded.trim()) {
-			toast.error(t("hire.applicationForm.validation.rolesNeededRequired"));
-			return;
-		}
-		if (!formData.projectType) {
-			toast.error(t("hire.applicationForm.validation.projectTypeRequired"));
-			return;
-		}
-		if (!formData.projectDescription.trim()) {
-			toast.error(t("hire.applicationForm.validation.projectDescriptionRequired"));
-			return;
-		}
+		// REMOVED: validation for rolesNeeded, projectType, projectDescription
+		// These are now validated in the hiring request form
 
 		// Show password modal instead of submitting directly
 		setShowPasswordModal(true);
@@ -185,11 +167,36 @@ export function CompanyApplicationForm() {
 				return;
 			}
 
-			// Success!
-			setIsSubmitted(true);
+			// Success! Now sign in the user automatically
+			const supabase = createClient();
+			const { error: signInError } = await supabase.auth.signInWithPassword({
+				email: formData.email,
+				password: password
+			});
+
+			if (signInError) {
+				console.error("Auto sign-in error:", signInError);
+				// Show success message but tell them to login manually
+				toast.success(t("hire.applicationForm.success.title"), {
+					description: t("hire.applicationForm.success.descriptionPleaseLogin")
+				});
+				// Redirect to login page
+				router.push("/login");
+				return;
+			}
+
+			// Successfully signed in! Show success message
 			toast.success(t("hire.applicationForm.success.title"), {
 				description: t("hire.applicationForm.success.description")
 			});
+
+			// Redirect to dashboard with auto-open dialog for creating first hiring request
+			if (result.companyId) {
+				router.push(`/dashboard?createRequest=true`);
+			} else {
+				// Fallback if companyId not returned
+				setIsSubmitted(true);
+			}
 
 			// Reset form
 			setFormData({
@@ -200,10 +207,6 @@ export function CompanyApplicationForm() {
 				phoneNumber: "",
 				website: "",
 				companySize: "",
-				rolesNeeded: "",
-				projectType: "",
-				budgetRange: "",
-				projectDescription: "",
 				honey: ""
 			});
 			setPassword("");
@@ -267,9 +270,7 @@ export function CompanyApplicationForm() {
 							<h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight mb-6">
 								{t("hire.applicationForm.title")}
 							</h2>
-							<p className="text-background/70 text-lg leading-relaxed mb-8">
-								{t("hire.applicationForm.description")}
-							</p>
+							<p className="text-background/70 text-lg leading-relaxed mb-8">{t("hire.applicationForm.description")}</p>
 
 							{/* Quick stats or trust signals */}
 							<div className="space-y-4 text-sm text-background/60">
@@ -309,8 +310,7 @@ export function CompanyApplicationForm() {
 								<div className="grid sm:grid-cols-2 gap-4">
 									<div className="space-y-2">
 										<label htmlFor="companyName" className="text-sm text-background/70">
-											{t("hire.applicationForm.fields.companyName.label")}{" "}
-											<span className="text-background/40">*</span>
+											{t("hire.applicationForm.fields.companyName.label")} <span className="text-background/40">*</span>
 										</label>
 										<Input
 											id="companyName"
@@ -325,8 +325,7 @@ export function CompanyApplicationForm() {
 
 									<div className="space-y-2">
 										<label htmlFor="contactName" className="text-sm text-background/70">
-											{t("hire.applicationForm.fields.contactName.label")}{" "}
-											<span className="text-background/40">*</span>
+											{t("hire.applicationForm.fields.contactName.label")} <span className="text-background/40">*</span>
 										</label>
 										<Input
 											id="contactName"
@@ -438,119 +437,31 @@ export function CompanyApplicationForm() {
 									</div>
 								</div>
 
-								{/* Company Size & Project Type */}
-								<div className="grid sm:grid-cols-2 gap-4">
-									<div className="space-y-2">
-										<label htmlFor="companySize" className="text-sm text-background/70">
-											{t("hire.applicationForm.fields.companySize.label")}{" "}
-											<span className="text-background/40">*</span>
-										</label>
-										<Select
-											value={formData.companySize}
-											onValueChange={(value) => setFormData({ ...formData, companySize: value })}
-											disabled={isSubmitting}
-										>
-											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-												<SelectValue placeholder={t("hire.applicationForm.fields.companySize.placeholder")} />
-											</SelectTrigger>
-											<SelectContent>
-												{companySizeKeys.map((size) => (
-													<SelectItem key={size} value={size}>
-														{t(`hire.applicationForm.fields.companySize.options.${size}`)}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-
-									<div className="space-y-2">
-										<label htmlFor="projectType" className="text-sm text-background/70">
-											{t("hire.applicationForm.fields.projectType.label")}{" "}
-											<span className="text-background/40">*</span>
-										</label>
-										<Select
-											value={formData.projectType}
-											onValueChange={(value) => setFormData({ ...formData, projectType: value })}
-											disabled={isSubmitting}
-										>
-											<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-												<SelectValue placeholder={t("hire.applicationForm.fields.projectType.placeholder")} />
-											</SelectTrigger>
-											<SelectContent>
-												{projectTypeKeys.map((type) => (
-													<SelectItem key={type} value={type}>
-														{t(`hire.applicationForm.fields.projectType.options.${type}`)}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-									</div>
-								</div>
-
-								{/* Roles Needed */}
+								{/* Company Size */}
 								<div className="space-y-2">
-									<label htmlFor="rolesNeeded" className="text-sm text-background/70">
-										{t("hire.applicationForm.fields.rolesNeeded.label")} <span className="text-background/40">*</span>
+									<label htmlFor="companySize" className="text-sm text-background/70">
+										{t("hire.applicationForm.fields.companySize.label")} <span className="text-background/40">*</span>
 									</label>
 									<Select
-										value={formData.rolesNeeded}
-										onValueChange={(value) => setFormData({ ...formData, rolesNeeded: value })}
+										value={formData.companySize}
+										onValueChange={(value) => setFormData({ ...formData, companySize: value })}
 										disabled={isSubmitting}
 									>
 										<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-											<SelectValue placeholder={t("hire.applicationForm.fields.rolesNeeded.placeholder")} />
+											<SelectValue placeholder={t("hire.applicationForm.fields.companySize.placeholder")} />
 										</SelectTrigger>
 										<SelectContent>
-											{roleOptions.map((role) => (
-												<SelectItem key={role} value={role}>
-													{role}
-												</SelectItem>
-											))}
-										</SelectContent>
-									</Select>
-									<p className="text-xs text-background/40">{t("hire.applicationForm.fields.rolesNeeded.hint")}</p>
-								</div>
-
-								{/* Budget Range */}
-								<div className="space-y-2">
-									<label htmlFor="budgetRange" className="text-sm text-background/70">
-										{t("hire.applicationForm.fields.budgetRange.label")}{" "}
-										<span className="text-background/40">{t("common.optional")}</span>
-									</label>
-									<Select
-										value={formData.budgetRange}
-										onValueChange={(value) => setFormData({ ...formData, budgetRange: value })}
-										disabled={isSubmitting}
-									>
-										<SelectTrigger className="w-full bg-background/5 border-background/10 text-background focus:border-background/30 h-11 [&>span]:text-background/70">
-											<SelectValue placeholder={t("hire.applicationForm.fields.budgetRange.placeholder")} />
-										</SelectTrigger>
-										<SelectContent>
-											{budgetRangeKeys.map((range) => (
-												<SelectItem key={range} value={range}>
-													{t(`hire.applicationForm.fields.budgetRange.options.${range}`)}
+											{companySizeKeys.map((size) => (
+												<SelectItem key={size} value={size}>
+													{t(`hire.applicationForm.fields.companySize.options.${size}`)}
 												</SelectItem>
 											))}
 										</SelectContent>
 									</Select>
 								</div>
 
-								{/* Project Description */}
-								<div className="space-y-2">
-									<label htmlFor="projectDescription" className="text-sm text-background/70">
-										{t("hire.applicationForm.fields.projectDescription.label")}{" "}
-										<span className="text-background/40">*</span>
-									</label>
-									<Textarea
-										id="projectDescription"
-										placeholder={t("hire.applicationForm.fields.projectDescription.placeholder")}
-										rows={4}
-										value={formData.projectDescription}
-										onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
-										className="bg-background/5 border-background/10 text-background placeholder:text-background/30 focus:border-background/30 resize-none"
-										disabled={isSubmitting}
-									/>
-								</div>
+								{/* REMOVED: Project fields (projectType, rolesNeeded, budgetRange, projectDescription) */}
+								{/* These are now collected via hiring requests after registration */}
 
 								{/* Submit */}
 								<div className="pt-4">
@@ -583,14 +494,13 @@ export function CompanyApplicationForm() {
 								<DialogContent className="sm:max-w-md">
 									<DialogHeader>
 										<DialogTitle>{t("hire.applicationForm.passwordModal.title")}</DialogTitle>
-										<DialogDescription>
-											{t("hire.applicationForm.passwordModal.description")}
-										</DialogDescription>
+										<DialogDescription>{t("hire.applicationForm.passwordModal.description")}</DialogDescription>
 									</DialogHeader>
 									<div className="space-y-4 py-4">
 										<div className="space-y-2">
 											<label htmlFor="modal-password" className="text-sm font-medium">
-												{t("hire.applicationForm.fields.password.label")} <span className="text-muted-foreground">*</span>
+												{t("hire.applicationForm.fields.password.label")}{" "}
+												<span className="text-muted-foreground">*</span>
 											</label>
 											<Input
 												id="modal-password"
@@ -606,7 +516,8 @@ export function CompanyApplicationForm() {
 
 										<div className="space-y-2">
 											<label htmlFor="modal-confirmPassword" className="text-sm font-medium">
-												{t("hire.applicationForm.fields.confirmPassword.label")} <span className="text-muted-foreground">*</span>
+												{t("hire.applicationForm.fields.confirmPassword.label")}{" "}
+												<span className="text-muted-foreground">*</span>
 											</label>
 											<Input
 												id="modal-confirmPassword"
@@ -627,11 +538,7 @@ export function CompanyApplicationForm() {
 										>
 											{t("common.cancel")}
 										</Button>
-										<Button
-											type="button"
-											onClick={handlePasswordSubmit}
-											disabled={isSubmitting}
-										>
+										<Button type="button" onClick={handlePasswordSubmit} disabled={isSubmitting}>
 											{isSubmitting ? (
 												<>
 													<Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -651,6 +558,3 @@ export function CompanyApplicationForm() {
 		</section>
 	);
 }
-
-
-

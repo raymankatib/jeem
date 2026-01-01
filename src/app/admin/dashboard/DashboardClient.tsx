@@ -17,7 +17,6 @@ import type { User } from "@supabase/supabase-js";
 import { AuthNav } from "@/components/auth-nav";
 
 type TalentStatus = 'under_review' | 'interviewing' | 'training' | 'pending_matching' | 'matched' | 'rejected';
-type CompanyStatus = 'under_review' | 'reviewing_candidates' | 'interviewing_candidates' | 'negotiating' | 'matched' | 'rejected';
 
 interface Talent {
   id: string;
@@ -46,32 +45,53 @@ interface Company {
   phone_number: string | null;
   website: string | null;
   company_size: string;
+  // REMOVED: roles_needed, project_type, budget_range, project_description, application_status
+  // Project fields are now exclusively in hiring_requests table
+  // application_status removed - companies don't have application status in multi-project model
+  email_status: string | null;
+  created_at?: string;
+}
+
+interface HiringRequest {
+  id: string;
+  company_id: string;
+  request_title: string;
   roles_needed: string;
   project_type: string;
   budget_range: string | null;
   project_description: string;
-  email_status: string | null;
-  application_status: CompanyStatus;
+  application_status: string;
+  request_status: 'open' | 'filled' | 'cancelled';
   created_at?: string;
+  updated_at?: string;
+  matched_talent_id?: string | null;
+  companies?: {
+    id: string;
+    company_name: string;
+    contact_name: string;
+    email: string;
+  };
 }
 
 interface DashboardClientProps {
   user: User;
   talents: Talent[];
   companies: Company[];
+  hiringRequests: HiringRequest[];
 }
 
-export default function DashboardClient({ user, talents, companies }: DashboardClientProps) {
+export default function DashboardClient({ user, talents, companies, hiringRequests }: DashboardClientProps) {
   const { t } = useTranslation();
   const router = useRouter();
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<HiringRequest | null>(null);
   const [statusConfirmDialog, setStatusConfirmDialog] = useState<{
     isOpen: boolean;
-    type: 'talent' | 'company';
+    type: 'talent' | 'request';
     id: string;
-    currentStatus: TalentStatus | CompanyStatus;
-    newStatus: TalentStatus | CompanyStatus;
+    currentStatus: TalentStatus | string;
+    newStatus: TalentStatus | string;
     name: string;
   } | null>(null);
 
@@ -112,27 +132,24 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
     });
   };
 
-  const handleCompanyStatusChange = (companyId: string, newStatus: CompanyStatus) => {
-    const company = companies.find(c => c.id === companyId);
-    if (!company || company.application_status === newStatus) return;
-
-    setStatusConfirmDialog({
-      isOpen: true,
-      type: 'company',
-      id: companyId,
-      currentStatus: company.application_status,
-      newStatus: newStatus,
-      name: company.company_name
-    });
-  };
 
   const confirmStatusUpdate = async () => {
     if (!statusConfirmDialog) return;
 
     const { type, id, newStatus } = statusConfirmDialog;
-    const endpoint = type === 'talent' ? `/api/talents/${id}/status` : `/api/companies/${id}/status`;
-    const successKey = type === 'talent' ? "dashboard.talents.statusUpdated" : "dashboard.companies.statusUpdated";
-    const errorKey = type === 'talent' ? "dashboard.talents.statusUpdateFailed" : "dashboard.companies.statusUpdateFailed";
+
+    // Determine endpoint based on type
+    const endpoint =
+      type === 'talent' ? `/api/talents/${id}/status` :
+      `/api/hiring-requests/${id}/status`;
+
+    const successKey =
+      type === 'talent' ? "dashboard.talents.statusUpdated" :
+      "dashboard.hiringRequests.statusUpdated";
+
+    const errorKey =
+      type === 'talent' ? "dashboard.talents.statusUpdateFailed" :
+      "dashboard.hiringRequests.statusUpdateFailed";
 
     try {
       const response = await fetch(endpoint, {
@@ -163,15 +180,6 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
     { value: 'pending_matching', labelKey: 'dashboard.status.talent.pendingMatching' },
     { value: 'matched', labelKey: 'dashboard.status.talent.matched' },
     { value: 'rejected', labelKey: 'dashboard.status.talent.rejected' },
-  ];
-
-  const companyStatuses: { value: CompanyStatus; labelKey: string }[] = [
-    { value: 'under_review', labelKey: 'dashboard.status.company.underReview' },
-    { value: 'reviewing_candidates', labelKey: 'dashboard.status.company.reviewingCandidates' },
-    { value: 'interviewing_candidates', labelKey: 'dashboard.status.company.interviewingCandidates' },
-    { value: 'negotiating', labelKey: 'dashboard.status.company.negotiating' },
-    { value: 'matched', labelKey: 'dashboard.status.company.matched' },
-    { value: 'rejected', labelKey: 'dashboard.status.company.rejected' },
   ];
 
   return (
@@ -248,6 +256,10 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
             <TabsTrigger value="companies" className="flex items-center gap-2">
               <Building2 className="h-4 w-4" />
               {t("dashboard.tabs.companies")} ({companies.length})
+            </TabsTrigger>
+            <TabsTrigger value="hiring-requests" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              {t("dashboard.hiringRequests.titleAdmin")} ({hiringRequests.length})
             </TabsTrigger>
           </TabsList>
 
@@ -405,18 +417,14 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
                       <TableHead>{t("dashboard.companies.table.email")}</TableHead>
                       <TableHead>{t("dashboard.companies.table.phone")}</TableHead>
                       <TableHead>{t("dashboard.companies.table.companySize")}</TableHead>
-                      <TableHead>{t("dashboard.companies.table.rolesNeeded")}</TableHead>
-                      <TableHead>{t("dashboard.companies.table.projectType")}</TableHead>
-                      <TableHead>{t("dashboard.companies.table.budget")}</TableHead>
                       <TableHead>{t("dashboard.companies.table.submittedDate")}</TableHead>
-                      <TableHead>{t("dashboard.companies.table.status")}</TableHead>
                       <TableHead>{t("dashboard.companies.table.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {companies.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={11} className="text-center text-muted-foreground">
+                        <TableCell colSpan={7} className="text-center text-muted-foreground">
                           {t("dashboard.companies.empty")}
                         </TableCell>
                       </TableRow>
@@ -459,40 +467,10 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
                             <Badge variant="outline">{company.company_size}</Badge>
                           </TableCell>
                           <TableCell>
-                            <div className="max-w-[120px] truncate">{company.roles_needed}</div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="secondary">{company.project_type}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            {company.budget_range ? (
-                              <Badge variant="outline">{company.budget_range}</Badge>
-                            ) : (
-                              <span className="text-muted-foreground text-sm">-</span>
-                            )}
-                          </TableCell>
-                          <TableCell>
                             <div className="flex items-center gap-1 text-sm text-muted-foreground">
                               <Calendar className="h-3 w-3" />
                               {formatDate(company.created_at)}
                             </div>
-                          </TableCell>
-                          <TableCell>
-                            <Select
-                              value={company.application_status}
-                              onValueChange={(value) => handleCompanyStatusChange(company.id, value as CompanyStatus)}
-                            >
-                              <SelectTrigger className="w-[200px] h-8">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {companyStatuses.map((status) => (
-                                  <SelectItem key={status.value} value={status.value}>
-                                    {t(status.labelKey)}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
                           </TableCell>
                           <TableCell>
                             <Button
@@ -503,6 +481,102 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
                             >
                               <Eye className="h-4 w-4 me-1" />
                               {t("dashboard.companies.table.details")}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Hiring Requests Tab */}
+          <TabsContent value="hiring-requests" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("dashboard.hiringRequests.titleAdmin")}</CardTitle>
+                <CardDescription>{t("dashboard.hiringRequests.description")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t("dashboard.hiringRequests.table.requestTitle")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.company")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.role")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.projectType")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.budget")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.requestStatus")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.applicationStatus")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.created")}</TableHead>
+                      <TableHead>{t("dashboard.hiringRequests.table.actions")}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {hiringRequests.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                          {t("dashboard.hiringRequests.table.empty")}
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      hiringRequests.map((request) => (
+                        <TableRow key={request.id}>
+                          <TableCell className="font-medium">{request.request_title}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-col">
+                              <span className="font-medium">{request.companies?.company_name}</span>
+                              <span className="text-xs text-muted-foreground">{request.companies?.contact_name}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>{request.roles_needed}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{request.project_type}</Badge>
+                          </TableCell>
+                          <TableCell>{request.budget_range || "-"}</TableCell>
+                          <TableCell>
+                            <Badge variant={request.request_status === 'filled' ? 'default' : 'secondary'}>
+                              {t(`dashboard.hiringRequests.status.${request.request_status}`)}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              value={request.application_status}
+                              onValueChange={(value) => {
+                                setStatusConfirmDialog({
+                                  isOpen: true,
+                                  type: 'request',
+                                  id: request.id,
+                                  currentStatus: request.application_status,
+                                  newStatus: value,
+                                  name: request.request_title
+                                });
+                              }}
+                            >
+                              <SelectTrigger className="w-[200px]">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="under_review">{t("dashboard.hiringRequests.applicationStatus.under_review")}</SelectItem>
+                                <SelectItem value="reviewing_candidates">{t("dashboard.hiringRequests.applicationStatus.reviewing_candidates")}</SelectItem>
+                                <SelectItem value="interviewing_candidates">{t("dashboard.hiringRequests.applicationStatus.interviewing_candidates")}</SelectItem>
+                                <SelectItem value="negotiating">{t("dashboard.hiringRequests.applicationStatus.negotiating")}</SelectItem>
+                                <SelectItem value="matched">{t("dashboard.hiringRequests.applicationStatus.matched")}</SelectItem>
+                                <SelectItem value="rejected">{t("dashboard.hiringRequests.applicationStatus.rejected")}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell>{formatDate(request.created_at)}</TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedRequest(request)}
+                            >
+                              <Eye className="h-4 w-4 me-1" />
+                              {t("dashboard.hiringRequests.table.viewDetails")}
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -706,30 +780,6 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
                   </div>
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.table.rolesNeeded")}
-                    </label>
-                    <p className="text-sm mt-1">{selectedCompany.roles_needed}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.table.projectType")}
-                    </label>
-                    <p className="text-sm mt-1">
-                      <Badge variant="secondary">{selectedCompany.project_type}</Badge>
-                    </p>
-                  </div>
-                  {selectedCompany.budget_range && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">
-                        {t("dashboard.companies.table.budget")}
-                      </label>
-                      <p className="text-sm mt-1">
-                        <Badge variant="outline">{selectedCompany.budget_range}</Badge>
-                      </p>
-                    </div>
-                  )}
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">
                       {t("dashboard.companies.table.submittedDate")}
                     </label>
                     <p className="text-sm mt-1">{formatDate(selectedCompany.created_at)}</p>
@@ -745,12 +795,75 @@ export default function DashboardClient({ user, talents, companies }: DashboardC
                     </p>
                   </div>
                 </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Hiring Request Detail Dialog */}
+        <Dialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>{t("dashboard.hiringRequests.details.title")}</DialogTitle>
+              <DialogDescription>{t("dashboard.hiringRequests.details.description")}</DialogDescription>
+            </DialogHeader>
+            {selectedRequest && (
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">{selectedRequest.request_title}</h3>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={selectedRequest.request_status === 'filled' ? 'default' : 'secondary'}>
+                      {t(`dashboard.hiringRequests.status.${selectedRequest.request_status}`)}
+                    </Badge>
+                    <Badge variant="outline">
+                      {t(`dashboard.hiringRequests.applicationStatus.${selectedRequest.application_status}`)}
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.company")}</label>
+                    <p className="text-sm mt-1 font-medium">{selectedRequest.companies?.company_name}</p>
+                    <p className="text-xs text-muted-foreground">{selectedRequest.companies?.contact_name}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.contactEmail")}</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm">{selectedRequest.companies?.email}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.role")}</label>
+                    <p className="text-sm mt-1">{selectedRequest.roles_needed}</p>
+                  </div>
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.projectType")}</label>
+                    <p className="text-sm mt-1">
+                      <Badge variant="outline">{selectedRequest.project_type}</Badge>
+                    </p>
+                  </div>
+
+                  {selectedRequest.budget_range && (
+                    <div>
+                      <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.budget")}</label>
+                      <p className="text-sm mt-1">{selectedRequest.budget_range}</p>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.createdDate")}</label>
+                    <p className="text-sm mt-1">{formatDate(selectedRequest.created_at)}</p>
+                  </div>
+                </div>
 
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">
-                    {t("dashboard.companies.details.projectDescription")}
-                  </label>
-                  <p className="text-sm mt-1 whitespace-pre-wrap">{selectedCompany.project_description}</p>
+                  <label className="text-sm font-medium text-muted-foreground">{t("dashboard.hiringRequests.details.projectDescription")}</label>
+                  <p className="text-sm mt-1 whitespace-pre-wrap">{selectedRequest.project_description}</p>
                 </div>
               </div>
             )}

@@ -52,13 +52,8 @@ const companySchema = z.object({
 	phoneNumber: z.string().min(7, "Phone number is too short").max(20, "Phone number is too long"),
 	website: z.string().url("Invalid website URL").max(500, "Website URL is too long").optional().or(z.literal("")),
 	companySize: z.string().min(1, "Company size is required").max(50, "Company size is too long"),
-	rolesNeeded: z.string().min(1, "Roles needed is required").max(500, "Roles needed is too long"),
-	projectType: z.string().min(1, "Project type is required").max(50, "Project type is too long"),
-	budgetRange: z.string().max(50, "Budget range is too long").optional().default(""),
-	projectDescription: z
-		.string()
-		.min(1, "Project description is required")
-		.max(3000, "Project description is too long"),
+	// REMOVED: rolesNeeded, projectType, budgetRange, projectDescription
+	// These are now handled via hiring_requests table
 	// Password for account creation
 	password: z.string().min(8, "Password must be at least 8 characters").max(100, "Password is too long"),
 	// UTM parameters (all optional)
@@ -197,10 +192,8 @@ export async function POST(request: NextRequest) {
 				phone_number: data.phoneNumber,
 				website: data.website || null,
 				company_size: data.companySize,
-				roles_needed: data.rolesNeeded,
-				project_type: data.projectType,
-				budget_range: data.budgetRange || null,
-				project_description: data.projectDescription,
+				// REMOVED: roles_needed, project_type, budget_range, project_description
+				// These fields will be created in hiring_requests table instead
 				source: "hire-landing",
 				utm_source: data.utm_source || null,
 				utm_medium: data.utm_medium || null,
@@ -275,7 +268,7 @@ export async function POST(request: NextRequest) {
 			}
 		}
 
-		return NextResponse.json({ ok: true }, { status: 201 });
+		return NextResponse.json({ ok: true, companyId: companyId }, { status: 201 });
 	} catch (error) {
 		console.error("API error:", error);
 		return NextResponse.json(

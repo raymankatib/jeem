@@ -33,6 +33,20 @@ export default async function DashboardPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
+  // Fetch hiring requests with company info
+  const { data: hiringRequests, error: hiringRequestsError } = await supabaseAdmin
+    .from("hiring_requests")
+    .select(`
+      *,
+      companies:company_id (
+        id,
+        company_name,
+        contact_name,
+        email
+      )
+    `)
+    .order("created_at", { ascending: false });
+
   // Generate signed URLs for CV files (bucket is private)
   const talentsWithSignedUrls = await Promise.all(
     (talents || []).map(async (talent) => {
@@ -66,6 +80,7 @@ export default async function DashboardPage() {
       user={user}
       talents={talentsWithSignedUrls}
       companies={companies || []}
+      hiringRequests={hiringRequests || []}
     />
   );
 }

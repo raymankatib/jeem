@@ -1,18 +1,20 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import { LogOut, Mail, ExternalLink, FileText, Calendar, User as UserIcon, Building2, Briefcase, DollarSign, Phone } from "lucide-react";
+import { LogOut, Mail, ExternalLink, FileText, Calendar, User as UserIcon, Building2, Briefcase, DollarSign, Phone, Plus } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { User } from "@supabase/supabase-js";
 import { AuthNav } from "@/components/auth-nav";
+import { HiringRequestForm } from "@/components/dashboard/HiringRequestForm";
 
 type TalentStatus = 'under_review' | 'interviewing' | 'training' | 'pending_matching' | 'matched' | 'rejected';
-type CompanyStatus = 'under_review' | 'reviewing_candidates' | 'interviewing_candidates' | 'negotiating' | 'matched' | 'rejected';
 
 interface Talent {
   id: string;
@@ -41,24 +43,51 @@ interface Company {
   phone_number: string | null;
   website: string | null;
   company_size: string;
+  // REMOVED: roles_needed, project_type, budget_range, project_description, application_status
+  // Project fields are now exclusively in hiring_requests table
+  // application_status removed - companies don't have application status in multi-project model
+  email_status: string | null;
+  created_at?: string;
+}
+
+interface HiringRequest {
+  id: string;
+  company_id: string;
+  request_title: string;
   roles_needed: string;
   project_type: string;
   budget_range: string | null;
   project_description: string;
-  email_status: string | null;
-  application_status: CompanyStatus;
+  application_status: string;
+  request_status: 'open' | 'filled' | 'cancelled';
   created_at?: string;
+  updated_at?: string;
+  matched_talent_id?: string | null;
 }
 
 interface DashboardClientProps {
   user: User;
   talentProfile: Talent | null;
   companyProfile: Company | null;
+  hiringRequests?: HiringRequest[];
 }
 
-export default function DashboardClient({ user, talentProfile, companyProfile }: DashboardClientProps) {
+export default function DashboardClient({ user, talentProfile, companyProfile, hiringRequests = [] }: DashboardClientProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const [showCreateRequestDialog, setShowCreateRequestDialog] = useState(false);
+
+  // Auto-open dialog when redirected from registration
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('createRequest') === 'true' && companyProfile) {
+        setShowCreateRequestDialog(true);
+        // Clean up URL without reload
+        window.history.replaceState({}, '', '/dashboard');
+      }
+    }
+  }, [companyProfile]);
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -278,26 +307,6 @@ export default function DashboardClient({ user, talentProfile, companyProfile }:
                     </div>
                   )}
 
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.details.applicationStatus")}
-                    </label>
-                    <div className="mt-1">
-                      <Badge variant={
-                        companyProfile.application_status === 'matched' ? 'default' :
-                        companyProfile.application_status === 'rejected' ? 'destructive' :
-                        'secondary'
-                      }>
-                        {t(`dashboard.status.company.${
-                          companyProfile.application_status
-                            .split('_')
-                            .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
-                            .join('')
-                        }`)}
-                      </Badge>
-                    </div>
-                  </div>
-
                   {companyProfile.website && (
                     <div>
                       <label className="text-sm font-medium text-muted-foreground">
@@ -324,35 +333,8 @@ export default function DashboardClient({ user, talentProfile, companyProfile }:
                     <p className="mt-1 text-sm">{companyProfile.company_size}</p>
                   </div>
 
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.details.projectType")}
-                    </label>
-                    <p className="mt-1 text-sm">{companyProfile.project_type}</p>
-                  </div>
-
-                  <div className="col-span-full">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.details.rolesNeeded")}
-                    </label>
-                    <p className="mt-1 text-sm">{companyProfile.roles_needed}</p>
-                  </div>
-
-                  {companyProfile.budget_range && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">
-                        {t("dashboard.companies.details.budgetRange")}
-                      </label>
-                      <p className="mt-1 text-sm">{companyProfile.budget_range}</p>
-                    </div>
-                  )}
-
-                  <div className="col-span-full">
-                    <label className="text-sm font-medium text-muted-foreground">
-                      {t("dashboard.companies.details.projectDescription")}
-                    </label>
-                    <p className="mt-1 text-sm">{companyProfile.project_description}</p>
-                  </div>
+                  {/* REMOVED: projectType, rolesNeeded, budgetRange, projectDescription */}
+                  {/* These are now managed via hiring requests */}
 
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">
@@ -368,6 +350,77 @@ export default function DashboardClient({ user, talentProfile, companyProfile }:
             </Card>
           )}
 
+          {/* Hiring Requests Section (for companies) */}
+          {companyProfile && (
+            <Card className="mt-6">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>{t("dashboard.hiringRequests.title")}</CardTitle>
+                    <CardDescription>{t("dashboard.hiringRequests.description")}</CardDescription>
+                  </div>
+                  <Button onClick={() => setShowCreateRequestDialog(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    {t("dashboard.hiringRequests.newRequest")}
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {hiringRequests.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Briefcase className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">{t("dashboard.hiringRequests.empty")}</h3>
+                    <p className="text-muted-foreground mb-4">
+                      {t("dashboard.hiringRequests.emptyDescription")}
+                    </p>
+                    <Button variant="outline" onClick={() => setShowCreateRequestDialog(true)}>
+                      <Plus className="h-4 w-4 mr-2" />
+                      {t("dashboard.hiringRequests.createFirst")}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {hiringRequests.map((request) => (
+                      <Card key={request.id} className="border-l-4 border-l-primary">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-lg">{request.request_title}</CardTitle>
+                            <Badge variant={request.request_status === 'filled' ? 'default' : 'secondary'}>
+                              {t(`dashboard.hiringRequests.status.${request.request_status}`)}
+                            </Badge>
+                          </div>
+                          <CardDescription>
+                            {request.roles_needed} • {t(`hire.applicationForm.fields.projectType.options.${request.project_type}`)}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                            {request.project_description}
+                          </p>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              <span>{t("dashboard.hiringRequests.table.created")} {formatDate(request.created_at)}</span>
+                            </div>
+                            {request.budget_range && (
+                              <div className="flex items-center gap-1">
+                                <DollarSign className="h-3 w-3" />
+                                <span>{t(`hire.applicationForm.fields.budgetRange.options.${request.budget_range}`)}</span>
+                              </div>
+                            )}
+                            <Badge variant="outline" className="text-xs">
+                              {t(`dashboard.hiringRequests.applicationStatus.${request.application_status}`)}
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* No profile found */}
           {!talentProfile && !companyProfile && (
             <Card>
@@ -379,6 +432,28 @@ export default function DashboardClient({ user, talentProfile, companyProfile }:
                 </p>
               </CardContent>
             </Card>
+          )}
+
+          {/* Create Hiring Request Dialog */}
+          {companyProfile && (
+            <Dialog open={showCreateRequestDialog} onOpenChange={setShowCreateRequestDialog}>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{t("dashboard.hiringRequests.form.title")}</DialogTitle>
+                  <DialogDescription>
+                    {t("dashboard.hiringRequests.form.description")}
+                  </DialogDescription>
+                </DialogHeader>
+                <HiringRequestForm
+                  companyId={companyProfile.id}
+                  onSuccess={() => {
+                    setShowCreateRequestDialog(false);
+                    router.refresh();
+                  }}
+                  onCancel={() => setShowCreateRequestDialog(false)}
+                />
+              </DialogContent>
+            </Dialog>
           )}
         </div>
       </div>

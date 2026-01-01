@@ -494,7 +494,8 @@
 		},
 		"success": {
 			"title": "Application submitted successfully!",
-			"description": "We'll review your application and get back to you soon."
+			"description": "We'll review your application and get back to you soon.",
+			"descriptionPleaseLogin": "Your account has been created. Please login to continue."
 		},
 		"errors": {
 			"rateLimit": "Too many requests. Please try again in a minute.",
@@ -1165,6 +1166,98 @@
 				"budgetRange": "Budget Range",
 				"projectDescription": "Project Description",
 				"submittedOn": "Submitted On"
+			}
+		},
+		"hiringRequests": {
+			"title": "Your Hiring Requests",
+			"titleAdmin": "Hiring Requests",
+			"description": "Manage your talent hiring requests",
+			"empty": "No hiring requests yet",
+			"emptyDescription": "Create your first hiring request to find the perfect talent for your project",
+			"newRequest": "New Request",
+			"createFirst": "Create Your First Request",
+			"statusUpdated": "Hiring request status updated successfully",
+			"statusUpdateFailed": "Failed to update hiring request status",
+			"form": {
+				"title": "Create New Hiring Request",
+				"titleEdit": "Edit Hiring Request",
+				"description": "Tell us about the role you're looking to fill",
+				"requestTitle": {
+					"label": "Request Title",
+					"placeholder": "e.g., Frontend Developer for Dashboard Redesign",
+					"hint": "Give your hiring request a clear, descriptive title",
+					"required": "Request title is required"
+				},
+				"roleNeeded": {
+					"label": "Role Needed",
+					"placeholder": "Select role...",
+					"required": "Role is required"
+				},
+				"projectType": {
+					"label": "Project Type",
+					"placeholder": "Select type...",
+					"required": "Project type is required"
+				},
+				"budgetRange": {
+					"label": "Budget Range",
+					"labelOptional": "Budget Range (Optional)",
+					"placeholder": "Select budget range..."
+				},
+				"projectDescription": {
+					"label": "Project Description",
+					"placeholder": "Describe the project, requirements, skills needed, and what you're looking for in detail...",
+					"hint": "Be specific about your requirements to help us match you with the right talent",
+					"required": "Project description is required"
+				},
+				"cancel": "Cancel",
+				"submit": "Create Hiring Request",
+				"submitting": "Creating...",
+				"success": "Hiring request created successfully!",
+				"error": "Failed to create hiring request",
+				"errorGeneric": "Failed to create request"
+			},
+			"table": {
+				"requestTitle": "Request Title",
+				"company": "Company",
+				"role": "Role",
+				"projectType": "Project Type",
+				"budget": "Budget",
+				"status": "Status",
+				"requestStatus": "Request Status",
+				"applicationStatus": "Application Status",
+				"created": "Created",
+				"updated": "Updated",
+				"actions": "Actions",
+				"viewDetails": "Details",
+				"empty": "No hiring requests found"
+			},
+			"details": {
+				"title": "Hiring Request Details",
+				"description": "Full information about this hiring request",
+				"company": "Company",
+				"contactEmail": "Contact Email",
+				"requestTitle": "Request Title",
+				"role": "Role Needed",
+				"projectType": "Project Type",
+				"budget": "Budget Range",
+				"applicationStatus": "Application Status",
+				"requestStatus": "Request Status",
+				"createdDate": "Created Date",
+				"updatedDate": "Last Updated",
+				"projectDescription": "Project Description"
+			},
+			"status": {
+				"open": "Open",
+				"filled": "Filled",
+				"cancelled": "Cancelled"
+			},
+			"applicationStatus": {
+				"under_review": "Under Review",
+				"reviewing_candidates": "Reviewing Candidates",
+				"interviewing_candidates": "Interviewing Candidates",
+				"negotiating": "Negotiating",
+				"matched": "Matched",
+				"rejected": "Rejected"
 			}
 		}
 	}

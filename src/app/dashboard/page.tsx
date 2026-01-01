@@ -37,6 +37,17 @@ export default async function UserDashboardPage() {
     .eq("email", user.email)
     .single();
 
+  // Fetch hiring requests if user is a company
+  let hiringRequests: any[] = [];
+  if (companyProfile) {
+    const { data: requests } = await supabaseAdmin
+      .from("hiring_requests")
+      .select("*")
+      .eq("company_id", companyProfile.id)
+      .order("created_at", { ascending: false });
+    hiringRequests = requests || [];
+  }
+
   // Generate signed URL for CV if user is a talent with CV
   let talentWithSignedUrl = talentProfile;
   if (talentProfile && talentProfile.cv_url) {
@@ -62,6 +73,7 @@ export default async function UserDashboardPage() {
       user={user}
       talentProfile={talentWithSignedUrl}
       companyProfile={companyProfile}
+      hiringRequests={hiringRequests}
     />
   );
 }

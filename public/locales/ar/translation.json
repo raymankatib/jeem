@@ -446,7 +446,8 @@
 		},
 		"success": {
 			"title": "وصلنا طلبك",
-			"description": "رح نراجعه ونرجعلك قريب."
+			"description": "رح نراجعه ونرجعلك قريب.",
+			"descriptionPleaseLogin": "تم إنشاء حسابك. يرجى تسجيل الدخول للمتابعة."
 		},
 		"errors": {
 			"rateLimit": "طلبات كتير. جرّب بعد دقيقة.",
@@ -1112,6 +1113,98 @@
 				"budgetRange": "نطاق الميزانية",
 				"projectDescription": "وصف المشروع",
 				"submittedOn": "تاريخ التقديم"
+			}
+		},
+		"hiringRequests": {
+			"title": "طلبات التوظيف الخاصة بك",
+			"titleAdmin": "طلبات التوظيف",
+			"description": "إدارة طلبات توظيف المواهب",
+			"empty": "لا توجد طلبات توظيف بعد",
+			"emptyDescription": "أنشئ طلب التوظيف الأول للعثور على الموهبة المثالية لمشروعك",
+			"newRequest": "طلب جديد",
+			"createFirst": "أنشئ طلبك الأول",
+			"statusUpdated": "تم تحديث حالة طلب التوظيف بنجاح",
+			"statusUpdateFailed": "فشل تحديث حالة طلب التوظيف",
+			"form": {
+				"title": "إنشاء طلب توظيف جديد",
+				"titleEdit": "تعديل طلب التوظيف",
+				"description": "أخبرنا عن الدور الذي تبحث عنه",
+				"requestTitle": {
+					"label": "عنوان الطلب",
+					"placeholder": "مثال: مطور واجهات أمامية لإعادة تصميم لوحة التحكم",
+					"hint": "اختر عنواناً واضحاً ووصفياً لطلب التوظيف",
+					"required": "عنوان الطلب مطلوب"
+				},
+				"roleNeeded": {
+					"label": "الدور المطلوب",
+					"placeholder": "اختر الدور...",
+					"required": "الدور مطلوب"
+				},
+				"projectType": {
+					"label": "نوع المشروع",
+					"placeholder": "اختر النوع...",
+					"required": "نوع المشروع مطلوب"
+				},
+				"budgetRange": {
+					"label": "نطاق الميزانية",
+					"labelOptional": "نطاق الميزانية (اختياري)",
+					"placeholder": "اختر نطاق الميزانية..."
+				},
+				"projectDescription": {
+					"label": "وصف المشروع",
+					"placeholder": "صف المشروع والمتطلبات والمهارات المطلوبة وما تبحث عنه بالتفصيل...",
+					"hint": "كن محدداً في متطلباتك لمساعدتنا في مطابقتك مع الموهبة المناسبة",
+					"required": "وصف المشروع مطلوب"
+				},
+				"cancel": "إلغاء",
+				"submit": "إنشاء طلب التوظيف",
+				"submitting": "جارٍ الإنشاء...",
+				"success": "تم إنشاء طلب التوظيف بنجاح!",
+				"error": "فشل إنشاء طلب التوظيف",
+				"errorGeneric": "فشل إنشاء الطلب"
+			},
+			"table": {
+				"requestTitle": "عنوان الطلب",
+				"company": "الشركة",
+				"role": "الدور",
+				"projectType": "نوع المشروع",
+				"budget": "الميزانية",
+				"status": "الحالة",
+				"requestStatus": "حالة الطلب",
+				"applicationStatus": "حالة المعالجة",
+				"created": "تاريخ الإنشاء",
+				"updated": "آخر تحديث",
+				"actions": "الإجراءات",
+				"viewDetails": "التفاصيل",
+				"empty": "لا توجد طلبات توظيف"
+			},
+			"details": {
+				"title": "تفاصيل طلب التوظيف",
+				"description": "معلومات كاملة عن طلب التوظيف",
+				"company": "الشركة",
+				"contactEmail": "البريد الإلكتروني للتواصل",
+				"requestTitle": "عنوان الطلب",
+				"role": "الدور المطلوب",
+				"projectType": "نوع المشروع",
+				"budget": "نطاق الميزانية",
+				"applicationStatus": "حالة الطلب",
+				"requestStatus": "حالة طلب التوظيف",
+				"createdDate": "تاريخ الإنشاء",
+				"updatedDate": "آخر تحديث",
+				"projectDescription": "وصف المشروع"
+			},
+			"status": {
+				"open": "مفتوح",
+				"filled": "مكتمل",
+				"cancelled": "ملغى"
+			},
+			"applicationStatus": {
+				"under_review": "قيد المراجعة",
+				"reviewing_candidates": "مراجعة المرشحين",
+				"interviewing_candidates": "إجراء المقابلات",
+				"negotiating": "قيد التفاوض",
+				"matched": "تمت المطابقة",
+				"rejected": "مرفوض"
 			}
 		}
 	}
