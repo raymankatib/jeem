@@ -66,7 +66,7 @@ export function HireNavigation() {
 			initial={{ y: -10, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-			className="fixed top-9 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
+			className="fixed top-0 inset-x-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
 		>
 			<div className="container-narrow">
 				<div className="flex items-center justify-between h-16">

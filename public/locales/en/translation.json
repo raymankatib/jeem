@@ -8,7 +8,10 @@
 	},
 	"topBanner": {
 		"forCompanies": "Looking to hire? Check out Jeem for Companies",
-		"forTalent": "Looking for work? Join our talent network"
+		"forTalent": "Looking for work? Join our talent network",
+		"badge": "For Companies",
+		"title": "Looking to hire?",
+		"subtitle": "Access vetted talent →"
 	},
 	"nav": {
 		"links": {
@@ -520,6 +523,11 @@
 		"copyright": "© {{year}} Jeem. All rights reserved."
 	},
 	"hire": {
+		"topBanner": {
+			"badge": "For Talent",
+			"title": "Looking for work?",
+			"subtitle": "Join our talent network →"
+		},
 		"nav": {
 			"badge": "For Companies",
 			"links": {
