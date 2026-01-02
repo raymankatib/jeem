@@ -1078,6 +1078,20 @@
 			"talents": "Talents",
 			"companies": "Companies"
 		},
+		"filters": {
+			"label": "Filters",
+			"clear": "Clear filters",
+			"all": "All",
+			"talentStatus": "Application Status",
+			"role": "Role",
+			"englishLevel": "English Level",
+			"applicationStatus": "Application Status",
+			"requestStatus": "Request Status",
+			"roles": {
+				"developer": "Developer",
+				"designer": "Designer"
+			}
+		},
 		"status": {
 			"talent": {
 				"underReview": "Under Review",

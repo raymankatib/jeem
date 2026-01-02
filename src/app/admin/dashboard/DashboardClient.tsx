@@ -31,6 +31,8 @@ import type { User } from "@supabase/supabase-js";
 import { AuthNav } from "@/components/auth-nav";
 import { Pagination } from "@/components/ui/pagination";
 import type { PaginationInfo } from "@/lib/types/pagination";
+import type { TalentFilters, HiringRequestFilters } from "@/lib/types/filters";
+import { FilterBar } from "@/components/dashboard/filters";
 
 type TalentStatus = "under_review" | "interviewing" | "training" | "pending_matching" | "matched" | "rejected";
 
@@ -95,20 +97,26 @@ interface DashboardClientProps {
 	user: User;
 	talents: Talent[];
 	talentPagination: PaginationInfo;
+	talentFilters: TalentFilters;
+	availableRoles: string[];
 	companies: Company[];
 	companyPagination: PaginationInfo;
 	hiringRequests: HiringRequest[];
 	requestPagination: PaginationInfo;
+	hiringRequestFilters: HiringRequestFilters;
 }
 
 export default function DashboardClient({
 	user,
 	talents,
 	talentPagination,
+	talentFilters,
+	availableRoles,
 	companies,
 	companyPagination,
 	hiringRequests,
-	requestPagination
+	requestPagination,
+	hiringRequestFilters
 }: DashboardClientProps) {
 	const { t } = useTranslation();
 	const router = useRouter();
@@ -148,6 +156,54 @@ export default function DashboardClient({
 	const handlePageChange = (tab: "talent" | "company" | "request", page: number) => {
 		const params = new URLSearchParams(window.location.search);
 		params.set(`${tab}Page`, page.toString());
+		router.push(`/admin/dashboard?${params.toString()}`);
+	};
+
+	const handleFilterChange = (tab: "talent" | "request", filterKey: string, value: string) => {
+		const params = new URLSearchParams(window.location.search);
+
+		// Map tab and filterKey to URL param name
+		const paramMap: Record<string, Record<string, string>> = {
+			talent: {
+				status: "talentStatus",
+				role: "talentRole",
+				englishLevel: "talentEnglish"
+			},
+			request: {
+				applicationStatus: "requestAppStatus",
+				requestStatus: "requestStatus"
+			}
+		};
+
+		const paramName = paramMap[tab]?.[filterKey];
+		if (!paramName) return;
+
+		if (value === "all") {
+			params.delete(paramName);
+		} else {
+			params.set(paramName, value);
+		}
+
+		// Reset to page 1 when filters change
+		params.set(`${tab}Page`, "1");
+
+		router.push(`/admin/dashboard?${params.toString()}`);
+	};
+
+	const handleClearFilters = (tab: "talent" | "request") => {
+		const params = new URLSearchParams(window.location.search);
+
+		if (tab === "talent") {
+			params.delete("talentStatus");
+			params.delete("talentRole");
+			params.delete("talentEnglish");
+			params.set("talentPage", "1");
+		} else if (tab === "request") {
+			params.delete("requestAppStatus");
+			params.delete("requestStatus");
+			params.set("requestPage", "1");
+		}
+
 		router.push(`/admin/dashboard?${params.toString()}`);
 	};
 
@@ -447,6 +503,53 @@ export default function DashboardClient({
 									<CardDescription>{t("dashboard.talents.description")}</CardDescription>
 								</CardHeader>
 								<CardContent>
+									<FilterBar
+										filters={{
+											status: talentFilters.status || "all",
+											role: talentFilters.role || "all",
+											englishLevel: talentFilters.englishLevel || "all"
+										}}
+										onFilterChange={(key, value) => handleFilterChange("talent", key, value)}
+										onClearFilters={() => handleClearFilters("talent")}
+										filterConfig={[
+											{
+												key: "status",
+												labelKey: "dashboard.filters.talentStatus",
+												options: [
+													{ value: "all", labelKey: "dashboard.filters.all" },
+													{ value: "under_review", labelKey: "dashboard.status.talent.underReview" },
+													{ value: "interviewing", labelKey: "dashboard.status.talent.interviewing" },
+													{ value: "training", labelKey: "dashboard.status.talent.training" },
+													{ value: "pending_matching", labelKey: "dashboard.status.talent.pendingMatching" },
+													{ value: "matched", labelKey: "dashboard.status.talent.matched" },
+													{ value: "rejected", labelKey: "dashboard.status.talent.rejected" }
+												]
+											},
+											{
+												key: "role",
+												labelKey: "dashboard.filters.role",
+												options: [
+													{ value: "all", labelKey: "dashboard.filters.all" },
+													...availableRoles.map((role) => ({
+														value: role,
+														labelKey: role
+													}))
+												]
+											},
+											{
+												key: "englishLevel",
+												labelKey: "dashboard.filters.englishLevel",
+												options: [
+													{ value: "all", labelKey: "dashboard.filters.all" },
+													{ value: "native", labelKey: "applicationForm.fields.englishLevel.options.native" },
+													{ value: "fluent", labelKey: "applicationForm.fields.englishLevel.options.fluent" },
+													{ value: "advanced", labelKey: "applicationForm.fields.englishLevel.options.advanced" },
+													{ value: "intermediate", labelKey: "applicationForm.fields.englishLevel.options.intermediate" },
+													{ value: "basic", labelKey: "applicationForm.fields.englishLevel.options.basic" }
+												]
+											}
+										]}
+									/>
 									<Table>
 										<TableHeader>
 											<TableRow>
@@ -714,6 +817,45 @@ export default function DashboardClient({
 									<CardDescription>{t("dashboard.hiringRequests.description")}</CardDescription>
 								</CardHeader>
 								<CardContent>
+									<FilterBar
+										filters={{
+											applicationStatus: hiringRequestFilters.applicationStatus || "all",
+											requestStatus: hiringRequestFilters.requestStatus || "all"
+										}}
+										onFilterChange={(key, value) => handleFilterChange("request", key, value)}
+										onClearFilters={() => handleClearFilters("request")}
+										filterConfig={[
+											{
+												key: "applicationStatus",
+												labelKey: "dashboard.filters.applicationStatus",
+												options: [
+													{ value: "all", labelKey: "dashboard.filters.all" },
+													{ value: "under_review", labelKey: "dashboard.hiringRequests.applicationStatus.under_review" },
+													{
+														value: "reviewing_candidates",
+														labelKey: "dashboard.hiringRequests.applicationStatus.reviewing_candidates"
+													},
+													{
+														value: "interviewing_candidates",
+														labelKey: "dashboard.hiringRequests.applicationStatus.interviewing_candidates"
+													},
+													{ value: "negotiating", labelKey: "dashboard.hiringRequests.applicationStatus.negotiating" },
+													{ value: "matched", labelKey: "dashboard.hiringRequests.applicationStatus.matched" },
+													{ value: "rejected", labelKey: "dashboard.hiringRequests.applicationStatus.rejected" }
+												]
+											},
+											{
+												key: "requestStatus",
+												labelKey: "dashboard.filters.requestStatus",
+												options: [
+													{ value: "all", labelKey: "dashboard.filters.all" },
+													{ value: "open", labelKey: "dashboard.hiringRequests.status.open" },
+													{ value: "filled", labelKey: "dashboard.hiringRequests.status.filled" },
+													{ value: "cancelled", labelKey: "dashboard.hiringRequests.status.cancelled" }
+												]
+											}
+										]}
+									/>
 									<Table>
 										<TableHeader>
 											<TableRow>

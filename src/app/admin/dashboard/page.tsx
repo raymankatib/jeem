@@ -3,14 +3,75 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabaseServer";
 import DashboardClient from "./DashboardClient";
 import type { PaginationInfo } from "@/lib/types/pagination";
+import type {
+	TalentFilters,
+	HiringRequestFilters,
+	TalentStatusFilter,
+	TalentEnglishFilter,
+	HiringRequestAppStatusFilter,
+	HiringRequestStatusFilter
+} from "@/lib/types/filters";
+import {
+	VALID_TALENT_STATUSES,
+	VALID_ENGLISH_LEVELS,
+	VALID_REQUEST_APP_STATUSES,
+	VALID_REQUEST_STATUSES
+} from "@/lib/types/filters";
+import { CONFIG } from "@/lib/config";
 
 const PAGE_SIZE: number = 20;
+
+// Helper functions to apply filters to Supabase queries
+function applyTalentFilters<T extends { eq: (column: string, value: string) => T }>(
+	query: T,
+	filters: TalentFilters
+): T {
+	let filteredQuery = query;
+
+	if (filters.status && filters.status !== "all") {
+		filteredQuery = filteredQuery.eq("application_status", filters.status);
+	}
+
+	if (filters.role && filters.role !== "all") {
+		filteredQuery = filteredQuery.eq("role", filters.role);
+	}
+
+	if (filters.englishLevel && filters.englishLevel !== "all") {
+		filteredQuery = filteredQuery.eq("english_level", filters.englishLevel);
+	}
+
+	return filteredQuery;
+}
+
+function applyHiringRequestFilters<T extends { eq: (column: string, value: string) => T }>(
+	query: T,
+	filters: HiringRequestFilters
+): T {
+	let filteredQuery = query;
+
+	if (filters.applicationStatus && filters.applicationStatus !== "all") {
+		filteredQuery = filteredQuery.eq("application_status", filters.applicationStatus);
+	}
+
+	if (filters.requestStatus && filters.requestStatus !== "all") {
+		filteredQuery = filteredQuery.eq("request_status", filters.requestStatus);
+	}
+
+	return filteredQuery;
+}
 
 interface PageProps {
 	searchParams: Promise<{
 		talentPage?: string;
 		companyPage?: string;
 		requestPage?: string;
+		// Filter params - Talents
+		talentStatus?: string;
+		talentRole?: string;
+		talentEnglish?: string;
+		// Filter params - Hiring Requests
+		requestAppStatus?: string;
+		requestStatus?: string;
 	}>;
 }
 
@@ -42,13 +103,37 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 	const companyOffset = (companyPage - 1) * PAGE_SIZE;
 	const requestOffset = (requestPage - 1) * PAGE_SIZE;
 
+	// Parse and validate filter params
+	const talentFilters: TalentFilters = {
+		status: VALID_TALENT_STATUSES.includes(params.talentStatus as TalentStatusFilter)
+			? (params.talentStatus as TalentStatusFilter)
+			: "all",
+		role: params.talentRole || "all",
+		englishLevel: VALID_ENGLISH_LEVELS.includes(params.talentEnglish as TalentEnglishFilter)
+			? (params.talentEnglish as TalentEnglishFilter)
+			: "all"
+	};
+
+	const hiringRequestFilters: HiringRequestFilters = {
+		applicationStatus: VALID_REQUEST_APP_STATUSES.includes(params.requestAppStatus as HiringRequestAppStatusFilter)
+			? (params.requestAppStatus as HiringRequestAppStatusFilter)
+			: "all",
+		requestStatus: VALID_REQUEST_STATUSES.includes(params.requestStatus as HiringRequestStatusFilter)
+			? (params.requestStatus as HiringRequestStatusFilter)
+			: "all"
+	};
+
 	// Fetch talents and companies data
 	const supabaseAdmin = getSupabaseAdmin();
 
-	// Fetch talents with pagination
-	const { data: talents, count: talentCount } = await supabaseAdmin
-		.from("talents")
-		.select("*", { count: "exact" })
+	// Fetch talents with pagination and filters
+	let talentQuery = supabaseAdmin.from("talents").select("*", { count: "exact" });
+
+	// Apply filters
+	talentQuery = applyTalentFilters(talentQuery, talentFilters);
+
+	// Apply ordering and pagination
+	const { data: talents, count: talentCount } = await talentQuery
 		.order("created_at", { ascending: false })
 		.range(talentOffset, talentOffset + PAGE_SIZE - 1);
 
@@ -59,11 +144,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 		.order("created_at", { ascending: false })
 		.range(companyOffset, companyOffset + PAGE_SIZE - 1);
 
-	// Fetch hiring requests with company info and pagination
-	const { data: hiringRequests, count: requestCount } = await supabaseAdmin
-		.from("hiring_requests")
-		.select(
-			`
+	// Fetch hiring requests with company info, pagination, and filters
+	let hiringRequestQuery = supabaseAdmin.from("hiring_requests").select(
+		`
       *,
       companies:company_id (
         id,
@@ -72,8 +155,14 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         email
       )
     `,
-			{ count: "exact" }
-		)
+		{ count: "exact" }
+	);
+
+	// Apply filters
+	hiringRequestQuery = applyHiringRequestFilters(hiringRequestQuery, hiringRequestFilters);
+
+	// Apply ordering and pagination
+	const { data: hiringRequests, count: requestCount } = await hiringRequestQuery
 		.order("created_at", { ascending: false })
 		.range(requestOffset, requestOffset + PAGE_SIZE - 1);
 
@@ -132,10 +221,13 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 			user={user}
 			talents={talentsWithSignedUrls}
 			talentPagination={talentPagination}
+			talentFilters={talentFilters}
+			availableRoles={CONFIG.roles_list}
 			companies={companies || []}
 			companyPagination={companyPagination}
 			hiringRequests={hiringRequests || []}
 			requestPagination={requestPagination}
+			hiringRequestFilters={hiringRequestFilters}
 		/>
 	);
 }

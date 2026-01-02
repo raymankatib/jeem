@@ -1025,6 +1025,20 @@
 			"talents": "المواهب",
 			"companies": "الشركات"
 		},
+		"filters": {
+			"label": "الفلاتر",
+			"clear": "مسح الفلاتر",
+			"all": "الكل",
+			"talentStatus": "حالة الطلب",
+			"role": "الدور",
+			"englishLevel": "مستوى الإنجليزية",
+			"applicationStatus": "حالة الطلب",
+			"requestStatus": "حالة الطلب",
+			"roles": {
+				"developer": "مطور",
+				"designer": "مصمم"
+			}
+		},
 		"status": {
 			"talent": {
 				"underReview": "قيد المراجعة",
