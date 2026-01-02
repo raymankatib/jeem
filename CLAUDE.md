@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 **Jeem** is a bilingual (English/Arabic) talent matching platform built with Next.js that connects companies with pre-vetted developers and designers. The platform includes:
+
 - Public landing pages for talent applications and company hiring requests
 - Admin dashboard for managing applications, statuses, and matching
 - Automated email notifications in both languages
@@ -61,11 +62,13 @@ src/app/
 Three main tables in Supabase:
 
 1. **`talents`**: Developer/designer applications
+
    - Links to auth.users via `user_id`
    - Fields: name, email, role, portfolio, CV, status tracking, UTM params
    - Status flow: under_review → interviewing → training → pending_matching → matched → rejected
 
 2. **`companies`**: Company profiles (created from hiring request forms)
+
    - Links to auth.users via `user_id`
    - Fields: company_name, contact info, industry, size, website
 
@@ -82,11 +85,13 @@ Three main tables in Supabase:
 **Three different clients for different contexts:**
 
 1. **Browser Client** (`src/lib/supabase/client.ts`):
+
    - Uses `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - For client components
    - Row-Level Security (RLS) applies
 
 2. **Server Client** (`src/lib/supabase/server.ts`):
+
    - Uses cookies for session management
    - For Server Components and API routes with user context
    - RLS applies based on authenticated user
@@ -99,6 +104,7 @@ Three main tables in Supabase:
    - Used in admin dashboard for cross-user data access
 
 **When to use which:**
+
 - Use admin client (`getSupabaseAdmin()`) for admin operations that need to bypass RLS
 - Use server client (`createServerSupabaseClient()`) for user-scoped operations
 - Use browser client (`createClient()`) in client components
@@ -106,6 +112,7 @@ Three main tables in Supabase:
 ### Authentication Flow
 
 **Admin Authentication:**
+
 - Admins log in via `/admin/login` using Supabase Auth
 - Admin role is set via `auth.users.user_metadata.role = "admin"`
 - Must be manually set in database (not via registration)
@@ -113,6 +120,7 @@ Three main tables in Supabase:
 - Dashboard redirects non-admins to home page
 
 **User Authentication:**
+
 - Talents/companies create accounts during application
 - Auto-confirmed email (no verification flow yet)
 - Password stored via Supabase Auth
@@ -120,12 +128,14 @@ Three main tables in Supabase:
 ### Internationalization (i18n)
 
 **Structure:**
+
 - Translation files: `/public/locales/{en,ar}/translation.json`
 - Loaded via HTTP backend (i18next-http-backend)
 - Language detection: localStorage → browser navigator
 - Client-side only (no SSR translations yet)
 
 **Usage Pattern:**
+
 ```tsx
 import { useTranslation } from "react-i18next";
 
@@ -134,6 +144,7 @@ const { t } = useTranslation();
 ```
 
 **RTL Support:**
+
 - Arabic pages use `dir="rtl"` automatically
 - Email templates have separate HTML for RTL
 
@@ -142,12 +153,14 @@ const { t } = useTranslation();
 **Provider**: Resend API
 
 **Email types:**
+
 1. Talent confirmation (on application)
 2. Company confirmation (on hiring request)
 3. Talent status updates (when admin changes status)
 4. Company status updates (when admin changes status)
 
 **Pattern:**
+
 - All emails support English/Arabic
 - Templates in `src/lib/email.ts`
 - Idempotency keys prevent duplicate sends
@@ -159,19 +172,23 @@ const { t } = useTranslation();
 **Common patterns across API routes:**
 
 1. **Rate Limiting** (in-memory, see `/api/talents/route.ts`):
+
    - IP-based hashing with salt
    - Simple in-memory map (not distributed)
    - Should use Redis/Upstash for production multi-instance deployments
 
 2. **Validation**:
+
    - Zod schemas for all inputs
    - Return `400` with detailed field errors on validation failure
 
 3. **Honeypot Protection**:
+
    - `honey` field in forms - should remain empty
    - If filled, return success without processing (don't reveal honeypot)
 
 4. **Error Handling**:
+
    - Console.error for debugging
    - Generic user-facing messages (don't leak internals)
    - `500` for server errors, `400` for client errors, `429` for rate limits
@@ -195,6 +212,7 @@ src/components/
 ```
 
 **UI Components** (`src/components/ui/`):
+
 - Built on Radix UI primitives
 - Styled with Tailwind + `class-variance-authority`
 - Follow shadcn/ui patterns
@@ -202,12 +220,14 @@ src/components/
 ### File Upload (CV)
 
 **Storage**: Supabase Storage bucket `talent-cvs`
+
 - Bucket is **private** (not publicly accessible)
 - Upload endpoint: `/api/upload-cv`
 - Signed URLs generated on-demand (expires in 1 hour)
 - Pattern in `/admin/dashboard/page.tsx` lines 81-106
 
 **Upload Flow:**
+
 1. Client uploads to `/api/upload-cv` with file blob
 2. API validates, uploads to Supabase Storage
 3. Returns public URL (for storage path reference)
@@ -281,6 +301,7 @@ IP_HASH_SALT=                    # For rate limiting IP hashing
 3. **Path Alias**: `@/*` maps to `src/*` (configured in `tsconfig.json`)
 
 4. **Admin Dashboard Pattern**:
+
    - Server component (`page.tsx`) fetches data, checks auth
    - Passes data to Client component (`DashboardClient.tsx`)
    - Client component handles all interactivity
@@ -291,8 +312,6 @@ IP_HASH_SALT=                    # For rate limiting IP hashing
    - Use logical properties: `ms-4` (margin-inline-start), `me-4` (margin-inline-end)
    - These automatically flip for RTL languages
    - Avoid `ml-4` / `mr-4` in bilingual components
-
-7. **MATCHING_IMPLEMENTATION_PLAN.md**: Contains detailed implementation plan for the talent-hiring request matching feature (reference this for matching system details)
 
 ## Testing Checklist for New Features
 
