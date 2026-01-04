@@ -28,8 +28,8 @@
 	},
 	"hero": {
 		"kicker": "Syrian-built • Working with teams at leading companies",
-		"headline": "Join the network where",
-		"headlineAccent": "builders ship",
+		"headline": "New way to work",
+		"headlineAccent": "",
 		"subheadline": "Get matched with real work from serious teams. Grow your craft, earn in USD, and be part of a community that values quality over quantity.",
 		"primaryCta": "Apply to Jeem",
 		"secondaryCta": "See roles",
@@ -385,7 +385,7 @@
 			},
 			{
 				"question": "How does payment work?",
-				"answer": "You're paid in USD, typically via bank transfer or Wise. Rates are agreed upfront before any project starts. We don't take cuts from your pay — our fee is on the client side."
+				"answer": "Most likely by cash. Rates are agreed upfront before any project starts. We don't take cuts from your pay — our fee is on the client side."
 			},
 			{
 				"question": "What timezones do you work with?",
@@ -1067,6 +1067,16 @@
 			"description": "Your account information",
 			"email": "Email",
 			"name": "Name"
+		},
+		"profileImage": {
+			"upload": "Upload Photo",
+			"change": "Change Photo",
+			"success": "Profile image updated successfully",
+			"errors": {
+				"invalidType": "Only JPG, PNG, and WebP images are allowed",
+				"tooLarge": "Image must be less than 2MB",
+				"uploadFailed": "Failed to upload image. Please try again."
+			}
 		},
 		"stats": {
 			"totalTalents": "Total Talents",

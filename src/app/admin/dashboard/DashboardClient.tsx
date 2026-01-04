@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -49,6 +50,8 @@ interface Talent {
 	tools: string | null;
 	cv_url: string | null;
 	cv_filename: string | null;
+	image_url: string | null;
+	image_filename: string | null;
 	email_status: string | null;
 	application_status: TalentStatus;
 	salary?: number | null;
@@ -143,6 +146,12 @@ export default function DashboardClient({
 		requestId: string;
 		requestTitle: string;
 		talentId: string;
+		talentName: string;
+	} | null>(null);
+
+	const [imagePreview, setImagePreview] = useState<{
+		isOpen: boolean;
+		imageUrl: string;
 		talentName: string;
 	} | null>(null);
 
@@ -577,7 +586,24 @@ export default function DashboardClient({
 											) : (
 												talents.map((talent) => (
 													<TableRow key={talent.id}>
-														<TableCell className="font-medium">{talent.name}</TableCell>
+														<TableCell className="font-medium">
+															<div className="flex items-center gap-3">
+																{talent.image_url ? (
+																	<Image
+																		src={talent.image_url}
+																		alt={talent.name}
+																		width={32}
+																		height={32}
+																		className="rounded-full object-cover"
+																	/>
+																) : (
+																	<div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+																		<UserIcon className="h-4 w-4 text-muted-foreground" />
+																	</div>
+																)}
+																<span>{talent.name}</span>
+															</div>
+														</TableCell>
 														<TableCell>
 															<a
 																href={`mailto:${talent.email}`}
@@ -1019,6 +1045,33 @@ export default function DashboardClient({
 							</DialogHeader>
 							{selectedTalent && (
 								<div className="space-y-4 mt-4">
+									{/* Profile Image */}
+									{selectedTalent.image_url && (
+										<div className="flex justify-center pb-4 border-b">
+											<button
+												onClick={() =>
+													setImagePreview({
+														isOpen: true,
+														imageUrl: selectedTalent.image_url!,
+														talentName: selectedTalent.name
+													})
+												}
+												className="relative group cursor-pointer"
+											>
+												<Image
+													src={selectedTalent.image_url}
+													alt={selectedTalent.name}
+													width={120}
+													height={120}
+													className="rounded-full object-cover border-4 border-primary/10 transition-all group-hover:border-primary/30"
+												/>
+												<div className="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/10 transition-all flex items-center justify-center">
+													<Eye className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+												</div>
+											</button>
+										</div>
+									)}
+
 									<div className="grid grid-cols-2 gap-4">
 										<div>
 											<label className="text-sm font-medium text-muted-foreground">
@@ -1795,6 +1848,27 @@ export default function DashboardClient({
 										: t("dashboard.hiringRequests.unmatch.confirmButton")}
 								</Button>
 							</div>
+						</DialogContent>
+					</Dialog>
+
+					{/* Image Preview Dialog */}
+					<Dialog open={imagePreview?.isOpen || false} onOpenChange={() => setImagePreview(null)}>
+						<DialogContent className="max-w-3xl">
+							<DialogHeader>
+								<DialogTitle>{imagePreview?.talentName}</DialogTitle>
+								<DialogDescription>Profile Image</DialogDescription>
+							</DialogHeader>
+							{imagePreview && (
+								<div className="flex justify-center p-4">
+									<Image
+										src={imagePreview.imageUrl}
+										alt={imagePreview.talentName}
+										width={500}
+										height={500}
+										className="rounded-lg object-contain max-h-[70vh]"
+									/>
+								</div>
+							)}
 						</DialogContent>
 					</Dialog>
 				</div>

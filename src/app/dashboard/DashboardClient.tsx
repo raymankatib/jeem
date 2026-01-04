@@ -26,6 +26,7 @@ import { Badge } from "@/components/ui/badge";
 import type { User } from "@supabase/supabase-js";
 import { AuthNav } from "@/components/auth-nav";
 import { HiringRequestForm } from "@/components/dashboard/HiringRequestForm";
+import { ProfileImageUpload } from "@/components/dashboard/ProfileImageUpload";
 
 type TalentStatus = "under_review" | "interviewing" | "training" | "pending_matching" | "matched" | "rejected";
 
@@ -42,6 +43,8 @@ interface Talent {
 	tools: string | null;
 	cv_url: string | null;
 	cv_filename: string | null;
+	image_url: string | null;
+	image_filename: string | null;
 	email_status: string | null;
 	application_status: TalentStatus;
 	created_at?: string;
@@ -171,11 +174,9 @@ export default function DashboardClient({
 					{talentProfile && (
 						<Card>
 							<CardHeader>
-								<div className="flex items-center gap-3">
-									<div className="p-2 bg-primary/10 rounded-lg">
-										<UserIcon className="h-6 w-6" />
-									</div>
-									<div>
+								<div className="flex items-center gap-4">
+									<ProfileImageUpload currentImageUrl={talentProfile.image_url} talentName={talentProfile.name} />
+									<div className="flex-1">
 										<CardTitle>{talentProfile.name}</CardTitle>
 										<CardDescription>{talentProfile.role}</CardDescription>
 									</div>
