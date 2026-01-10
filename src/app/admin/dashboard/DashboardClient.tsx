@@ -10,7 +10,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { RichTextEditor } from "@/components/rich-text-editor";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import {
@@ -153,6 +162,14 @@ export default function DashboardClient({
 		isOpen: boolean;
 		imageUrl: string;
 		talentName: string;
+	} | null>(null);
+
+	const [emailDialog, setEmailDialog] = useState<{
+		isOpen: boolean;
+		talent: Talent | null;
+		subject: string;
+		body: string;
+		isSending: boolean;
 	} | null>(null);
 
 	const [availableTalents, setAvailableTalents] = useState<Talent[]>([]);
@@ -427,6 +444,96 @@ export default function DashboardClient({
 		}
 	};
 
+	const handleOpenEmailDialog = (talent: Talent) => {
+		setEmailDialog({
+			isOpen: true,
+			talent: talent,
+			subject: "",
+			body: "",
+			isSending: false
+		});
+	};
+
+	const handleCloseEmailDialog = () => {
+		setEmailDialog(null);
+	};
+
+	const handleSubjectChange = (value: string) => {
+		if (emailDialog) {
+			setEmailDialog({
+				...emailDialog,
+				subject: value
+			});
+		}
+	};
+
+	const handleBodyChange = (value: string) => {
+		if (emailDialog) {
+			setEmailDialog({
+				...emailDialog,
+				body: value
+			});
+		}
+	};
+
+	const handleSendEmail = async () => {
+		if (!emailDialog || !emailDialog.talent) return;
+
+		// Validate fields
+		if (!emailDialog.subject.trim()) {
+			toast.error(t("dashboard.talents.email.subjectRequired"));
+			return;
+		}
+
+		if (!emailDialog.body.trim()) {
+			toast.error(t("dashboard.talents.email.bodyRequired"));
+			return;
+		}
+
+		// Set sending state
+		setEmailDialog({
+			...emailDialog,
+			isSending: true
+		});
+
+		try {
+			const response = await fetch(`/api/talents/${emailDialog.talent.id}/send-email`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					subject: emailDialog.subject,
+					body: emailDialog.body
+				})
+			});
+
+			const result = await response.json();
+
+			if (response.ok && result.success) {
+				toast.success(t("dashboard.talents.email.sendSuccess"));
+				handleCloseEmailDialog();
+			} else {
+				toast.error(result.error || t("dashboard.talents.email.sendError"));
+				// Reset sending state on error
+				setEmailDialog({
+					...emailDialog,
+					isSending: false
+				});
+			}
+		} catch (error) {
+			console.error("Error sending email:", error);
+			toast.error(t("dashboard.talents.email.sendError"));
+			// Reset sending state on error
+			if (emailDialog) {
+				setEmailDialog({
+					...emailDialog,
+					isSending: false
+				});
+			}
+		}
+	};
+
 	const talentStatuses: { value: TalentStatus; labelKey: string }[] = [
 		{ value: "under_review", labelKey: "dashboard.status.talent.underReview" },
 		{ value: "interviewing", labelKey: "dashboard.status.talent.interviewing" },
@@ -553,7 +660,10 @@ export default function DashboardClient({
 													{ value: "native", labelKey: "applicationForm.fields.englishLevel.options.native" },
 													{ value: "fluent", labelKey: "applicationForm.fields.englishLevel.options.fluent" },
 													{ value: "advanced", labelKey: "applicationForm.fields.englishLevel.options.advanced" },
-													{ value: "intermediate", labelKey: "applicationForm.fields.englishLevel.options.intermediate" },
+													{
+														value: "intermediate",
+														labelKey: "applicationForm.fields.englishLevel.options.intermediate"
+													},
 													{ value: "basic", labelKey: "applicationForm.fields.englishLevel.options.basic" }
 												]
 											}
@@ -645,7 +755,11 @@ export default function DashboardClient({
 														<TableCell>
 															<input
 																type="number"
-																value={salaryEdits[talent.id] !== undefined ? salaryEdits[talent.id] || "" : talent.salary || ""}
+																value={
+																	salaryEdits[talent.id] !== undefined
+																		? salaryEdits[talent.id] || ""
+																		: talent.salary || ""
+																}
 																onChange={(e) => handleSalaryChange(talent.id, e.target.value)}
 																onBlur={(e) => handleSalaryUpdate(talent.id, e.target.value)}
 																placeholder="Enter salary"
@@ -706,15 +820,26 @@ export default function DashboardClient({
 															</Select>
 														</TableCell>
 														<TableCell>
-															<Button
-																variant="ghost"
-																size="sm"
-																onClick={() => setSelectedTalent(talent)}
-																className="h-8"
-															>
-																<Eye className="h-4 w-4 me-1" />
-																{t("dashboard.talents.table.details")}
-															</Button>
+															<div className="flex items-center gap-2">
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	onClick={() => handleOpenEmailDialog(talent)}
+																	className="h-8"
+																>
+																	<Mail className="h-4 w-4 me-1" />
+																	{t("dashboard.talents.email.button")}
+																</Button>
+																<Button
+																	variant="ghost"
+																	size="sm"
+																	onClick={() => setSelectedTalent(talent)}
+																	className="h-8"
+																>
+																	<Eye className="h-4 w-4 me-1" />
+																	{t("dashboard.talents.table.details")}
+																</Button>
+															</div>
 														</TableCell>
 													</TableRow>
 												))
@@ -856,7 +981,10 @@ export default function DashboardClient({
 												labelKey: "dashboard.filters.applicationStatus",
 												options: [
 													{ value: "all", labelKey: "dashboard.filters.all" },
-													{ value: "under_review", labelKey: "dashboard.hiringRequests.applicationStatus.under_review" },
+													{
+														value: "under_review",
+														labelKey: "dashboard.hiringRequests.applicationStatus.under_review"
+													},
 													{
 														value: "reviewing_candidates",
 														labelKey: "dashboard.hiringRequests.applicationStatus.reviewing_candidates"
@@ -944,45 +1072,45 @@ export default function DashboardClient({
 																	{t(`dashboard.hiringRequests.status.${request.request_status}`)}
 																</Badge>
 															</TableCell>
-														<TableCell>
-															<Select
-																value={request.application_status}
-																onValueChange={(value) => {
-																	setStatusConfirmDialog({
-																		isOpen: true,
-																		type: "request",
-																		id: request.id,
-																		currentStatus: request.application_status,
-																		newStatus: value,
-																		name: request.request_title
-																	});
-																}}
-															>
-																<SelectTrigger className="w-[200px]">
-																	<SelectValue />
-																</SelectTrigger>
-																<SelectContent>
-																	<SelectItem value="under_review">
-																		{t("dashboard.hiringRequests.applicationStatus.under_review")}
-																	</SelectItem>
-																	<SelectItem value="reviewing_candidates">
-																		{t("dashboard.hiringRequests.applicationStatus.reviewing_candidates")}
-																	</SelectItem>
-																	<SelectItem value="interviewing_candidates">
-																		{t("dashboard.hiringRequests.applicationStatus.interviewing_candidates")}
-																	</SelectItem>
-																	<SelectItem value="negotiating">
-																		{t("dashboard.hiringRequests.applicationStatus.negotiating")}
-																	</SelectItem>
-																	<SelectItem value="matched">
-																		{t("dashboard.hiringRequests.applicationStatus.matched")}
-																	</SelectItem>
-																	<SelectItem value="rejected">
-																		{t("dashboard.hiringRequests.applicationStatus.rejected")}
-																	</SelectItem>
-																</SelectContent>
-															</Select>
-														</TableCell>
+															<TableCell>
+																<Select
+																	value={request.application_status}
+																	onValueChange={(value) => {
+																		setStatusConfirmDialog({
+																			isOpen: true,
+																			type: "request",
+																			id: request.id,
+																			currentStatus: request.application_status,
+																			newStatus: value,
+																			name: request.request_title
+																		});
+																	}}
+																>
+																	<SelectTrigger className="w-[200px]">
+																		<SelectValue />
+																	</SelectTrigger>
+																	<SelectContent>
+																		<SelectItem value="under_review">
+																			{t("dashboard.hiringRequests.applicationStatus.under_review")}
+																		</SelectItem>
+																		<SelectItem value="reviewing_candidates">
+																			{t("dashboard.hiringRequests.applicationStatus.reviewing_candidates")}
+																		</SelectItem>
+																		<SelectItem value="interviewing_candidates">
+																			{t("dashboard.hiringRequests.applicationStatus.interviewing_candidates")}
+																		</SelectItem>
+																		<SelectItem value="negotiating">
+																			{t("dashboard.hiringRequests.applicationStatus.negotiating")}
+																		</SelectItem>
+																		<SelectItem value="matched">
+																			{t("dashboard.hiringRequests.applicationStatus.matched")}
+																		</SelectItem>
+																		<SelectItem value="rejected">
+																			{t("dashboard.hiringRequests.applicationStatus.rejected")}
+																		</SelectItem>
+																	</SelectContent>
+																</Select>
+															</TableCell>
 															<TableCell>{formatDate(request.created_at)}</TableCell>
 															<TableCell>
 																<div className="flex items-center gap-2">
@@ -1190,74 +1318,79 @@ export default function DashboardClient({
 									</div>
 
 									{/* Matched Hiring Request Section */}
-									{selectedTalent.application_status === "matched" && (() => {
-										const matchedRequest = hiringRequests.find((r) => r.matched_talent_id === selectedTalent.id);
-										return matchedRequest ? (
-											<div className="border-t pt-4">
-												<h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
-													<FileText className="h-4 w-4" />
-													{t("dashboard.talents.details.matchedRequest")}
-												</h4>
-												<div className="space-y-3 bg-muted/50 rounded-lg p-4">
-													<div className="grid grid-cols-2 gap-4">
-														<div>
-															<label className="text-xs font-medium text-muted-foreground">
-																{t("dashboard.hiringRequests.table.requestTitle")}
-															</label>
-															<p className="text-sm mt-1 font-medium">{matchedRequest.request_title}</p>
-														</div>
-														<div>
-															<label className="text-xs font-medium text-muted-foreground">
-																{t("dashboard.hiringRequests.table.company")}
-															</label>
-															<p className="text-sm mt-1 font-medium">{matchedRequest.companies?.company_name}</p>
-															<p className="text-xs text-muted-foreground">{matchedRequest.companies?.contact_name}</p>
-														</div>
-														<div>
-															<label className="text-xs font-medium text-muted-foreground">
-																{t("dashboard.hiringRequests.table.role")}
-															</label>
-															<p className="text-sm mt-1">{matchedRequest.roles_needed}</p>
-														</div>
-														<div>
-															<label className="text-xs font-medium text-muted-foreground">
-																{t("dashboard.hiringRequests.table.projectType")}
-															</label>
-															<p className="text-sm mt-1">
-																<Badge variant="outline" className="text-xs">{matchedRequest.project_type}</Badge>
-															</p>
-														</div>
-														{matchedRequest.budget_range && (
+									{selectedTalent.application_status === "matched" &&
+										(() => {
+											const matchedRequest = hiringRequests.find((r) => r.matched_talent_id === selectedTalent.id);
+											return matchedRequest ? (
+												<div className="border-t pt-4">
+													<h4 className="text-sm font-semibold mb-3 flex items-center gap-2">
+														<FileText className="h-4 w-4" />
+														{t("dashboard.talents.details.matchedRequest")}
+													</h4>
+													<div className="space-y-3 bg-muted/50 rounded-lg p-4">
+														<div className="grid grid-cols-2 gap-4">
 															<div>
 																<label className="text-xs font-medium text-muted-foreground">
-																	{t("dashboard.hiringRequests.table.budget")}
+																	{t("dashboard.hiringRequests.table.requestTitle")}
 																</label>
-																<p className="text-sm mt-1">{matchedRequest.budget_range}</p>
+																<p className="text-sm mt-1 font-medium">{matchedRequest.request_title}</p>
 															</div>
-														)}
-														{matchedRequest.matched_at && (
 															<div>
 																<label className="text-xs font-medium text-muted-foreground">
-																	{t("dashboard.talents.details.matchedDate")}
+																	{t("dashboard.hiringRequests.table.company")}
 																</label>
-																<p className="text-sm mt-1">{formatDate(matchedRequest.matched_at)}</p>
+																<p className="text-sm mt-1 font-medium">{matchedRequest.companies?.company_name}</p>
+																<p className="text-xs text-muted-foreground">
+																	{matchedRequest.companies?.contact_name}
+																</p>
+															</div>
+															<div>
+																<label className="text-xs font-medium text-muted-foreground">
+																	{t("dashboard.hiringRequests.table.role")}
+																</label>
+																<p className="text-sm mt-1">{matchedRequest.roles_needed}</p>
+															</div>
+															<div>
+																<label className="text-xs font-medium text-muted-foreground">
+																	{t("dashboard.hiringRequests.table.projectType")}
+																</label>
+																<p className="text-sm mt-1">
+																	<Badge variant="outline" className="text-xs">
+																		{matchedRequest.project_type}
+																	</Badge>
+																</p>
+															</div>
+															{matchedRequest.budget_range && (
+																<div>
+																	<label className="text-xs font-medium text-muted-foreground">
+																		{t("dashboard.hiringRequests.table.budget")}
+																	</label>
+																	<p className="text-sm mt-1">{matchedRequest.budget_range}</p>
+																</div>
+															)}
+															{matchedRequest.matched_at && (
+																<div>
+																	<label className="text-xs font-medium text-muted-foreground">
+																		{t("dashboard.talents.details.matchedDate")}
+																	</label>
+																	<p className="text-sm mt-1">{formatDate(matchedRequest.matched_at)}</p>
+																</div>
+															)}
+														</div>
+														{matchedRequest.project_description && (
+															<div className="pt-2 border-t">
+																<label className="text-xs font-medium text-muted-foreground">
+																	{t("dashboard.hiringRequests.details.projectDescription")}
+																</label>
+																<p className="text-xs mt-1 text-muted-foreground line-clamp-3">
+																	{matchedRequest.project_description}
+																</p>
 															</div>
 														)}
 													</div>
-													{matchedRequest.project_description && (
-														<div className="pt-2 border-t">
-															<label className="text-xs font-medium text-muted-foreground">
-																{t("dashboard.hiringRequests.details.projectDescription")}
-															</label>
-															<p className="text-xs mt-1 text-muted-foreground line-clamp-3">
-																{matchedRequest.project_description}
-															</p>
-														</div>
-													)}
 												</div>
-											</div>
-										) : null;
-									})()}
+											) : null;
+										})()}
 								</div>
 							)}
 						</DialogContent>
@@ -1699,17 +1832,13 @@ export default function DashboardClient({
 								<div className="space-y-4 py-4">
 									<div className="space-y-2">
 										<p className="text-sm">
-											<span className="font-medium">
-												{t("dashboard.hiringRequests.table.requestTitle")}:
-											</span>{" "}
+											<span className="font-medium">{t("dashboard.hiringRequests.table.requestTitle")}:</span>{" "}
 											{matchDialog.requestTitle}
 										</p>
 									</div>
 
 									<div className="space-y-2">
-										<label className="text-sm font-medium">
-											{t("dashboard.hiringRequests.match.selectTalent")}
-										</label>
+										<label className="text-sm font-medium">{t("dashboard.hiringRequests.match.selectTalent")}</label>
 										{isLoadingTalents ? (
 											<div className="flex items-center justify-center py-8">
 												<div className="text-sm text-muted-foreground">
@@ -1719,9 +1848,7 @@ export default function DashboardClient({
 										) : availableTalents.length === 0 ? (
 											<div className="flex flex-col items-center justify-center py-8 text-center">
 												<Users className="h-12 w-12 text-muted-foreground mb-2" />
-												<p className="text-sm font-medium">
-													{t("dashboard.hiringRequests.match.noTalentsAvailable")}
-												</p>
+												<p className="text-sm font-medium">{t("dashboard.hiringRequests.match.noTalentsAvailable")}</p>
 												<p className="text-xs text-muted-foreground mt-1">
 													{t("dashboard.hiringRequests.match.noTalentsAvailableDesc")}
 												</p>
@@ -1729,9 +1856,7 @@ export default function DashboardClient({
 										) : (
 											<Select value={selectedTalentId} onValueChange={setSelectedTalentId}>
 												<SelectTrigger>
-													<SelectValue
-														placeholder={t("dashboard.hiringRequests.match.selectTalentPlaceholder")}
-													/>
+													<SelectValue placeholder={t("dashboard.hiringRequests.match.selectTalentPlaceholder")} />
 												</SelectTrigger>
 												<SelectContent>
 													{availableTalents.map((talent) => (
@@ -1750,23 +1875,17 @@ export default function DashboardClient({
 
 										{selectedTalentId && (
 											<div className="mt-4 p-4 border rounded-lg bg-muted/50">
-												<p className="text-sm font-medium mb-2">
-													{t("dashboard.hiringRequests.match.talentInfo")}
-												</p>
+												<p className="text-sm font-medium mb-2">{t("dashboard.hiringRequests.match.talentInfo")}</p>
 												{availableTalents
 													.filter((t) => t.id === selectedTalentId)
 													.map((talent) => (
 														<div key={talent.id} className="space-y-2 text-sm">
 															<div>
-																<span className="text-muted-foreground">
-																	{t("dashboard.talents.table.name")}:
-																</span>{" "}
+																<span className="text-muted-foreground">{t("dashboard.talents.table.name")}:</span>{" "}
 																<span className="font-medium">{talent.name}</span>
 															</div>
 															<div>
-																<span className="text-muted-foreground">
-																	{t("dashboard.talents.table.role")}:
-																</span>{" "}
+																<span className="text-muted-foreground">{t("dashboard.talents.table.role")}:</span>{" "}
 																{talent.role}
 															</div>
 															<div>
@@ -1777,9 +1896,7 @@ export default function DashboardClient({
 															</div>
 															{talent.tools && (
 																<div>
-																	<span className="text-muted-foreground">
-																		{t("dashboard.talents.table.tools")}:
-																	</span>{" "}
+																	<span className="text-muted-foreground">{t("dashboard.talents.table.tools")}:</span>{" "}
 																	{talent.tools}
 																</div>
 															)}
@@ -1804,30 +1921,21 @@ export default function DashboardClient({
 					</Dialog>
 
 					{/* Unmatch Talent Confirmation Dialog */}
-					<Dialog
-						open={unmatchDialog?.isOpen || false}
-						onOpenChange={(open) => !open && setUnmatchDialog(null)}
-					>
+					<Dialog open={unmatchDialog?.isOpen || false} onOpenChange={(open) => !open && setUnmatchDialog(null)}>
 						<DialogContent className="max-w-md">
 							<DialogHeader>
 								<DialogTitle>{t("dashboard.hiringRequests.unmatch.dialogTitle")}</DialogTitle>
-								<DialogDescription>
-									{t("dashboard.hiringRequests.unmatch.dialogDescription")}
-								</DialogDescription>
+								<DialogDescription>{t("dashboard.hiringRequests.unmatch.dialogDescription")}</DialogDescription>
 							</DialogHeader>
 							{unmatchDialog && (
 								<div className="space-y-4 py-4">
 									<div className="space-y-2">
 										<p className="text-sm">
-											<span className="font-medium">
-												{t("dashboard.hiringRequests.table.requestTitle")}:
-											</span>{" "}
+											<span className="font-medium">{t("dashboard.hiringRequests.table.requestTitle")}:</span>{" "}
 											{unmatchDialog.requestTitle}
 										</p>
 										<p className="text-sm">
-											<span className="font-medium">
-												{t("dashboard.hiringRequests.unmatch.currentMatch")}:
-											</span>{" "}
+											<span className="font-medium">{t("dashboard.hiringRequests.unmatch.currentMatch")}:</span>{" "}
 											{unmatchDialog.talentName}
 										</p>
 									</div>
@@ -1869,6 +1977,67 @@ export default function DashboardClient({
 									/>
 								</div>
 							)}
+						</DialogContent>
+					</Dialog>
+
+					{/* Send Email Dialog */}
+					<Dialog open={emailDialog?.isOpen || false} onOpenChange={(open) => !open && handleCloseEmailDialog()}>
+						<DialogContent className="w-[95vw] max-w-[1400px] min-h-[85vh] max-h-[95vh] flex flex-col sm:max-w-[1400px]">
+							<DialogHeader>
+								<DialogTitle>{t("dashboard.talents.email.dialogTitle")}</DialogTitle>
+								<DialogDescription>{t("dashboard.talents.email.dialogDescription")}</DialogDescription>
+							</DialogHeader>
+							<div className="flex-1 overflow-y-auto">
+								{emailDialog && emailDialog.talent && (
+									<div className="space-y-4 py-4">
+										{/* Recipient info */}
+										<div className="rounded-lg bg-muted/50 p-3">
+											<p className="text-sm">
+												<span className="font-medium">{t("dashboard.talents.email.recipient")}:</span>{" "}
+												{emailDialog.talent.name} ({emailDialog.talent.email})
+											</p>
+										</div>
+
+										{/* Subject field */}
+										<div className="space-y-2">
+											<label className="text-sm font-medium">{t("dashboard.talents.email.subject")}</label>
+											<Input
+												type="text"
+												value={emailDialog.subject}
+												onChange={(e) => handleSubjectChange(e.target.value)}
+												placeholder={t("dashboard.talents.email.subjectPlaceholder")}
+												disabled={emailDialog.isSending}
+											/>
+										</div>
+
+										{/* Body field */}
+										<div className="space-y-2">
+											<label className="text-sm font-medium">{t("dashboard.talents.email.body")}</label>
+											<RichTextEditor
+												value={emailDialog.body}
+												onChange={(content) => handleBodyChange(content)}
+												placeholder={t("dashboard.talents.email.bodyPlaceholder")}
+											/>
+										</div>
+
+										{/* Character count helper */}
+										<div className="text-xs text-muted-foreground text-end">{emailDialog.body.length} characters</div>
+									</div>
+								)}
+							</div>
+							<DialogFooter className="shrink-0">
+								<Button variant="outline" onClick={handleCloseEmailDialog} disabled={emailDialog?.isSending}>
+									{t("common.cancel")}
+								</Button>
+								<Button
+									onClick={handleSendEmail}
+									disabled={emailDialog?.isSending || !emailDialog?.subject.trim() || !emailDialog?.body.trim()}
+								>
+									{emailDialog?.isSending
+										? t("dashboard.talents.email.sending")
+										: t("dashboard.talents.email.sendButton")}
+								</Button>
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				</div>

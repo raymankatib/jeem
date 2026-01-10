@@ -1176,6 +1176,22 @@
 			"matchedProject": {
 				"title": "Your Matched Project",
 				"description": "You've been matched with this project opportunity"
+			},
+			"email": {
+				"button": "Send Email",
+				"dialogTitle": "Send Custom Email",
+				"dialogDescription": "Compose a custom email message to send to this talent",
+				"recipient": "To",
+				"subject": "Subject",
+				"subjectPlaceholder": "Enter email subject...",
+				"body": "Message",
+				"bodyPlaceholder": "Write your message here...\n\nYou can write multiple paragraphs. The formatting will be preserved in the email.",
+				"sendButton": "Send Email",
+				"sending": "Sending...",
+				"sendSuccess": "Email sent successfully",
+				"sendError": "Failed to send email",
+				"subjectRequired": "Please enter an email subject",
+				"bodyRequired": "Please enter a message"
 			}
 		},
 		"companies": {

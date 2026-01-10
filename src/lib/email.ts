@@ -787,3 +787,106 @@ export async function sendCompanyStatusUpdateEmail({
 		};
 	}
 }
+
+// ============================================================================
+// CUSTOM TALENT EMAIL (ADMIN-INITIATED)
+// ============================================================================
+
+interface SendCustomTalentEmailParams {
+	to: string;
+	name: string;
+	talentId: string;
+	subject: string;
+	body: string;
+}
+
+/**
+ * Sends a custom email from admin to a talent.
+ * Body text is preserved with line breaks and sent as-is.
+ */
+export async function sendCustomTalentEmail({
+	to,
+	name,
+	talentId,
+	subject,
+	body
+}: SendCustomTalentEmailParams): Promise<{ success: boolean; error?: string }> {
+	try {
+		const resend = getResend();
+
+		// Use timestamp for idempotency since these are one-off messages
+		const idempotencyKey = `talent-custom-${talentId}-${Date.now()}`;
+
+		const firstName = name.split(" ")[0];
+
+		// Check if body is HTML (contains HTML tags)
+		const isHtml = /<[^>]+>/.test(body);
+
+		// If HTML, use as-is. If plain text, convert to HTML with preserved line breaks
+		const htmlBody = isHtml
+			? body
+			: body
+				.split('\n')
+				.map(line => line.trim() === '' ? '<br>' : `<p style="margin: 0 0 16px 0;">${line}</p>`)
+				.join('\n');
+
+		const htmlContent = `
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+  <div style="margin-bottom: 32px;">
+    <h1 style="font-size: 24px; font-weight: 600; margin: 0 0 8px 0;">Hey ${firstName} 👋</h1>
+  </div>
+
+  <div>
+    ${htmlBody}
+  </div>
+
+  <p style="margin: 24px 0 0 0; color: #666;">
+    – The Jeem Team
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 32px 0;">
+
+  <p style="font-size: 12px; color: #999; margin: 0;">
+    You received this email because you applied to join Jeem.
+  </p>
+</body>
+</html>
+		`;
+
+		// Strip HTML tags for text version
+		const textBody = isHtml
+			? body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+			: body;
+		const textContent = `Hey ${firstName}!\n\n${textBody}\n\n– The Jeem Team`;
+
+		const { error } = await resend.emails.send({
+			from: "Jeem <hello@jeem.now>",
+			to: [to],
+			subject: subject,
+			headers: {
+				"X-Idempotency-Key": idempotencyKey
+			},
+			html: htmlContent,
+			text: textContent
+		});
+
+		if (error) {
+			console.error("Resend error:", error);
+			return { success: false, error: error.message };
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.error("Email send error:", error);
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Unknown error"
+		};
+	}
+}

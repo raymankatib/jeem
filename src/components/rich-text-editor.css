@@ -1,0 +1,111 @@
+.tiptap {
+  position: relative;
+  outline: none;
+}
+
+.tiptap .is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: none;
+}
+
+/* Ensure proper spacing for the editor content */
+.tiptap > * + * {
+  margin-top: 0.75em;
+}
+
+.tiptap p {
+  margin: 0;
+  min-height: 1.5em;
+}
+
+/* Remove default focus ring from prose */
+.tiptap.ProseMirror {
+  outline: none !important;
+}
+
+/* Style headings */
+.tiptap h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+}
+
+.tiptap h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0.83em;
+  margin-bottom: 0.83em;
+}
+
+.tiptap h3 {
+  font-size: 1.17em;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.tiptap h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 1.33em;
+  margin-bottom: 1.33em;
+}
+
+/* Style lists */
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5em;
+  margin: 0.75em 0;
+}
+
+.tiptap li {
+  margin: 0.25em 0;
+}
+
+/* Style blockquotes */
+.tiptap blockquote {
+  border-left: 3px solid var(--muted-foreground);
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+}
+
+/* Style code */
+.tiptap code {
+  background: var(--muted);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  font-size: 0.9em;
+}
+
+/* Style links */
+.tiptap a {
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Style horizontal rule */
+.tiptap hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 2em 0;
+}
+
+/* Style mark/highlight */
+.tiptap mark {
+  background-color: yellow;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+}
