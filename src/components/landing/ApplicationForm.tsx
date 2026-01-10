@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ import { ArrowLeft, ArrowRight, Loader2, CheckCircle2, FileText, Check, Chevrons
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { countryCodes } from "@/lib/country-codes";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 const roleOptions: Array<{ value: string; labelKey: string }> = [
 	{ value: "Vibe Coding Engineer", labelKey: "roles.categories.engineering.roles.vibeCodingEngineer.title" },
@@ -43,6 +45,7 @@ interface UTMParams {
 
 export function ApplicationForm() {
 	const { t, i18n } = useTranslation();
+	const router = useRouter();
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -253,29 +256,43 @@ export function ApplicationForm() {
 				return;
 			}
 
-			// Success!
-			setIsSubmitted(true);
-			toast.success(t("applicationForm.success.title"), {
-				description: t("applicationForm.success.description")
-			});
+			// Success! Now auto-login the user
+			try {
+				const supabase = createClient();
+				const { error: signInError } = await supabase.auth.signInWithPassword({
+					email: formData.email,
+					password: password
+				});
 
-			// Reset form
-			setFormData({
-				name: "",
-				email: "",
-				countryCode: "+963",
-				phoneNumber: "",
-				role: "",
-				englishLevel: "",
-				portfolio: "",
-				shipped: "",
-				tools: "",
-				honey: ""
-			});
-			setPassword("");
-			setConfirmPassword("");
-			setCvFile(null);
-			setCvError("");
+				if (signInError) {
+					console.error("Auto-login error:", signInError);
+					// Account created but login failed - ask user to login manually
+					toast.success(t("applicationForm.success.title"), {
+						description: t("applicationForm.success.manualLogin")
+					});
+					// Wait a bit for user to see the message, then redirect to login
+					setTimeout(() => {
+						router.push("/login");
+					}, 2000);
+					return;
+				}
+
+				// Successfully logged in! Redirect to dashboard
+				toast.success(t("applicationForm.success.title"), {
+					description: t("applicationForm.success.redirecting")
+				});
+				router.push("/dashboard");
+			} catch (loginError) {
+				console.error("Unexpected login error:", loginError);
+				// Fallback - show success and ask to login manually
+				setIsSubmitted(true);
+				toast.success(t("applicationForm.success.title"), {
+					description: t("applicationForm.success.manualLogin")
+				});
+				setTimeout(() => {
+					router.push("/login");
+				}, 2000);
+			}
 		} catch (error) {
 			console.error("Form submission error:", error);
 			toast.error(t("applicationForm.errors.network"));

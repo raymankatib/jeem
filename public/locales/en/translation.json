@@ -498,7 +498,9 @@
 		"success": {
 			"title": "Application submitted successfully!",
 			"description": "We'll review your application and get back to you soon.",
-			"descriptionPleaseLogin": "Your account has been created. Please login to continue."
+			"descriptionPleaseLogin": "Your account has been created. Please login to continue.",
+			"manualLogin": "Your account has been created! Redirecting you to login...",
+			"redirecting": "Logging you in and redirecting to your dashboard..."
 		},
 		"errors": {
 			"rateLimit": "Too many requests. Please try again in a minute.",
