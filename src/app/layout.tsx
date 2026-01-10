@@ -39,10 +39,25 @@ export const metadata: Metadata = {
 		"lead generation"
 	],
 	openGraph: {
+		title: "Jeem — Join the Network for Builders",
+		description:
+			"Apply to join Jeem's premium talent network. Get matched with real work, quality teams, and growth opportunities.",
+		type: "website",
+		images: [
+			{
+				url: "/white-logo.png",
+				width: 1200,
+				height: 630,
+				alt: "Jeem Logo"
+			}
+		]
+	},
+	twitter: {
+		card: "summary_large_image",
 		title: "Jeem — Join the Network for Builders Who Ship",
 		description:
 			"Apply to join Jeem's premium talent network. Get matched with real work, quality teams, and growth opportunities.",
-		type: "website"
+		images: ["/white-logo.png"]
 	}
 };
 
