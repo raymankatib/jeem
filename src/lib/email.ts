@@ -372,7 +372,14 @@ export async function sendCompanyConfirmationEmail({
 // TALENT STATUS UPDATE EMAIL
 // ============================================================================
 
-type TalentStatus = 'under_review' | 'interviewing' | 'training' | 'pending_matching' | 'matched' | 'rejected';
+type TalentStatus =
+	| "under_review"
+	| "screening"
+	| "interviewing"
+	| "training"
+	| "pending_matching"
+	| "matched"
+	| "rejected";
 
 interface SendTalentStatusUpdateEmailParams {
 	to: string;
@@ -390,6 +397,13 @@ const talentStatusEmailContent = {
 			getContent: (firstName: string, role: string) => ({
 				html: `Your application for ${role} is currently being reviewed by our team. We'll update you soon!`,
 				text: `Your application for ${role} is currently being reviewed by our team. We'll update you soon!`
+			})
+		},
+		screening: {
+			subject: "Screening in progress – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `Your ${role} application is being screened. We'll be in touch soon!`,
+				text: `Your ${role} application is being screened. We'll be in touch soon!`
 			})
 		},
 		interviewing: {
@@ -436,6 +450,13 @@ const talentStatusEmailContent = {
 				text: `طلبك لـ ${role} قيد المراجعة من قبل فريقنا حالياً. راح نحدّثك قريباً!`
 			})
 		},
+		screening: {
+			subject: "قيد الفحص – Jeem",
+			getContent: (firstName: string, role: string) => ({
+				html: `طلبك لـ ${role} قيد الفحص حالياً. راح نتواصل معك قريباً!`,
+				text: `طلبك لـ ${role} قيد الفحص حالياً. راح نتواصل معك قريباً!`
+			})
+		},
 		interviewing: {
 			subject: "دعوة للمقابلة – Jeem",
 			getContent: (firstName: string, role: string) => ({
@@ -479,7 +500,9 @@ function getStatusEmailTemplate(status: TalentStatus, language: "en" | "ar", fir
 
 	return {
 		subject: talentStatusEmailContent[language][status].subject,
-		html: language === "en" ? `
+		html:
+			language === "en"
+				? `
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -506,7 +529,8 @@ function getStatusEmailTemplate(status: TalentStatus, language: "en" | "ar", fir
   </p>
 </body>
 </html>
-		` : `
+		`
+				: `
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -582,7 +606,13 @@ export async function sendTalentStatusUpdateEmail({
 // COMPANY STATUS UPDATE EMAIL
 // ============================================================================
 
-type CompanyStatus = 'under_review' | 'reviewing_candidates' | 'interviewing_candidates' | 'negotiating' | 'matched' | 'rejected';
+type CompanyStatus =
+	| "under_review"
+	| "reviewing_candidates"
+	| "interviewing_candidates"
+	| "negotiating"
+	| "matched"
+	| "rejected";
 
 interface SendCompanyStatusUpdateEmailParams {
 	to: string;
@@ -684,12 +714,19 @@ const companyStatusEmailContent = {
 	}
 };
 
-function getCompanyStatusEmailTemplate(status: CompanyStatus, language: "en" | "ar", firstName: string, companyName: string) {
+function getCompanyStatusEmailTemplate(
+	status: CompanyStatus,
+	language: "en" | "ar",
+	firstName: string,
+	companyName: string
+) {
 	const content = companyStatusEmailContent[language][status].getContent(firstName, companyName);
 
 	return {
 		subject: companyStatusEmailContent[language][status].subject,
-		html: language === "en" ? `
+		html:
+			language === "en"
+				? `
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -716,7 +753,8 @@ function getCompanyStatusEmailTemplate(status: CompanyStatus, language: "en" | "
   </p>
 </body>
 </html>
-		` : `
+		`
+				: `
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -826,9 +864,9 @@ export async function sendCustomTalentEmail({
 		const htmlBody = isHtml
 			? body
 			: body
-				.split('\n')
-				.map(line => line.trim() === '' ? '<br>' : `<p style="margin: 0 0 16px 0;">${line}</p>`)
-				.join('\n');
+					.split("\n")
+					.map((line) => (line.trim() === "" ? "<br>" : `<p style="margin: 0 0 16px 0;">${line}</p>`))
+					.join("\n");
 
 		const htmlContent = `
 <!DOCTYPE html>
@@ -861,7 +899,10 @@ export async function sendCustomTalentEmail({
 
 		// Strip HTML tags for text version
 		const textBody = isHtml
-			? body.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+			? body
+					.replace(/<[^>]+>/g, "")
+					.replace(/\s+/g, " ")
+					.trim()
 			: body;
 		const textContent = `Hey ${firstName}!\n\n${textBody}\n\n– The Jeem Team`;
 

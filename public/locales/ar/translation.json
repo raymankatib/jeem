@@ -1070,6 +1070,7 @@
 		"status": {
 			"talent": {
 				"underReview": "قيد المراجعة",
+				"screening": "قيد الفحص",
 				"interviewing": "قيد المقابلة",
 				"training": "قيد التدريب",
 				"pendingMatching": "بانتظار المطابقة",

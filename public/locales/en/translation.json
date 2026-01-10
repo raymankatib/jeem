@@ -1107,6 +1107,7 @@
 		"status": {
 			"talent": {
 				"underReview": "Under Review",
+				"screening": "Screening",
 				"interviewing": "Interviewing",
 				"training": "Training",
 				"pendingMatching": "Pending Matching",

@@ -44,7 +44,7 @@ import type { PaginationInfo } from "@/lib/types/pagination";
 import type { TalentFilters, HiringRequestFilters } from "@/lib/types/filters";
 import { FilterBar } from "@/components/dashboard/filters";
 
-type TalentStatus = "under_review" | "interviewing" | "training" | "pending_matching" | "matched" | "rejected";
+type TalentStatus = "under_review" | "screening" | "interviewing" | "training" | "pending_matching" | "matched" | "rejected";
 
 interface Talent {
 	id: string;
@@ -536,6 +536,7 @@ export default function DashboardClient({
 
 	const talentStatuses: { value: TalentStatus; labelKey: string }[] = [
 		{ value: "under_review", labelKey: "dashboard.status.talent.underReview" },
+		{ value: "screening", labelKey: "dashboard.status.talent.screening" },
 		{ value: "interviewing", labelKey: "dashboard.status.talent.interviewing" },
 		{ value: "training", labelKey: "dashboard.status.talent.training" },
 		{ value: "pending_matching", labelKey: "dashboard.status.talent.pendingMatching" },
@@ -634,6 +635,7 @@ export default function DashboardClient({
 												options: [
 													{ value: "all", labelKey: "dashboard.filters.all" },
 													{ value: "under_review", labelKey: "dashboard.status.talent.underReview" },
+													{ value: "screening", labelKey: "dashboard.status.talent.screening" },
 													{ value: "interviewing", labelKey: "dashboard.status.talent.interviewing" },
 													{ value: "training", labelKey: "dashboard.status.talent.training" },
 													{ value: "pending_matching", labelKey: "dashboard.status.talent.pendingMatching" },

@@ -5,7 +5,7 @@ import { sendTalentStatusUpdateEmail } from "@/lib/email";
 import { z } from "zod";
 
 const talentStatusSchema = z.object({
-  application_status: z.enum(['under_review', 'interviewing', 'training', 'pending_matching', 'matched', 'rejected'])
+  application_status: z.enum(['under_review', 'screening', 'interviewing', 'training', 'pending_matching', 'matched', 'rejected'])
 });
 
 export async function PATCH(
@@ -69,7 +69,8 @@ export async function PATCH(
     }
 
     // Send status update email (fire and forget - don't block the response)
-    if (data) {
+    // Skip sending email for 'screening' status as it's an internal step
+    if (data && application_status !== 'screening') {
       sendTalentStatusUpdateEmail({
         to: data.email,
         name: data.name,
