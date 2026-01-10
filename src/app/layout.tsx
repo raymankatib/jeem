@@ -24,6 +24,7 @@ const cairoArabic = Cairo({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL("https://jeem.now"),
 	title: "Jeem — Join the Network for Builders Who Ship",
 	description:
 		"Apply to join Jeem's premium talent network. Get matched with real work, quality teams, and growth opportunities. Remote-friendly, paid in USD.",
@@ -46,9 +47,9 @@ export const metadata: Metadata = {
 		images: [
 			{
 				url: "/jeem-office.jpg",
-				width: 1200,
-				height: 630,
-				alt: "Jeem Logo"
+				width: 729,
+				height: 727,
+				alt: "Jeem Office"
 			}
 		]
 	},
