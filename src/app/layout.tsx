@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 		type: "website",
 		images: [
 			{
-				url: "/jeem-office.PNG",
+				url: "/jeem-office.jpg",
 				width: 1200,
 				height: 630,
 				alt: "Jeem Logo"
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 		title: "Jeem — Join the Network for Builders Who Ship",
 		description:
 			"Apply to join Jeem's premium talent network. Get matched with real work, quality teams, and growth opportunities.",
-		images: ["/jeem-office.PNG"]
+		images: ["/jeem-office.jpg"]
 	}
 };
 
