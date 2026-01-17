@@ -409,8 +409,8 @@ const talentStatusEmailContent = {
 		interviewing: {
 			subject: "Interview invitation – Jeem",
 			getContent: (firstName: string, role: string) => ({
-				html: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. We'll be in touch soon to coordinate a time.`,
-				text: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. We'll be in touch soon to coordinate a time.`
+				html: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. Please book a 30-minute call with us using this link: <a href="https://calendly.com/jeem-team/30min" style="color: #2563eb;">https://calendly.com/jeem-team/30min</a>`,
+				text: `Great news ${firstName}! We'd like to schedule an interview with you for the ${role} position. Please book a 30-minute call with us using this link: https://calendly.com/jeem-team/30min`
 			})
 		},
 		training: {
@@ -460,8 +460,8 @@ const talentStatusEmailContent = {
 		interviewing: {
 			subject: "دعوة للمقابلة – Jeem",
 			getContent: (firstName: string, role: string) => ({
-				html: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. راح نتواصل معك قريباً لتنسيق الوقت.`,
-				text: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. راح نتواصل معك قريباً لتنسيق الوقت.`
+				html: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. احجز مكالمة ٣٠ دقيقة معنا من هنا: <a href="https://calendly.com/jeem-team/30min" style="color: #2563eb;">https://calendly.com/jeem-team/30min</a>`,
+				text: `خبر سار ${firstName}! نحب نحدد معك مقابلة لمنصب ${role}. احجز مكالمة ٣٠ دقيقة معنا من هنا: https://calendly.com/jeem-team/30min`
 			})
 		},
 		training: {
