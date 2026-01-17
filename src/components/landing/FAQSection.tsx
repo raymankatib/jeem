@@ -14,7 +14,7 @@ export function FAQSection() {
 	const faqItems = t("faq.items", { returnObjects: true }) as Array<{ question: string; answer: string }>;
 
 	return (
-		<section id="faq" className="py-32 bg-surface relative bg-noise" ref={ref}>
+		<section id="faq" className="py-32 relative bg-white dark:bg-black" ref={ref}>
 			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Two-column layout */}

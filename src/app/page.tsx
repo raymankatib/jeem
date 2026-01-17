@@ -2,6 +2,7 @@ import {
 	TopBanner,
 	Navigation,
 	HeroSection,
+	PartnerLogos,
 	RolesSection,
 	HowItWorksSection,
 	BenefitsSection,
@@ -13,10 +14,19 @@ import {
 
 export default function JeemLandingPage() {
 	return (
-		<main className="relative">
-			<TopBanner />
+		<div className="min-h-screen bg-white dark:bg-black ">
+			{/* Navigation - above the card, full width, no background */}
 			<Navigation />
-			<HeroSection />
+			
+			{/* Hero Card - rounded gray gradient, only wraps hero section */}
+			<div className="px-4 sm:px-6 lg:px-8 ">
+				<div className="hero-card max-w-7xl mx-auto">
+					<HeroSection />
+				</div>
+			</div>
+			
+			{/* Everything below is on white background directly */}
+			{/* <PartnerLogos /> */}
 			<RolesSection />
 			<HowItWorksSection />
 			<BenefitsSection />
@@ -24,6 +34,8 @@ export default function JeemLandingPage() {
 			<FAQSection />
 			<ApplicationForm />
 			<Footer />
-		</main>
+			
+			<TopBanner />
+		</div>
 	);
 }

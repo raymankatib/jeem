@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Cairo } from "next/font/google";
+import { Inter, JetBrains_Mono, Cairo, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -22,6 +22,12 @@ const cairoArabic = Cairo({
 	subsets: ["arabic", "latin"],
 	weight: ["400", "500", "600", "700"]
 });
+
+// const playfairDisplay = Playfair_Display({
+// 	variable: "--font-serif",
+// 	subsets: ["latin"],
+// 	weight: ["400", "500", "600", "700"]
+// });
 
 export const metadata: Metadata = {
 	metadataBase: new URL("https://jeem.now"),
@@ -69,7 +75,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${inter.variable} ${jetbrainsMono.variable} ${cairoArabic.variable} antialiased`}>
+<body className={`${inter.variable} ${jetbrainsMono.variable} ${cairoArabic.variable} antialiased`}>
 				<I18nProvider>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 						<AuthProvider>

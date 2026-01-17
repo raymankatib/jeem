@@ -4,18 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Custom fonts - Neutral sans-serif with high legibility */
-@font-face {
-  font-family: 'Satoshi';
-  src: url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
-  font-display: swap;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,6 +41,8 @@
   --color-card: var(--card);
   --color-surface: var(--surface);
   --color-surface-elevated: var(--surface-elevated);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-orange-light: var(--accent-orange-light);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -58,102 +54,118 @@
 
 :root {
   --radius: 0.75rem;
-  
-  /* Greyscale-first palette - Light theme */
-  /* Never pure white or pure black */
-  --background: #FAFAF9;           /* Warm off-white */
-  --foreground: #18181B;           /* Near-black, not pure */
-  --surface: #F5F5F4;              /* Light grey sections */
-  --surface-elevated: #FFFFFF;     /* Slightly lighter cards - exception for elevation */
-  
-  --card: #FEFEFE;                 /* Card surface */
-  --card-foreground: #18181B;
-  --popover: #FEFEFE;
-  --popover-foreground: #18181B;
-  
-  /* Primary - Muted, sophisticated accent */
-  --primary: #18181B;              /* Near-black primary actions */
-  --primary-foreground: #FAFAF9;
-  
-  /* Secondary - Subtle grey tones */
+
+  /* PRD Color Palette - Light theme */
+  --background: #FFFFFF;
+  /* White page background */
+  --foreground: #111111;
+  /* Near black per PRD */
+  --surface: #F3F4F6;
+  /* Light grey sections */
+  --surface-elevated: #FFFFFF;
+  /* White for elevated elements */
+
+  --card: #FFFFFF;
+  /* Card surface */
+  --card-foreground: #111111;
+  --popover: #FFFFFF;
+  --popover-foreground: #111111;
+
+  /* Primary - Black per PRD */
+  --primary: #000000;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary - Subtle grey */
   --secondary: #F5F5F4;
-  --secondary-foreground: #18181B;
-  
-  /* Muted - For backgrounds and less important text */
-  --muted: #E7E5E4;
-  --muted-foreground: #78716C;     /* Mid-grey for secondary text */
-  
-  /* Accent - Sparingly used warm tone */
-  --accent: #A8A29E;               /* Warm grey accent */
-  --accent-foreground: #18181B;
-  
+  --secondary-foreground: #111111;
+
+  /* Muted - For backgrounds and secondary text */
+  --muted: #E5E7EB;
+  --muted-foreground: #4B5563;
+  /* Dark grey per PRD */
+
+  /* Accent - Orange per PRD */
+  --accent: #FF7F50;
+  --accent-foreground: #FFFFFF;
+  --accent-orange: #FF7F50;
+  --accent-orange-light: #FFA07A;
+
   --destructive: #B91C1C;
-  
-  /* Very subtle borders */
-  --border: rgba(0, 0, 0, 0.06);
-  --input: rgba(0, 0, 0, 0.06);
-  --ring: #18181B;
-  
-  /* Charts - Greyscale */
-  --chart-1: #18181B;
+
+  /* Borders */
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.08);
+  --ring: #000000;
+
+  /* Glass effect colors */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.4);
+
+  /* Charts */
+  --chart-1: #111111;
   --chart-2: #44403C;
   --chart-3: #78716C;
   --chart-4: #A8A29E;
   --chart-5: #D6D3D1;
-  
-  --sidebar: #FAFAF9;
-  --sidebar-foreground: #18181B;
-  --sidebar-primary: #18181B;
-  --sidebar-primary-foreground: #FAFAF9;
+
+  --sidebar: #EFEFEF;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #F5F5F4;
-  --sidebar-accent-foreground: #18181B;
-  --sidebar-border: rgba(0, 0, 0, 0.06);
-  --sidebar-ring: #18181B;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #000000;
 }
 
 .dark {
-  /* Greyscale-first palette - Dark theme */
-  --background: #0C0C0C;           /* Near-black, warm undertone */
-  --foreground: #FAFAF9;           /* Off-white text */
-  --surface: #141414;              /* Elevated surface */
-  --surface-elevated: #1C1C1C;     /* Cards and elevated elements */
-  
+  /* Dark theme - keeping existing */
+  --background: #0C0C0C;
+  --foreground: #FAFAF9;
+  --surface: #141414;
+  --surface-elevated: #1C1C1C;
+
   --card: #161616;
   --card-foreground: #FAFAF9;
   --popover: #161616;
   --popover-foreground: #FAFAF9;
-  
+
   --primary: #FAFAF9;
   --primary-foreground: #0C0C0C;
-  
+
   --secondary: #1C1C1C;
   --secondary-foreground: #FAFAF9;
-  
+
   --muted: #262626;
   --muted-foreground: #A1A1AA;
-  
-  --accent: #525252;
-  --accent-foreground: #FAFAF9;
-  
+
+  --accent: #FF7F50;
+  --accent-foreground: #FFFFFF;
+  --accent-orange: #FF7F50;
+  --accent-orange-light: #FFA07A;
+
   --destructive: #DC2626;
-  
-  --border: rgba(255, 255, 255, 0.06);
-  --input: rgba(255, 255, 255, 0.06);
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
   --ring: #FAFAF9;
-  
+
+  --glass-bg: rgba(30, 30, 30, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
   --chart-1: #FAFAF9;
   --chart-2: #D6D3D1;
   --chart-3: #A8A29E;
   --chart-4: #78716C;
   --chart-5: #44403C;
-  
+
   --sidebar: #0C0C0C;
   --sidebar-foreground: #FAFAF9;
   --sidebar-primary: #FAFAF9;
   --sidebar-primary-foreground: #0C0C0C;
   --sidebar-accent: #1C1C1C;
   --sidebar-accent-foreground: #FAFAF9;
-  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-border: rgba(255, 255, 255, 0.08);
   --sidebar-ring: #FAFAF9;
 }
 
@@ -161,29 +173,33 @@
   * {
     @apply border-border outline-ring/50;
   }
-  html, body {
+
+  html,
+  body {
     overflow-x: hidden;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   /* Arabic font for RTL */
   html[dir="rtl"] body {
     font-family: var(--font-arabic), system-ui, sans-serif;
   }
+
   html {
     scroll-behavior: smooth;
   }
-  
+
   /* RTL Support */
   html[dir="rtl"] {
     direction: rtl;
   }
-  
+
   /* Keep certain elements LTR (like code, URLs) */
   html[dir="rtl"] .ltr,
   html[dir="rtl"] input[type="url"],
@@ -191,7 +207,7 @@
     direction: ltr;
     text-align: left;
   }
-  
+
   /* Flip icons that have directional meaning */
   html[dir="rtl"] .rtl-flip {
     transform: scaleX(-1);
@@ -229,10 +245,82 @@
 
 /* Custom utilities */
 @layer utilities {
-  /* Very subtle noise texture - barely noticeable */
+
+  /* Serif font for headlines per PRD */
+  .font-serif {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+
+  /* Glassmorphism card - subtle glass effect */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 2px 4px -2px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .dark .glass-card {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.2),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Stronger glass for floating cards on hero */
+  .glass-card-strong {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.08),
+      0 4px 8px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-strong:hover {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.1),
+      0 6px 12px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .dark .glass-card-strong {
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 4px 8px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .glass-card-strong:hover {
+    background: rgba(50, 50, 50, 0.85);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 6px 12px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Orange gradient background per PRD */
+  .bg-accent-gradient {
+    background: linear-gradient(135deg, #FF7F50 0%, #FF6347 50%, #FF4500 100%);
+  }
+
+  /* Subtle noise texture */
   .bg-noise {
     position: relative;
   }
+
   .bg-noise::before {
     content: '';
     position: absolute;
@@ -243,16 +331,13 @@
     z-index: 0;
   }
 
-  /* Subtle shadow system for depth */
+  /* Shadow system per PRD */
   .shadow-soft {
-    box-shadow: 
-      0 1px 2px rgba(0, 0, 0, 0.02),
-      0 2px 4px rgba(0, 0, 0, 0.02),
-      0 4px 8px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   }
-  
+
   .shadow-soft-lg {
-    box-shadow: 
+    box-shadow:
       0 2px 4px rgba(0, 0, 0, 0.02),
       0 4px 8px rgba(0, 0, 0, 0.02),
       0 8px 16px rgba(0, 0, 0, 0.03),
@@ -260,20 +345,17 @@
   }
 
   .dark .shadow-soft {
-    box-shadow: 
-      0 1px 2px rgba(0, 0, 0, 0.1),
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   }
-  
+
   .dark .shadow-soft-lg {
-    box-shadow: 
+    box-shadow:
       0 2px 4px rgba(0, 0, 0, 0.15),
       0 4px 8px rgba(0, 0, 0, 0.15),
       0 8px 16px rgba(0, 0, 0, 0.15),
       0 16px 32px rgba(0, 0, 0, 0.1);
   }
-  
+
   /* Max content width */
   .container-narrow {
     max-width: 1280px;
@@ -282,19 +364,51 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
-  
+
   @media (min-width: 640px) {
     .container-narrow {
       padding-left: 2rem;
       padding-right: 2rem;
     }
   }
-  
+
   @media (min-width: 1024px) {
     .container-narrow {
       padding-left: 3rem;
       padding-right: 3rem;
     }
+  }
+
+  /* Hero card - rounded gray gradient card for hero section only */
+  .hero-card {
+    border-radius: 2rem;
+    background: linear-gradient(180deg, #E8E8E8 0%, #F5F5F5 50%, #EFEFEF 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  @media (min-width: 640px) {
+    .hero-card {
+      border-radius: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-card {
+      border-radius: 3rem;
+    }
+  }
+
+  .dark .hero-card {
+    background: linear-gradient(180deg, #1a1a1a 0%, #141414 50%, #0f0f0f 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Pill button per PRD */
+  .btn-pill {
+    border-radius: 9999px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 

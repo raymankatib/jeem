@@ -1,6 +1,7 @@
 export { TopBanner } from "./TopBanner";
 export { Navigation } from "./Navigation";
 export { HeroSection } from "./HeroSection";
+export { PartnerLogos } from "./PartnerLogos";
 export { RolesSection } from "./RolesSection";
 export { HowItWorksSection } from "./HowItWorksSection";
 export { BenefitsSection } from "./BenefitsSection";

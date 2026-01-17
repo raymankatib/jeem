@@ -36,7 +36,7 @@ export function BenefitsSection() {
 	];
 
 	return (
-		<section id="benefits" className="py-32 bg-surface relative bg-noise" ref={ref}>
+		<section id="benefits" className="py-32 relative bg-white dark:bg-black" ref={ref}>
 			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}

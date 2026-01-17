@@ -17,7 +17,7 @@ export function ProofSection() {
 	const standards = t("proof.standards.items", { returnObjects: true }) as string[];
 
 	return (
-		<section id="proof" className="py-32 relative bg-noise" ref={ref}>
+		<section id="proof" className="py-32 relative bg-white dark:bg-black" ref={ref}>
 			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}

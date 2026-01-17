@@ -13,7 +13,7 @@ export function HowItWorksSection() {
 	const isInView = useInView(ref, { once: true, margin: "-100px" });
 
 	return (
-		<section id="how-it-works" className="py-32 relative bg-noise" ref={ref}>
+		<section id="how-it-works" className="py-32 relative bg-white dark:bg-black" ref={ref}>
 			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}

@@ -38,7 +38,7 @@ export function RolesSection() {
 	const activeRoles = roleKeys[activeCategory] || [];
 
 	return (
-		<section id="roles" className="py-32 bg-surface relative bg-noise" ref={ref}>
+		<section id="roles" className="py-32 bg-white dark:bg-black relative" ref={ref}>
 			<div className="container-narrow">
 				<motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer}>
 					{/* Section Header */}
