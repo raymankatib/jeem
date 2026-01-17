@@ -17,6 +17,7 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { countryCodes } from "@/lib/country-codes";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { getUTMParams, UTMParams } from "@/lib/utm";
 
 const roleOptions: Array<{ value: string; labelKey: string }> = [
 	{ value: "Vibe Coding Engineer", labelKey: "roles.categories.engineering.roles.vibeCodingEngineer.title" },
@@ -34,14 +35,6 @@ const roleOptions: Array<{ value: string; labelKey: string }> = [
 ];
 
 const englishLevelKeys = ["native", "fluent", "advanced", "intermediate", "basic"];
-
-interface UTMParams {
-	utm_source: string;
-	utm_medium: string;
-	utm_campaign: string;
-	utm_term: string;
-	utm_content: string;
-}
 
 export function ApplicationForm() {
 	const { t, i18n } = useTranslation();
@@ -84,18 +77,10 @@ export function ApplicationForm() {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	// Extract UTM parameters from URL on mount
+	// Extract UTM parameters from URL or cookies on mount
+	// URL params take precedence and are stored in cookies for future visits
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const params = new URLSearchParams(window.location.search);
-			setUtmParams({
-				utm_source: params.get("utm_source") || "",
-				utm_medium: params.get("utm_medium") || "",
-				utm_campaign: params.get("utm_campaign") || "",
-				utm_term: params.get("utm_term") || "",
-				utm_content: params.get("utm_content") || ""
-			});
-		}
+		setUtmParams(getUTMParams());
 	}, []);
 
 	// CV file validation

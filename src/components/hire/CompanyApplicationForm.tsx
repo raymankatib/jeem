@@ -23,18 +23,11 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { countryCodes } from "@/lib/country-codes";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { getUTMParams, UTMParams } from "@/lib/utm";
 
 const companySizeKeys = ["solo", "small", "medium", "large", "enterprise"];
 // REMOVED: projectTypeKeys, budgetRangeKeys, roleOptions
 // These are now used in the HiringRequestForm component instead
-
-interface UTMParams {
-	utm_source: string;
-	utm_medium: string;
-	utm_campaign: string;
-	utm_term: string;
-	utm_content: string;
-}
 
 export function CompanyApplicationForm() {
 	const { t, i18n } = useTranslation();
@@ -74,18 +67,10 @@ export function CompanyApplicationForm() {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
-	// Extract UTM parameters from URL on mount
+	// Extract UTM parameters from URL or cookies on mount
+	// URL params take precedence and are stored in cookies for future visits
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const params = new URLSearchParams(window.location.search);
-			setUtmParams({
-				utm_source: params.get("utm_source") || "",
-				utm_medium: params.get("utm_medium") || "",
-				utm_campaign: params.get("utm_campaign") || "",
-				utm_term: params.get("utm_term") || "",
-				utm_content: params.get("utm_content") || ""
-			});
-		}
+		setUtmParams(getUTMParams());
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -558,5 +543,6 @@ export function CompanyApplicationForm() {
 		</section>
 	);
 }
+
 
 
