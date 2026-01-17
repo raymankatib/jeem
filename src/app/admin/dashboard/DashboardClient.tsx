@@ -697,7 +697,26 @@ export default function DashboardClient({
 												</TableRow>
 											) : (
 												talents.map((talent) => (
-													<TableRow key={talent.id}>
+													<TableRow
+																		key={talent.id}
+																		className={
+																			talent.application_status === "under_review"
+																				? "bg-green-50 dark:bg-green-950/30"
+																				: talent.application_status === "screening"
+																				? "bg-yellow-50 dark:bg-yellow-950/30"
+																				: talent.application_status === "interviewing"
+																				? "bg-purple-50 dark:bg-purple-950/30"
+																				: talent.application_status === "training"
+																				? "bg-orange-50 dark:bg-orange-950/30"
+																				: talent.application_status === "pending_matching"
+																				? "bg-cyan-50 dark:bg-cyan-950/30"
+																				: talent.application_status === "matched"
+																				? "bg-blue-50 dark:bg-blue-950/30"
+																				: talent.application_status === "rejected"
+																				? "bg-red-50 dark:bg-red-950/30"
+																				: ""
+																		}
+																	>
 														<TableCell className="font-medium">
 															<div className="flex items-center gap-3">
 																{talent.image_url ? (
