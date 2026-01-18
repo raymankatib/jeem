@@ -65,7 +65,7 @@ export function Navigation() {
 			initial={{ y: -10, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-			className="w-full py-4 px-6 sm:px-8 lg:px-12"
+			className="fixed top-0 left-0 right-0 z-50 w-full py-4 px-6 sm:px-8 lg:px-12 bg-background/80 backdrop-blur-md"
 		>
 			<div className="max-w-7xl mx-auto">
 				<div className="flex items-center justify-between">
@@ -81,13 +81,7 @@ export function Navigation() {
 								<Image src="/black-logo.png" alt="Jeem Logo" width={24} height={24} className="hidden dark:block" />
 							</div>
 						</button>
-						<span className="hidden sm:inline text-sm text-muted-foreground">/</span>
-						<a
-							href={`mailto:${t("common.email")}`}
-							className="hidden sm:flex items-center text-sm text-foreground font-medium hover:text-muted-foreground transition-colors"
-						>
-							{t("common.email")}
-						</a>
+
 					</div>
 
 					{/* Center - Desktop Nav Links */}

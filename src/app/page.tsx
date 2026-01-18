@@ -14,7 +14,7 @@ import {
 
 export default function JeemLandingPage() {
 	return (
-		<div className="min-h-screen bg-white dark:bg-black ">
+		<div className="min-h-screen bg-white dark:bg-black pt-20">
 			{/* Navigation - above the card, full width, no background */}
 			<Navigation />
 			
