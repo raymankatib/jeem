@@ -3,18 +3,20 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Mail, Lock } from "lucide-react";
+import { Loader2, Mail, Lock, ArrowLeft, ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { AuthNav } from "@/components/auth-nav";
 
 export default function LoginPage() {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 	const router = useRouter();
+	const isRTL = i18n.language === "ar";
+	const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 	const [isLoading, setIsLoading] = useState(false);
 	const [formData, setFormData] = useState({
 		email: "",
@@ -71,29 +73,57 @@ export default function LoginPage() {
 	return (
 		<>
 			<AuthNav />
-			<div className="min-h-screen flex items-center justify-center bg-background text-foreground pt-20 p-4">
+			<div className="min-h-screen flex items-center justify-center bg-white dark:bg-black pt-20 p-4 sm:p-6 lg:p-8">
 				<div className="w-full max-w-md">
-				<div className="text-center mb-8">
-					<h1 className="text-3xl font-semibold tracking-tight mb-2">{t("auth.login.title")}</h1>
-					<p className="text-muted-foreground">{t("auth.login.subtitle")}</p>
-				</div>
+					{/* Login Card with hero-card styling */}
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+						className="hero-card p-8 sm:p-10"
+					>
+						{/* Header */}
+						<motion.div
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.1, duration: 0.4 }}
+							className="text-center mb-8"
+						>
+							<h1 className="font-serif text-4xl sm:text-5xl font-medium tracking-tight mb-3">
+								{t("auth.login.title")}
+							</h1>
+							<p className="text-muted-foreground">{t("auth.login.subtitle")}</p>
+						</motion.div>
 
-				<Card className="bg-card border-border">
-					<CardContent className="pt-6">
-						<form onSubmit={handleSubmit} className="space-y-4">
+						{/* Divider */}
+						<motion.div
+							initial={{ opacity: 0, scaleX: 0 }}
+							animate={{ opacity: 1, scaleX: 1 }}
+							transition={{ delay: 0.2, duration: 0.4 }}
+							className="w-full h-px bg-border mb-8 origin-center"
+						/>
+
+						{/* Form */}
+						<motion.form
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.3, duration: 0.4 }}
+							onSubmit={handleSubmit}
+							className="space-y-5"
+						>
 							<div className="space-y-2">
-								<label htmlFor="email" className="text-sm text-muted-foreground">
+								<label htmlFor="email" className="text-sm font-medium text-foreground">
 									{t("auth.login.fields.email.label")}
 								</label>
 								<div className="relative">
-									<Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+									<Mail className="absolute start-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 									<Input
 										id="email"
 										type="email"
 										placeholder={t("auth.login.fields.email.placeholder")}
 										value={formData.email}
 										onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-										className="h-11 pl-10"
+										className="h-12 ps-11 bg-white dark:bg-black/50 border-border/50 rounded-xl focus:border-foreground transition-colors"
 										disabled={isLoading}
 										autoComplete="email"
 									/>
@@ -101,18 +131,18 @@ export default function LoginPage() {
 							</div>
 
 							<div className="space-y-2">
-								<label htmlFor="password" className="text-sm text-muted-foreground">
+								<label htmlFor="password" className="text-sm font-medium text-foreground">
 									{t("auth.login.fields.password.label")}
 								</label>
 								<div className="relative">
-									<Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+									<Lock className="absolute start-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 									<Input
 										id="password"
 										type="password"
 										placeholder={t("auth.login.fields.password.placeholder")}
 										value={formData.password}
 										onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-										className="h-11 pl-10"
+										className="h-12 ps-11 bg-white dark:bg-black/50 border-border/50 rounded-xl focus:border-foreground transition-colors"
 										disabled={isLoading}
 										autoComplete="current-password"
 									/>
@@ -121,36 +151,50 @@ export default function LoginPage() {
 
 							<Button
 								type="submit"
-								className="w-full font-medium h-11"
+								className="w-full bg-foreground hover:bg-foreground/90 text-background font-medium h-12 text-base rounded-full transition-all duration-200 gap-2 shadow-soft mt-2"
 								disabled={isLoading}
 							>
 								{isLoading ? (
 									<>
-										<Loader2 className="h-4 w-4 animate-spin me-2" />
+										<Loader2 className="h-4 w-4 animate-spin" />
 										{t("auth.login.submit.loading")}
 									</>
 								) : (
-									t("auth.login.submit.button")
+									<>
+										{t("auth.login.submit.button")}
+										<ArrowIcon className="h-4 w-4" />
+									</>
 								)}
 							</Button>
-						</form>
+						</motion.form>
 
-						<div className="mt-6 text-center text-sm text-muted-foreground">
-							<p className="mb-2">{t("auth.login.noAccount")}</p>
-							<div className="flex gap-2 justify-center">
-								<Link href="/#apply" className="text-foreground hover:underline font-medium">
+						{/* Footer links */}
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 0.5, duration: 0.4 }}
+							className="mt-8 text-center text-sm text-muted-foreground"
+						>
+							<p className="mb-3">{t("auth.login.noAccount")}</p>
+							<div className="flex gap-3 justify-center">
+								<Link
+									href="/#apply"
+									className="text-foreground hover:text-accent-orange font-medium transition-colors"
+								>
 									{t("auth.login.applyForTalent")}
 								</Link>
-								<span className="text-muted-foreground">•</span>
-								<Link href="/hire#apply" className="text-foreground hover:underline font-medium">
+								<span className="text-border">|</span>
+								<Link
+									href="/hire#apply"
+									className="text-foreground hover:text-accent-orange font-medium transition-colors"
+								>
 									{t("auth.login.applyForCompany")}
 								</Link>
 							</div>
-						</div>
-					</CardContent>
-				</Card>
+						</motion.div>
+					</motion.div>
+				</div>
 			</div>
-		</div>
 		</>
 	);
 }
